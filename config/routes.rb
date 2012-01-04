@@ -1,5 +1,7 @@
 PicMixr::Application.routes.draw do
   
+  root :to => "home#index"
+
   match "/auth/:provider/callback" => "sessions#create"
   match "/logout" => "sessions#destroy", :as => :logout
   
