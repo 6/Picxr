@@ -2,6 +2,12 @@
 <html>
 <head>
   <title>PicMixr</title>
+  <script>
+  window.is_dev = <% if Rails.env.development? %>true<% else %>false<% end %>;
+  window.is_fb_frame = self !== top;
+  window.fb_app_id = "<%= ENV['FACEBOOK_APP_ID'] %>";
+  window.top_href = window.is_fb_frame ? "<%= ENV['FACEBOOK_CB_FRAME'] %>" : "<%= ENV['FACEBOOK_CB_DEFAULT'] %>";
+  </script>
   <%= stylesheet_link_tag    "application" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
@@ -12,14 +18,19 @@
   <%= content_tag :div, msg, :class => "flash_#{name}" %>
 <% end %>
 
-<% if current_user %>
-  Welcome <%= current_user.name %>!
-  <%= link_to "Logout", logout_path %>
-<% else %>
-  <%=link_to "Login with Facebook", "/auth/facebook" %>
-<% end %>
+<a href="#" id="fb-auth">Login with Facebook</a>
+<a href="#" id="fb-logout" class="hide">Logout of Facebook</a>
+<div id="user-info" class="hide"></div>
 
 <%= yield %>
-
+<div id="fb-root" class="hide"></div>
+<script>
+// Load Facebook JS SDK asynchronously
+(function(){
+  var e = document.createElement('script'); e.async = true;
+  e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
+  document.getElementById('fb-root').appendChild(e);
+}());
+</script>
 </body>
 </html>
