@@ -18,7 +18,7 @@ update_status = (res) ->
     user_id = res.authResponse.userID
     toggle_login_html false
     set_user_info()
-    console.p "Auth token:",res.authResponse.accessToken
+    console.p "Auth token:",res.authResponse.accessToken, "expires:", res.authResponse.expiresIn
   else if !user_id?
     # user is not connected to your app or logged out
     toggle_login_html true
