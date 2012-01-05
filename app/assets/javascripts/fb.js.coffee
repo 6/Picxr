@@ -44,7 +44,7 @@ toggle_login_html = (show_bool) ->
 fb_login = ->
   FB.login (res) ->
     # user cancelled login or did not grant authorization
-    alert("DENY") unless res.authResponse?
+    console.p "DENY" unless res.authResponse?
   , {scope: 'user_photos,friends_photos'}
   
 fb_logout = ->
