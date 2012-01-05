@@ -57,15 +57,10 @@ create_session = (user_id, name) ->
     info:
       name: name
 
-auth_url = (scope) ->    
-  cb_url = "#{window.top_href}auth/facebook/callback"
-  "https://www.facebook.com/dialog/oauth?client_id=#{window.fb_app_id}&redirect_uri=#{encodeURIComponent cb_url}&scope=#{scope}"
-
 avatar_url = (user_id) -> "https://graph.facebook.com/#{user_id}/picture"
 
 $ ->
   $("#fb-auth").click (e) ->
-    #top.location.href = auth_url window.fb_scope
     fb_login()
     e.preventDefault()
   $("#fb-logout").click (e) ->
