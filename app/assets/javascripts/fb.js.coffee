@@ -91,9 +91,26 @@ show_albums = (albums) ->
   $.each albums, (i, album) ->
     #TODO use client-side templates
     $album = $("<li><a href='#'><img class='thumbnail' src='#{album.cover}' title='#{album.name}' alt='#{album.name}'></a></li>")
-    $album.click ->
-      console.p "#{album.name}, #{album.aid}"
+    $album.click (e) ->
+      #TODO extract this to "click builder"
+      fetch_album_photos album.aid, (photos) ->
+        $("#fb-photos-title").text(album.name).show(0)
+        $("#fb-photos").html("").show(0)
+        $.each photos, (i, photo) ->
+          $photo = $("<li><a href='#'><img class='thumbnail' src='#{photo.src}' title='#{photo.caption}' alt='Photo from #{album.name}'></a></li>")
+          $photo.click (e) ->
+            #TODO extract
+            alert "TODO: start editing #{photo.src_big}"
+            e.preventDefault()
+          $photo.appendTo("#fb-photos")
+      e.preventDefault()
     $album.appendTo("#fb-photos")
+
+fetch_album_photos = (aid, cb) ->
+  q_photos = FB.Data.query("SELECT pid, caption, src, src_width, src_height, src_big, src_big_width, src_big_height FROM photo WHERE aid='{0}'", aid)
+  q_photos.wait (rows) ->
+    console.p "FETCHED PHOTOS", rows
+    cb rows
 
 $ ->
   $("#fb-auth").click (e) ->
