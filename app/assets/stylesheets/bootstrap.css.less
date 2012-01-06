@@ -3,3 +3,87 @@
 // Baseline grid
 @basefont:          13px;
 @baseline:          18px;
+
+// 760-ish px wide
+@gridColumns: 12;
+@gridColumnWidth: 49px;
+@gridGutterWidth: 15px;
+
+.btn {
+  // Facebook Button Type
+  &.fb {
+    color: @white;
+    .gradientBar(#57b, #248)
+  } 
+}
+
+// TODO move this to scss
+body {
+  background: #eee;
+}
+
+#landing-header {
+  margin-top:10px;
+  margin-bottom:15px;
+  background:#fff;
+  .box-shadow();
+  .border-radius();
+}
+
+#logo {
+  padding-top: 9px;
+  padding-left: 17px;
+  font-size: 18px;
+}
+
+#cta {
+  padding-top: 8px;
+  div {
+    text-align:center;
+  }
+  .btn {
+    margin-top: 4px
+  }
+  #cta-or {
+    text-transform: uppercase;
+    margin-top: 15px;
+  }
+}
+
+#toolbox-wrap{
+  #toolbox {
+  }
+  #save-image-well {
+    text-align:center;
+    border-color:#e3e3e3;
+    background-color:#f9f9f9;
+    padding: 10px;
+  }
+}
+#canvas-wrap {
+  #canvas-placeholder,#canvas {
+    background:#fff;
+    .box-shadow();
+    height:350px; // TODO remove    
+  }
+  #canvas-placeholder {
+    #pitch {
+      margin: 11px 0;
+      text-align:center;
+      font-size: 22px;
+    }
+  }
+}
+
+footer#default-footer {
+  border-top:0;
+  text-align:center;
+  font-size: 12px;
+  margin-top:8px;
+  padding-top: 7px;
+  color: #888;
+  a {
+    color: #68a;
+    padding: 0 5px;
+  }
+}

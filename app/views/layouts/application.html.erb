@@ -19,11 +19,35 @@
   <%= content_tag :div, msg, :class => "flash_#{name}" %>
 <% end %>
 
-<a href="#" id="fb-auth">Login with Facebook</a>
+<div class="container">
+  <div class="row">
+    <div id="landing-header" class="span12">
+      <div class="row">
+        <div id="logo-wrap" class="span3">
+          <a href="/"><img id="logo" src="/assets/logo-medium.png" alt="picmixr" title="picmixr"></a>
+        </div>
+        <div id="cta" class="span9">
+          <div class="row">
+            <div id="cta-import-wrap" class="span">
+              <a href="#" id="fb-import" class="btn large fb">Import Facebook Photos</a>
+            </div>
+          </div>
+          <!--div id="cta-upload-wrap" class="span">
+              <a href="#" class="btn large" data-controls-modal="modal-upload" data-backdrop="static">Upload Pictures</a>
+            </div-->
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!--a href="#" id="fb-auth">Login with Facebook</a>
 <a href="#" id="fb-logout" class="hide">Logout of Facebook</a>
-<div id="user-info" class="hide"></div>
+<div id="user-info" class="hide"></div-->
 
 <%= yield %>
+
+</div>
+<footer id="default-footer">&copy; 2012 PicMixr. <a href="/about">About</a>&middot;<a href="/contact">Contact</a>&middot;<a href="/terms">Terms</a></footer>
 <div id="fb-root" class="hide"></div>
 <script>
 // Load Facebook JS SDK asynchronously
