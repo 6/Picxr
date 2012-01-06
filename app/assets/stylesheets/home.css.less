@@ -1,6 +1,7 @@
 // Place all the styles related to the home controller here.
 // They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+
+@import "twitter/bootstrap/mixins";
 
 #user-info-wrap {
   margin-top: 9px;
@@ -15,4 +16,16 @@
       margin-bottom: 5px;
     }
   }
+}
+
+// STATIC PAGES
+#static-wrap {
+  background: #fff;
+  padding: 20px;
+  .box-shadow();
+  .border-radius();
+  h1 {
+    font-size: 20px;
+    line-height: 26px;
+  } 
 }

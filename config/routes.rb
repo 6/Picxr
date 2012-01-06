@@ -5,6 +5,8 @@ PicMixr::Application.routes.draw do
   match "/session/:provider" => "sessions#create", :via => :post
   match "/logout" => "sessions#destroy", :as => :logout
   
+  match ':action' => 'static#:action' # this should always be the last route
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
