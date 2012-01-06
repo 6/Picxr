@@ -1,4 +1,5 @@
 user_id = null
+access_token = null
 
 window.fbAsyncInit = ->
   FB.init
@@ -16,9 +17,13 @@ update_status = (res) ->
   if res.authResponse? and !user_id?
     #user is already logged in and connected
     user_id = res.authResponse.userID
+    access_token = res.authResponse.accessToken
     toggle_login_html false
     set_user_info()
     console.p "Auth token:",res.authResponse.accessToken, "expires:", res.authResponse.expiresIn
+    #TODO show "Loading Facebook photos [loading img]"
+    $("#canvas-placeholder").hide(0);
+    fetch_albums user_id, show_albums
   else if !user_id?
     # user is not connected to your app or logged out
     toggle_login_html true
@@ -58,6 +63,37 @@ create_session = (user_id, name) ->
       name: name
 
 avatar_url = (user_id) -> "https://graph.facebook.com/#{user_id}/picture"
+
+fetch_albums = (uid, cb) ->
+  uid ?= user_id
+  albums = []
+  q_albums = FB.Data.query("SELECT aid, name, cover_pid, photo_count FROM album WHERE owner='{0}' AND photo_count > 0", user_id)
+  q_albums.wait (rows) ->
+    cb [] if rows.length is 0
+    results_count = rows.length
+    $.each rows, (i, row) ->
+      q_album_cover = FB.Data.query("SELECT src, src_width, src_height FROM photo WHERE pid='{0}'", row["cover_pid"])
+      q_album_cover.wait (res) ->
+        res = res[0]
+        if res.src? and res.src.length > 0 # may be blank. TODO: don't ignore if blank
+          albums.push
+            cover: res.src
+            name: row.name
+            aid: row.aid
+            count: row.photo_count
+        else results_count -= 1
+        if albums.length is results_count
+          console.p "FETCHED ALBUMS", albums
+          cb albums
+
+show_albums = (albums) ->
+  $("#fb-photos").html("").show(0)
+  $.each albums, (i, album) ->
+    #TODO use client-side templates
+    $album = $("<li><a href='#'><img class='thumbnail' src='#{album.cover}' title='#{album.name}' alt='#{album.name}'></a></li>")
+    $album.click ->
+      console.p "#{album.name}, #{album.aid}"
+    $album.appendTo("#fb-photos")
 
 $ ->
   $("#fb-auth").click (e) ->
