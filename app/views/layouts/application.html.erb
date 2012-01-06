@@ -29,7 +29,11 @@
         <div id="cta" class="span9">
           <div class="row">
             <div id="cta-import-wrap" class="span">
-              <a href="#" id="fb-import" class="btn large fb">Import Facebook Photos</a>
+              <a href="#" id="fb-auth" class="btn large fb">Import Facebook Photos</a>
+            </div>
+            <div id="user-info-wrap" class="span">
+              <span id="user-info" class="hide"></span>
+              <a href="#" id="fb-logout" class="hide">Logout of Facebook</a>
             </div>
           </div>
           <!--div id="cta-upload-wrap" class="span">
@@ -39,10 +43,6 @@
       </div>
     </div>
   </div>
-
-<!--a href="#" id="fb-auth">Login with Facebook</a>
-<a href="#" id="fb-logout" class="hide">Logout of Facebook</a>
-<div id="user-info" class="hide"></div-->
 
 <%= yield %>
 

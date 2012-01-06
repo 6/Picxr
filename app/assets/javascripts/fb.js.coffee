@@ -25,7 +25,7 @@ update_status = (res) ->
     console.p "no facebook user_id"
     
 set_user_info = ->
-  $("#user-info").html "<img src='#{avatar_url user_id}'>"
+  $("#user-info").html "<img id='fb-avatar' src='#{avatar_url user_id}'>"
   FB.api '/me', (res) ->
     $("#user-info").append res.name
     create_session user_id, res.name
