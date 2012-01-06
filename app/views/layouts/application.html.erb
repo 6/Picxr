@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title><%= "#{@page_title} - PicMixr" or 'PicMixr - Make your photos hilarious' %></title>
+  <title><%= @page_title ? "#{@page_title} - PicMixr" : 'PicMixr - Make your photos hilarious' %></title>
   <script>
   window.is_dev = <% if Rails.env.development? %>true<% else %>false<% end %>;
   window.is_fb_frame = self !== top;
