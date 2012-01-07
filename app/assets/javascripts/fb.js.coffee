@@ -30,9 +30,9 @@ update_status = (res) ->
     console.p "no facebook user_id"
     
 set_user_info = ->
-  $("#user-info").html "<img id='fb-avatar' src='#{avatar_url user_id}'>"
+  #TODO loading message
   FB.api '/me', (res) ->
-    $("#user-info").append res.name
+    $("#user-info").html JST["fb_user_info"](fb_user_id: user_id, fb_name: res.name)
     create_session user_id, res.name
   
 toggle_login_html = (show_bool) ->
@@ -61,8 +61,6 @@ create_session = (user_id, name) ->
     uid: user_id
     info:
       name: name
-
-avatar_url = (user_id) -> "https://graph.facebook.com/#{user_id}/picture"
 
 fetch_albums = (uid, cb) ->
   uid ?= user_id
