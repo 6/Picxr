@@ -1,7 +1,33 @@
-// Place all the styles related to the home controller here.
-// They will automatically be included in application.css.
-
 @import "twitter/bootstrap/mixins";
+
+body {
+  background: #eee;
+}
+
+#landing-header {
+  margin-top:10px;
+  margin-bottom:15px;
+  background:#fff;
+  .box-shadow();
+  .border-radius();
+}
+
+#logo {
+  padding-top: 9px;
+  padding-left: 17px;
+  font-size: 18px;
+}
+
+#cta {
+  padding-top: 8px;
+  .btn {
+    margin-top: 4px
+  }
+  #cta-or {
+    text-transform: uppercase;
+    margin-top: 15px;
+  }
+}
 
 #user-info-wrap {
   margin-top: 9px;
@@ -22,14 +48,15 @@
   }
 }
 
-// STATIC PAGES
-#static-wrap {
-  background: #fff;
-  padding: 20px;
-  .box-shadow();
-  .border-radius();
-  h1 {
-    font-size: 20px;
-    line-height: 26px;
-  } 
+footer#default-footer {
+  border-top:0;
+  text-align:center;
+  font-size: 12px;
+  margin-top:8px;
+  padding-top: 7px;
+  color: #888;
+  a {
+    color: #68a;
+    padding: 0 5px;
+  }
 }
