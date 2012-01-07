@@ -1,0 +1,46 @@
+!!! 5
+%html
+  %head
+    %meta{:charset => 'utf-8'}
+    %title= @page_title ? "#{@page_title} - PicMixr" : 'PicMixr - Make your photos hilarious'
+    :javascript
+      window.is_dev = #{Rails.env.development? ? 'true' : 'false'};
+      window.is_fb_frame = self !== top;
+      window.fb_app_id = "#{ENV['FACEBOOK_APP_ID']}";
+      window.top_href = window.is_fb_frame ? "#{ENV['FACEBOOK_CB_FRAME']}" : "#{ENV['FACEBOOK_CB_DEFAULT']}";
+    = stylesheet_link_tag    "application"
+    = javascript_include_tag "application"
+    = csrf_meta_tags
+  %body{:data => {:controller => "#{controller_name}", :action => "#{action_name}"}}
+    - flash.each do |name, msg|
+      = content_tag :div, msg, :class => "flash_#{name}"
+    .container
+      .row
+        #landing-header.span12
+          .row
+            #logo-wrap.span3
+              %a{:href=> "/"}
+                %img#logo{:src => "/assets/logo-medium.png", :alt => "picmixr", :title => "picmixr"}
+            #cta.span9
+              .row
+                #cta-import-wrap.span
+                  %a#fb-auth.btn.large.fb{:href => "#"} Import Facebook Photos
+                #user-info-wrap.span6
+                  %span#user-info.hide
+                    %a#fb-logout.hide{:href => "#"} Logout of Facebook
+      = yield
+    %footer#default-footer
+      &copy; 2012 PicMixr.
+      %a{:href => "/about"} About
+      &middot;
+      %a{:href => "/contact"} Contact
+      &middot;
+      %a{:href => "/terms"} Terms
+    #fb-root.hide
+    :javascript
+      // Load Facebook JS SDK asynchronously
+      (function(){
+        var e = document.createElement('script'); e.async = true;
+        e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
+        document.getElementById('fb-root').appendChild(e);
+      }());
