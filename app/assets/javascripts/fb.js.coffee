@@ -89,15 +89,14 @@ fetch_albums = (uid, cb) ->
 show_albums = (albums) ->
   $("#fb-photos").html("").show(0)
   $.each albums, (i, album) ->
-    #TODO use client-side templates
-    $album = $("<li><a href='#'><img class='thumbnail' src='#{album.cover}' title='#{album.name}' alt='#{album.name}'></a></li>")
+    $album = $(JST['grid_thumb'](src: album.cover, title: album.name, alt: album.name))
     $album.click (e) ->
       #TODO extract this to "click builder"
       fetch_album_photos album.aid, (photos) ->
         $("#fb-photos-title").text(album.name).show(0)
         $("#fb-photos").html("").show(0)
         $.each photos, (i, photo) ->
-          $photo = $("<li><a href='#'><img class='thumbnail' src='#{photo.src}' title='#{photo.caption}' alt='Photo from #{album.name}'></a></li>")
+          $photo = $(JST['grid_thumb'](src: photo.src, title: photo.caption, alt: "Photo from #{album.name}"))
           $photo.click (e) ->
             #TODO extract
             alert "TODO: start editing #{photo.src_big}"
