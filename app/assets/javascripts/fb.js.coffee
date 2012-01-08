@@ -3,7 +3,7 @@ access_token = null
 
 window.fbAsyncInit = ->
   FB.init
-    appId: window.fb_app_id
+    appId: $("html").data("fb-app-id")
     status: true
     cookie: true
     oauth: true
@@ -20,14 +20,14 @@ update_status = (res) ->
     access_token = res.authResponse.accessToken
     toggle_login_html false
     set_user_info()
-    console.p "Auth token:",res.authResponse.accessToken, "expires:", res.authResponse.expiresIn
+    UT.p "Auth token:",res.authResponse.accessToken, "expires:", res.authResponse.expiresIn
     #TODO show "Loading Facebook photos [loading img]"
     $("#canvas-placeholder").hide(0);
     fetch_albums user_id, show_albums
   else if !user_id?
     # user is not connected to your app or logged out
     toggle_login_html true
-    console.p "no facebook user_id"
+    UT.p "no facebook user_id"
     
 set_user_info = ->
   #TODO loading message
@@ -43,13 +43,13 @@ toggle_login_html = (show_bool) ->
   else
     $("#fb-auth").hide(0)
     # only show logout if they're not using canvas frame
-    $("#fb-logout").show(0) unless window.is_fb_frame
+    $("#fb-logout").show(0) unless UT.is_framed()
     $("#user-info").show(0)
 
 fb_login = ->
   FB.login (res) ->
     # user cancelled login or did not grant authorization
-    console.p "DENY" unless res.authResponse?
+    UT.p "DENY" unless res.authResponse?
   , {scope: 'user_photos,friends_photos'}
   
 fb_logout = ->
@@ -81,7 +81,7 @@ fetch_albums = (uid, cb) ->
             count: row.photo_count
         else results_count -= 1
         if albums.length is results_count
-          console.p "FETCHED ALBUMS", albums
+          UT.p "FETCHED ALBUMS", albums
           cb albums
 
 show_albums = (albums) ->
@@ -106,7 +106,7 @@ show_albums = (albums) ->
 fetch_album_photos = (aid, cb) ->
   q_photos = FB.Data.query("SELECT pid, caption, src, src_width, src_height, src_big, src_big_width, src_big_height FROM photo WHERE aid='{0}'", aid)
   q_photos.wait (rows) ->
-    console.p "FETCHED PHOTOS", rows
+    UT.p "FETCHED PHOTOS", rows
     cb rows
 
 $ ->

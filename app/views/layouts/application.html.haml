@@ -1,17 +1,17 @@
 !!! 5
-%html
+%html{:data => {:controller => "#{controller_name}",
+                :action => "#{action_name}",
+                :'is-dev' => "#{Rails.env.development? ? 'yes' : 'no'}",
+                :'fb-app-id' => "#{ENV['FACEBOOK_APP_ID']}",
+                :'fb-cb-frame' => "#{ENV['FACEBOOK_CB_FRAME']}",
+                :'fb-cb-default' => "#{ENV['FACEBOOK_CB_DEFAULT']}"}}
   %head
     %meta{:charset => 'utf-8'}
     %title= @page_title ? "#{@page_title} - PicMixr" : 'PicMixr - Make your photos hilarious'
-    :javascript
-      window.is_dev = #{Rails.env.development? ? 'true' : 'false'};
-      window.is_fb_frame = self !== top;
-      window.fb_app_id = "#{ENV['FACEBOOK_APP_ID']}";
-      window.top_href = window.is_fb_frame ? "#{ENV['FACEBOOK_CB_FRAME']}" : "#{ENV['FACEBOOK_CB_DEFAULT']}";
     = stylesheet_link_tag    "application"
     = javascript_include_tag "application"
     = csrf_meta_tags
-  %body{:data => {:controller => "#{controller_name}", :action => "#{action_name}"}}
+  %body
     - flash.each do |name, msg|
       = content_tag :div, msg, :class => "flash_#{name}"
     .container
