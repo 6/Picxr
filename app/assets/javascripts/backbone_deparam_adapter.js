@@ -16,8 +16,15 @@
 
   Backbone.Router.prototype.oldExtractParameters = Backbone.Router.prototype._extractParameters;
   Backbone.Router.prototype._extractParameters = function(route, fragment) {
-    var result = route.exec(fragment).slice(1);
-    result.unshift(deparam(result[result.length-1]));
-    return result.slice(0,-1);
+    if(fragment.indexOf("?") === -1) {
+      // doesn't contain query params, use old version
+      return Backbone.Router.prototype.oldExtractParameters(route, fragment);
+    }
+    //TODO doesn't work if has both :id and query params
+    else {
+      var result = route.exec(fragment).slice(1);
+      result.unshift(deparam(result[result.length-1]));
+      return result.slice(0,-1);
+    }
   }
 })();
