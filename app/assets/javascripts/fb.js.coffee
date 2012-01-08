@@ -22,8 +22,8 @@ update_status = (res) ->
     set_user_info()
     UT.p "Auth token:",res.authResponse.accessToken, "expires:", res.authResponse.expiresIn
     #TODO show "Loading Facebook photos [loading img]"
-    $("#canvas-placeholder").hide(0);
     fetch_albums user_id, show_albums
+    $("#canvas-placeholder").hide(0)
   else if !user_id?
     # user is not connected to your app or logged out
     toggle_login_html true
