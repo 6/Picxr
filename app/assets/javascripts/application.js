@@ -9,7 +9,7 @@
 //= require twitter/bootstrap
 //= require underscore
 //= require backbone
-//= require backbonerailsauthtokenadapter
+//= require backbone_rails_authtoken_adapter
 //= require hamlcoffee
 //= require_tree ../templates
 //= require_tree ./models
