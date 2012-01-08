@@ -13,6 +13,7 @@
 //= require backbone_rails_authtoken_adapter
 //= require backbone_rails_parse_tojson_adapter
 //= require hamlcoffee
+//= require pic_mixr
 //= require_tree ../templates
 //= require_tree ./models
 //= require_tree ./collections
