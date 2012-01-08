@@ -5,6 +5,11 @@ PicMixr::Application.routes.draw do
   match "/session/:provider" => "sessions#create", :via => :post
   match "/logout" => "sessions#destroy", :as => :logout
   
+  # handled by backbone router
+  match '/albums/:id' => 'home#index'
+  match '/album/:id' => 'home#index'
+  match '/edit' => 'home#index'
+  
   match ':action' => 'static#:action' # this should always be the last route
   
   # The priority is based upon order of creation:
