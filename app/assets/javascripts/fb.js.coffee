@@ -63,7 +63,6 @@ create_session = (user_id, name) ->
       name: name
 
 fetch_albums = (uid, cb) ->
-  uid ?= user_id
   albums = []
   q_albums = FB.Data.query("SELECT aid, name, cover_pid, photo_count FROM album WHERE owner='{0}' AND photo_count > 0", user_id)
   q_albums.wait (rows) ->
