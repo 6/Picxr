@@ -1,6 +1,5 @@
 class PicMixr.Routers.PicMixrRouter extends Backbone.Router
   routes:
-    #TODO make controllers for each of these that pass appropriate data to views
     "albums/:user_id": "albums"
     "album/:album_id": "album"
     "edit/?:params": "edit"
