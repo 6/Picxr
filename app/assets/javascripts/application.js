@@ -10,6 +10,7 @@
 //= require underscore
 //= require backbone
 //= require backbone_rails_authtoken_adapter
+//= require backbone_rails_parse_tojson_adapter
 //= require hamlcoffee
 //= require_tree ../templates
 //= require_tree ./models
