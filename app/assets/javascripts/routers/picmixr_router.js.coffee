@@ -7,10 +7,10 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
     "": "index"
   
   albums: (user_id) ->
-    UT.p "Route ALBUMS"
+    UT.p "Route ALBUMS for user #{user_id}"
     
   album: (album_id) ->
-    UT.p "Route ALBUM"
+    UT.p "Route ALBUM for album #{album_id}"
 
   edit: (params) ->
     UT.p "Route EDIT",params,params.url
