@@ -31,13 +31,10 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
       Face.update_status_cb = -> PicMixr.router.album(album_id)
 
   edit: (url) ->
-    if Face.active()
-      url = decodeURIComponent url.replace(/@/g, ".")
-      UT.p "Route EDIT", url
-      #TODO
-    else
-      #TODO loading
-      Face.update_status_cb = -> PicMixr.router.edit(url)
+    # don't need Facebook permissions to load image
+    Face.update_status_cb = -> null
+    url = decodeURIComponent url.replace(/@/g, ".")
+    UT.p "Route EDIT", url
   
   index: ->
     UT.p "TODO convert to backbone"
