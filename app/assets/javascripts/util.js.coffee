@@ -39,3 +39,6 @@ UT.poorman_image_resize = (image, receiving_ctx, new_width, new_height) ->
   temp_ctx = temp_canvas.getContext("2d")
   temp_ctx.drawImage(image, 0, 0)
   receiving_ctx.drawImage(temp_canvas, 0, 0, new_width, new_height)
+
+UT.loading = (text) ->
+  $("#canvas-wrap").html JST['loading']({text: text})
