@@ -40,4 +40,4 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
       Face.update_status_cb = -> PicMixr.router.edit(url)
   
   index: ->
-    UT.p "TODO only do something here if already logged into fb? (put FB data in session)"
+    UT.p "TODO convert to backbone"
