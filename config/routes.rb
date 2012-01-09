@@ -6,7 +6,7 @@ PicMixr::Application.routes.draw do
   match "/logout" => "sessions#destroy", :as => :logout
   
   # handled by backbone router
-  match '/albums/:id' => 'home#index'
+  match '/user-albums/:id' => 'home#index'
   match '/album/:id' => 'home#index'
   match '/edit' => 'home#index'
   
