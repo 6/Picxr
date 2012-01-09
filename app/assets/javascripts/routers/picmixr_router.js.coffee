@@ -35,6 +35,13 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
     Face.update_status_cb = -> null
     url = decodeURIComponent url.replace(/@/g, ".")
     UT.p "Route EDIT", url
+    #TODO loading image
+    pic = new Image()
+    #TODO handle onerror, onabort
+    pic.onload = ->
+      view = new PicMixr.Views.Edit pic: pic
+      view.render()
+    pic.src = url
   
   index: ->
     UT.p "TODO convert to backbone"
