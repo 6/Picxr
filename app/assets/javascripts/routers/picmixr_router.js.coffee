@@ -16,7 +16,7 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
       Face.user_albums user_id, (albums_models) ->
         albums.add albums_models
     else
-      #TODO loading
+      UT.loading "Loading photos"
       Face.update_status_cb = -> PicMixr.router.user_albums(user_id)
     
   album: (album_id) ->
@@ -27,7 +27,7 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
       Face.album_photos album_id, (pics_models) ->
         pics.add pics_models
     else
-      #TODO loading
+      UT.loading "Loading album"
       Face.update_status_cb = -> PicMixr.router.album(album_id)
 
   edit: (url) ->
@@ -35,7 +35,7 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
     Face.update_status_cb = -> null
     url = decodeURIComponent url.replace(/@/g, ".")
     UT.p "Route EDIT", url
-    #TODO loading image
+    UT.loading "Loading"
     pic = new Image()
     #TODO handle onerror, onabort
     pic.onload = ->
