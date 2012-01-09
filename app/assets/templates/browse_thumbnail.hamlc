@@ -1,2 +1,2 @@
-%a.bb-link{:href => @pic.get('href')}
+%a.route-bb{:href => @pic.get('href')}
   %img.thumbnail{:src => @pic.get('src_small'), :title => @pic.get('title'), :alt=> @pic.get('alt')}

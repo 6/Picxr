@@ -30,7 +30,7 @@ update_status = (res) ->
     if Face.update_status_cb?
       Face.update_status_cb()
     else
-      UT.bb_navigate "user-albums/#{user_id}"
+      UT.route_bb "user-albums/#{user_id}"
   else if !user_id?
     # user is not connected to your app or logged out
     Face.update_status_cb = null
