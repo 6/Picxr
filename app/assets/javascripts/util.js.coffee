@@ -22,3 +22,6 @@ UT.route_bb = (href, e) ->
   UT.p "route_bb -> #{href}"
   PicMixr.router.navigate(href, true)
   e.preventDefault() if e?
+
+UT.loading = (text) ->
+  $("#canvas-wrap").html JST['loading']({text: text})
