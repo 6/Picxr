@@ -1,0 +1,2 @@
+%h3#fb-photos-title= @title
+%ul#fb-photos.media-grid

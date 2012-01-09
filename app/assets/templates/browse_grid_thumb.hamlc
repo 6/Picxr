@@ -1,3 +1,0 @@
-%li
-  %a.bb-link{:href => @href}
-    %img.thumbnail{:src => @src, :title => @title, :alt=> @alt}

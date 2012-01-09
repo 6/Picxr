@@ -1,7 +1,12 @@
 user_id = null
 access_token = null
 
+window.Face =
+  active: -> user_id?
+  update_status_cb: null
+
 window.fbAsyncInit = ->
+  UT.p "fbAsyncInit"
   FB.init
     appId: $("html").data("fb-app-id")
     status: true
@@ -18,25 +23,29 @@ update_status = (res) ->
     #user is already logged in and connected
     user_id = res.authResponse.userID
     access_token = res.authResponse.accessToken
-    toggle_login_html false
+    toggle_login_html()
     set_user_info()
     UT.p "Auth token:",res.authResponse.accessToken, "expires:", res.authResponse.expiresIn
     #TODO show "Loading Facebook photos [loading img]"
-    fetch_albums user_id, show_albums
-    $("#canvas-placeholder").hide(0)
+    if Face.update_status_cb?
+      Face.update_status_cb()
+    else
+      UT.bb_navigate "user-albums/#{user_id}"
   else if !user_id?
     # user is not connected to your app or logged out
-    toggle_login_html true
+    Face.update_status_cb = null
+    toggle_login_html()
     UT.p "no facebook user_id"
     
 set_user_info = ->
+  UT.p "set_user_info"
   #TODO loading message
   FB.api '/me', (res) ->
     $("#user-info").html JST["fb_user_info"](fb_user_id: user_id, fb_name: res.name)
     create_session user_id, res.name
   
-toggle_login_html = (show_bool) ->
-  if show_bool
+toggle_login_html = ->
+  if not Face.active()
     $("#fb-auth").show(0)
     $("#fb-logout").hide(0)
     $("#user-info").hide(0)
@@ -62,51 +71,45 @@ create_session = (user_id, name) ->
     info:
       name: name
 
-fetch_albums = (uid, cb) ->
+Face.user_albums = (uid, cb) ->
+  UT.p "Face.user_albums #{uid}"
   albums = []
   q_albums = FB.Data.query("SELECT aid, name, cover_pid, photo_count FROM album WHERE owner='{0}' AND photo_count > 0", user_id)
   q_albums.wait (rows) ->
     cb [] if rows.length is 0
     results_count = rows.length
-    $.each rows, (i, row) ->
-      q_album_cover = FB.Data.query("SELECT src, src_width, src_height FROM photo WHERE pid='{0}'", row["cover_pid"])
-      q_album_cover.wait (res) ->
-        res = res[0]
-        if res.src? and res.src.length > 0 # may be blank. TODO: don't ignore if blank
-          albums.push
-            cover: res.src
-            name: row.name
-            aid: row.aid
-            count: row.photo_count
+    $.each rows, (i, album) ->
+      q_album_cover = FB.Data.query("SELECT src, src_width, src_height FROM photo WHERE pid='{0}'", album["cover_pid"])
+      q_album_cover.wait (result) ->
+        cover = result[0]
+        if cover.src? and cover.src.length > 0 # may be blank. TODO: don't ignore if blank
+          albums.push new PicMixr.Models.Picture(
+            src_small: cover.src
+            title: album.name
+            alt: album.name
+            count: album.photo_count
+            href: "/album/#{album.aid}"
+          )
         else results_count -= 1
         if albums.length is results_count
-          UT.p "FETCHED ALBUMS", albums
+          UT.p "Found albums", albums
           cb albums
 
-show_albums = (albums) ->
-  $("#fb-photos").html("").show(0)
-  $.each albums, (i, album) ->
-    $album = $(JST['browse_grid_thumb'](src: album.cover, title: album.name, alt: album.name))
-    $album.click (e) ->
-      #TODO extract this to "click builder"
-      fetch_album_photos album.aid, (photos) ->
-        $("#fb-photos-title").text(album.name).show(0)
-        $("#fb-photos").html("").show(0)
-        $.each photos, (i, photo) ->
-          $photo = $(JST['browse_grid_thumb'](src: photo.src, title: photo.caption, alt: "Photo from #{album.name}"))
-          $photo.click (e) ->
-            #TODO extract
-            alert "TODO: start editing #{photo.src_big}"
-            e.preventDefault()
-          $photo.appendTo("#fb-photos")
-      e.preventDefault()
-    $album.appendTo("#fb-photos")
-
-fetch_album_photos = (aid, cb) ->
+Face.album_photos = (aid, cb) ->
+  UT.p "Face.album_photos #{aid}"
   q_photos = FB.Data.query("SELECT pid, caption, src, src_width, src_height, src_big, src_big_width, src_big_height FROM photo WHERE aid='{0}'", aid)
-  q_photos.wait (rows) ->
-    UT.p "FETCHED PHOTOS", rows
-    cb rows
+  q_photos.wait (results) ->
+    photos = []
+    $.each results, (i, photo) ->
+      photos.push new PicMixr.Models.Picture(
+        src_small: photo.src
+        title: photo.caption
+        alt: photo.caption
+        # TODO Rails routes doesn't handle periods correctly
+        href: "/edit/#{encodeURIComponent(photo.src_big or photo.src).replace(/\./g, '@')}"
+      )
+    UT.p "Found photos", photos
+    cb photos
 
 $ ->
   $("#fb-auth").click (e) ->

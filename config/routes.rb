@@ -8,7 +8,7 @@ PicMixr::Application.routes.draw do
   # handled by backbone router
   match '/user-albums/:id' => 'home#index'
   match '/album/:id' => 'home#index'
-  match '/edit' => 'home#index'
+  match '/edit/:url' => 'home#index'
   
   match ':action' => 'static#:action' # this should always be the last route
   
