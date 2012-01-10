@@ -18,10 +18,10 @@ class PicMixr.Views.Edit extends Backbone.View
     @
   
   show_draw: ->
-    $("#tool-well").html JST['tools/draw']()
     default_color = "#22ee55"
     default_radius = 10
     min_radius = 2
+    $("#tool-well").html JST['tools/draw'](default_color: default_color)
     # brush
     brush = new CanvasDrawing "draw",
       color: default_color
@@ -41,7 +41,14 @@ class PicMixr.Views.Edit extends Backbone.View
         slide: (e, ui) ->
           preview.attr r: ui.value + min_radius
           brush.setOption "lineWidth", (ui.value * 2) + min_radius
-    # TODO brush color selector
+    # brush color selector
+    $ ->
+      $("#brush-color-selector").spectrum
+        flat: true
+        theme: 'sp-light'
+        move: (color) ->
+          preview.attr fill: color.toHexString()
+          brush.setOption "color", color.toHexString()
     @
 
   back: (e) ->
