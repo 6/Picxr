@@ -12,6 +12,7 @@
 //= require backbone_rails_authtoken_adapter
 //= require backbone_rails_parse_tojson_adapter
 //= require hamlcoffee
+//= require raphael
 //= require canvasdrawing
 //= require on_ready
 //= require pic_mixr
