@@ -9,7 +9,7 @@ class MixrController < ApplicationController
     end
     url = url.gsub("@", ".")
     ext = url.split(".").last
-    # TODO get MIME type from requesting server
+    # guess MIME type from file extension
     mime = case ext
     when "gif"
       "image/gif"
@@ -19,6 +19,9 @@ class MixrController < ApplicationController
       "image/jpeg"
     end
     open(url, "rb") do |file|
+      if %w[image/jpeg image/png image/gif].include? file.content_type
+        mime = file.content_type
+      end
       send_file file, :type => mime, :disposition => 'inline'
     end
   end
