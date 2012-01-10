@@ -13,8 +13,14 @@ UT.redirect = (path) ->
 UT.is_framed = ->
   self isnt top
 
+UT.framed_cb_href = ->
+  $("html").data("fb-cb-frame")
+
+UT.default_cb_href = ->
+  $("html").data("fb-cb-default")
+
 UT.top_href = ->
-  $("html").data("fb-cb-#{if UT.is_framed() then 'frame' else 'default'}")
+  if UT.is_framed() then framed_cb_href() else default_cb_href()
 
 UT.route_bb = (href, e) ->
   # remove preceding "/" if it exists
