@@ -6,16 +6,12 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require jquery-ui-1.8.16.custom.min
 //= require twitter/bootstrap
 //= require underscore
 //= require backbone
 //= require backbone_rails_authtoken_adapter
 //= require backbone_rails_parse_tojson_adapter
 //= require hamlcoffee
-//= require raphael
-//= require spectrum
-//= require canvasdrawing
 //= require on_ready
 //= require pic_mixr
 //= require_tree ../templates

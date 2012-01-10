@@ -2,44 +2,26 @@
 
 #toolbox-wrap{
   #toolbox {
-    .sp-container {
-      margin-top: 20px;
-      width: 135px;
-    }
-  }
-  .well {
-    border-color:#e3e3e3;
-    background-color:#fcfcfd;
-    padding: 10px;
   }
   #save-image-well {
     text-align:center;
+    border-color:#e3e3e3;
+    background-color:#f9f9f9;
+    padding: 10px;
   }
 }
 
-#canvas-inner-wrap {
-  position:relative;
-  canvas {
-    position: absolute;
-    left: 0;
-    top: 0;
+#canvas-wrap {
+  #canvas-placeholder,#canvas {
+    background:#fff;
+    .box-shadow();
+    height:350px; // TODO remove    
   }
-  #base-image {
-    z-index: 0;
-  }
-  #draw {
-    z-index: 1;
-  }
-}
-
-#canvas-placeholder,#base-image {
-  background:#fff;
-  .box-shadow();   
-}
-#canvas-placeholder {
-  #pitch {
-    margin: 11px 0;
-    text-align:center;
-    font-size: 22px;
+  #canvas-placeholder {
+    #pitch {
+      margin: 11px 0;
+      text-align:center;
+      font-size: 22px;
+    }
   }
 }

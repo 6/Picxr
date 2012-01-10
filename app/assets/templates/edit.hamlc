@@ -1,6 +1,0 @@
-.row
-  #toolbox-wrap.span3
-  #canvas-wrap.span9
-    #canvas-inner-wrap
-      <canvas id="base-image" width="#{@width}" height="#{@height}">Please upgrade your browser (try Google Chrome or Firefox)</canvas>
-      <canvas id="draw" width="#{@width}" height="#{@height}"></canvas>
