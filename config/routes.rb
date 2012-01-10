@@ -5,6 +5,8 @@ PicMixr::Application.routes.draw do
   match "/session/:provider" => "sessions#create", :via => :post
   match "/logout" => "sessions#destroy", :as => :logout
   
+  match "/image-proxy/:url" => 'mixr#proxy'
+  
   # handled by backbone router
   match '/user-albums/:id' => 'home#index'
   match '/album/:id' => 'home#index'
