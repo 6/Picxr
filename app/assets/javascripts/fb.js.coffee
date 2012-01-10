@@ -27,7 +27,6 @@ update_status = (res) ->
     toggle_login_html()
     set_user_info()
     UT.p "Auth token:",res.authResponse.accessToken, "expires:", res.authResponse.expiresIn
-    #TODO show "Loading Facebook photos [loading img]"
     Face.update_status_cb() if Face.update_status_cb?
   else if !user_id?
     # user is not connected to your app or logged out
@@ -103,7 +102,6 @@ Face.album_photos = (aid, cb) ->
         src_small: photo.src
         title: photo.caption
         alt: photo.caption
-        # TODO Rails routes doesn't handle periods correctly
         href: "/edit/#{encodeURIComponent(photo.src_big or photo.src).replace(/\./g, '@')}"
       )
     UT.p "Found photos", photos
