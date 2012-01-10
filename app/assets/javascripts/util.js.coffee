@@ -21,6 +21,9 @@ UT.route_bb = (href, e) ->
   href = href.substring(1) if href.substring(0 ,1) is "/"
   UT.p "route_bb -> #{href}"
   PicMixr.router.navigate(href, true)
+  if UT.is_framed()
+    # update Facebook URL
+    UT.p "TODO: update FB URL to #{UT.top_href()}#{href} ? need to hijack history"
   e.preventDefault() if e?
   
 UT.fit_dimensions = (width, height, max_width, max_height) ->
