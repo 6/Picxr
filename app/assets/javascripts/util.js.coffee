@@ -42,6 +42,9 @@ UT.poorman_image_resize = (image, receiving_ctx, new_width, new_height) ->
   temp_ctx = temp_canvas.getContext("2d")
   temp_ctx.drawImage(image, 0, 0)
   receiving_ctx.drawImage(temp_canvas, 0, 0, new_width, new_height)
+  
+UT.merge_layers = (base_ctx, layer_canvas, layer_width, layer_height) ->
+  base_ctx.drawImage(layer_canvas, 0, 0, layer_width, layer_height)
 
 UT.loading = (text) ->
   $("#main-wrap").html JST['loading']({text: text})

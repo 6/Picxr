@@ -3,6 +3,7 @@ class PicMixr.Views.Edit extends Backbone.View
   template: JST['edit']
   events:
     'click .route-bb': 'back'
+    'click .save': 'save'
   
   initialize: ->
     @pic = arguments[0].pic
@@ -10,11 +11,11 @@ class PicMixr.Views.Edit extends Backbone.View
   
   render: ->
     UT.p "PicMixr.Views.Edit -> render"
-    size = UT.fit_dimensions(@pic.width, @pic.height, 558, 600)
-    $(@el).html @template(width: size.width, height: size.height)
+    @size = UT.fit_dimensions(@pic.width, @pic.height, 558, 600)
+    $(@el).html @template(width: @size.width, height: @size.height)
     $("#toolbox-wrap").html JST['toolbox']()
     @base_ctx = $("#base-image")[0].getContext('2d')
-    UT.poorman_image_resize(@pic, @base_ctx, size.width, size.height)
+    UT.poorman_image_resize(@pic, @base_ctx, @size.width, @size.height)
     @
   
   show_draw: ->
@@ -49,6 +50,12 @@ class PicMixr.Views.Edit extends Backbone.View
         move: (color) ->
           preview.attr fill: color.toHexString()
           brush.setOption "color", color.toHexString()
+    @
+
+  save: (e) ->
+    e.preventDefault()
+    UT.merge_layers @base_ctx, $("#draw")[0], @size.width, @size.height
+    Canvas2Image.saveAsPNG $("#base-image")[0]
     @
 
   back: (e) ->
