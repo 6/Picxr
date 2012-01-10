@@ -44,4 +44,6 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
     pic.src = url
   
   index: ->
-    UT.p "TODO convert to backbone"
+    UT.p "Route INDEX"
+    $("#main-wrap").html JST['home']()
+    $("#toolbox-wrap").html JST['toolbox']()

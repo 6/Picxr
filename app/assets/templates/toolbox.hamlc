@@ -1,0 +1,5 @@
+#toolbox
+  #save-image-well.well
+    %p
+      %a.btn.large.success{:href => "#"} Done Editing
+    %a.route-bb{:href => "/"} Back to image selection

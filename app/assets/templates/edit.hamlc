@@ -1,10 +1,5 @@
 .row
   #toolbox-wrap.span3
-    #toolbox
-      #save-image-well.well
-        %p
-          %a.btn.large.success{:href => "#"} Done Editing
-        %a.route-bb{:href => "/"} Back to image selection
   #canvas-wrap.span9
     #canvas-inner-wrap
       <canvas id="base-image" width="#{@width}" height="#{@height}">Please upgrade your browser (try Google Chrome or Firefox)</canvas>
