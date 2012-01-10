@@ -34,7 +34,7 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
     # don't need Facebook permissions to load image
     Face.update_status_cb = -> null
     clean_url = decodeURIComponent url.replace(/@/g, ".")
-    url = "#{UT.top_href()}image-proxy/#{encodeURIComponent(clean_url).replace(/\./g, '@')}"
+    url = "#{UT.default_cb_href()}image-proxy/#{encodeURIComponent(clean_url).replace(/\./g, '@')}"
     UT.p "Route EDIT", clean_url, "through", url
     UT.loading "Loading"
     pic = new Image()
