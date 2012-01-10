@@ -12,7 +12,6 @@ class MixrController < ApplicationController
     # TODO get MIME type from requesting server
     mime = case ext
     when "gif"
-      #TODO what if GIF is animated?
       "image/gif"
     when "png"
       "image/png"
