@@ -48,3 +48,9 @@ UT.merge_layers = (base_ctx, layer_canvas, layer_width, layer_height) ->
 
 UT.loading = (text) ->
   $("#main-wrap").html JST['loading']({text: text})
+
+UT.non_ajax_post = (url, data_list) ->
+  html = "<form method='post' action='#{url}'>"
+  for data in data_list
+    html += "<input name='#{data.name}' value='#{data.value}'>"
+  $("#{html}</form>").submit()
