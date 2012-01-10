@@ -55,7 +55,10 @@ class PicMixr.Views.Edit extends Backbone.View
   save: (e) ->
     e.preventDefault()
     UT.merge_layers @base_ctx, $("#draw")[0], @size.width, @size.height
-    Canvas2Image.saveAsPNG $("#base-image")[0]
+    data = $("#base-image")[0].toDataURL("image/jpeg")
+    # remove "data:image/jpeg;base64,"
+    data = data.substr(data.indexOf(',') + 1).toString()
+    UT.non_ajax_post '/save-image', [{name: 'imgdata', value: data}]
     @
 
   back: (e) ->

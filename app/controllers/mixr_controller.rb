@@ -19,4 +19,9 @@ class MixrController < ApplicationController
       send_file file, :type => mime, :disposition => 'inline'
     end
   end
+  
+  def save
+    bytes = ActiveSupport::Base64.decode64(params[:imgdata])
+    send_data bytes, :filename => 'picmixr.jpg'
+  end
 end

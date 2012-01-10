@@ -16,8 +16,6 @@
 //= require raphael
 //= require spectrum
 //= require canvasdrawing
-//= require base64
-//= require canvas2image
 //= require on_ready
 //= require pic_mixr
 //= require_tree ../templates
