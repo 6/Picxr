@@ -63,3 +63,4 @@ class PicMixr.Views.Edit extends Backbone.View
 
   back: (e) ->
     UT.route_bb "/", e
+    @
