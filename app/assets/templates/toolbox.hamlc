@@ -1,4 +1,5 @@
 #toolbox
+  #tool-well.well
   #save-image-well.well
     %p
       %a.btn.large.success{:href => "#"} Done Editing

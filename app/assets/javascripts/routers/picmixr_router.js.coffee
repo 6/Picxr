@@ -40,7 +40,7 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
     #TODO handle onerror, onabort
     pic.onload = ->
       view = new PicMixr.Views.Edit pic: pic
-      view.render()
+      view.render().show_draw()
     pic.src = url
   
   index: ->
