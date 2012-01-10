@@ -3,7 +3,11 @@ class MixrController < ApplicationController
   
   # help solve issues with cross-origin policy for image data
   def proxy
-    url = params[:url].gsub("@", ".")
+    url = params[:url]
+    unless url.starts_with?("http://", "https://", "ftp://")
+      url = "http://#{url}"
+    end
+    url = url.gsub("@", ".")
     ext = url.split(".").last
     # TODO get MIME type from requesting server
     mime = case ext
