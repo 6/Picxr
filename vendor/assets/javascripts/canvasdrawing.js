@@ -27,6 +27,7 @@ function CanvasDrawing(canvasId, options) {
 			color: "#000",
 			"background-color": "white",
 			freeDrawing: true,
+			clearRect: false,
 			smoothBrush: true
 		};
 	
@@ -38,8 +39,14 @@ function CanvasDrawing(canvasId, options) {
 	cd.context = cd.canvas.getContext("2d");
 
 	// set initial background colour
-	cd.context.fillStyle = cd.options["background-color"];
-	cd.context.fillRect(0, 0, cd.canvas.width, cd.canvas.height);
+	if(!cd.options.clearRect) {
+	  cd.context.fillStyle = cd.options["background-color"];
+	  cd.context.fillRect(0, 0, cd.canvas.width, cd.canvas.height);
+  }
+
+  if(cd.options.clearRect) {
+    cd.context.clearRect();
+  }
 
 	// setup user drawing controls, specific functions are used to translate the MouseEvent to x / y coordinates
 	function controls(e) {
