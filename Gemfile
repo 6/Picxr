@@ -6,6 +6,7 @@ gem 'twitter-bootstrap-rails'
 gem 'newrelic_rpm'
 gem 'haml-rails'
 gem 'backbone-on-rails'
+gem 'rmagick'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
