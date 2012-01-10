@@ -1,6 +1,6 @@
 .row
   #toolbox-wrap.span3
   #canvas-wrap.span9
-    #canvas-inner-wrap
+    #canvas-inner-wrap{:style => "width:#{@width}px;height:#{@height}px"}
       <canvas id="base-image" width="#{@width}" height="#{@height}">Please upgrade your browser (try Google Chrome or Firefox)</canvas>
       <canvas id="draw" width="#{@width}" height="#{@height}"></canvas>
