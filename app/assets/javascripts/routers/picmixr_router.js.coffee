@@ -6,6 +6,7 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
   routes:
     "user-albums/:user_id": "user_albums"
     "album/:album_id": "album"
+    "url-upload": "url_upload"
     "": "index"
   
   user_albums: (user_id) ->
@@ -41,6 +42,10 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
       view = new PicMixr.Views.Edit pic: pic
       view.render().show_draw()
     pic.src = url
+    
+  url_upload: ->
+    view = new PicMixr.Views.UrlUpload
+    view.render()
   
   index: ->
     UT.p "Route INDEX"

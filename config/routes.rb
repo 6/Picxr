@@ -12,6 +12,7 @@ PicMixr::Application.routes.draw do
   match '/user-albums/:id' => 'home#index'
   match '/album/:id' => 'home#index'
   match '/edit/:url' => 'home#index'
+  match '/url-upload' => 'home#index'
   
   match ':action' => 'static#:action' # this should always be the last route
   
