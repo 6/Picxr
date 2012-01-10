@@ -19,7 +19,7 @@ class PicMixr.Views.Edit extends Backbone.View
   
   show_draw: ->
     $("#tool-well").html JST['tools/draw']()
-    default_color = "#0f0"
+    default_color = "#22ee55"
     default_radius = 10
     min_radius = 2
     # brush
