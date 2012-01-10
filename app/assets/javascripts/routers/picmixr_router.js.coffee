@@ -31,8 +31,6 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
       Face.update_status_cb = -> PicMixr.router.album(album_id)
 
   edit: (url) ->
-    # don't need Facebook permissions to load image
-    Face.update_status_cb = -> null
     clean_url = decodeURIComponent url.replace(/@/g, ".")
     url = "#{UT.default_cb_href()}image-proxy/#{encodeURIComponent(clean_url).replace(/\./g, '@')}"
     UT.p "Route EDIT", clean_url, "through", url
@@ -48,3 +46,4 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
     UT.p "Route INDEX"
     $("#main-wrap").html JST['home']()
     $("#toolbox-wrap").html JST['toolbox']()
+    Face.update_status_cb = "default"
