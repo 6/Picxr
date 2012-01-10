@@ -4,6 +4,7 @@ access_token = null
 window.Face =
   active: -> user_id?
   update_status_cb: null
+  default_route: -> "user-albums/#{user_id}"
 
 window.fbAsyncInit = ->
   UT.p "fbAsyncInit"
@@ -27,11 +28,7 @@ update_status = (res) ->
     set_user_info()
     UT.p "Auth token:",res.authResponse.accessToken, "expires:", res.authResponse.expiresIn
     #TODO show "Loading Facebook photos [loading img]"
-    if Face.update_status_cb?
-      if Face.update_status_cb is "default"
-        UT.route_bb "user-albums/#{user_id}"
-      else
-        Face.update_status_cb()
+    Face.update_status_cb() if Face.update_status_cb?
   else if !user_id?
     # user is not connected to your app or logged out
     Face.update_status_cb = null

@@ -44,6 +44,9 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
   
   index: ->
     UT.p "Route INDEX"
-    $("#main-wrap").html JST['home']()
-    $("#toolbox-wrap").html JST['toolbox']()
-    Face.update_status_cb = "default"
+    if Face.active()
+      UT.route_bb Face.default_route()
+    else
+      Face.update_status_cb = -> PicMixr.router.index()
+      $("#main-wrap").html JST['home']()
+      $("#toolbox-wrap").html JST['toolbox']()
