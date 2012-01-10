@@ -14,6 +14,7 @@
 //= require backbone_rails_parse_tojson_adapter
 //= require hamlcoffee
 //= require raphael
+//= require spectrum
 //= require canvasdrawing
 //= require on_ready
 //= require pic_mixr
