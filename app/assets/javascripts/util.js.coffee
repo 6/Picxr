@@ -11,7 +11,7 @@ UT.redirect = (path) ->
   top.location.href = "#{UT.top_href()}#{path}"
   
 UT.is_framed = ->
-  self is not top
+  self isnt top
 
 UT.top_href = ->
   $("html").data("fb-cb-#{if UT.is_framed() then 'frame' else 'default'}")
