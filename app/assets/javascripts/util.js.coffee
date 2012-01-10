@@ -2,7 +2,7 @@
 window.UT = {}
 
 UT.is_dev = ->
-  $("html").data("is-dev") is "yes"
+  $("html").attr("data-is-dev") is "yes"
 
 UT.p = (args...) ->
   console.log args... if UT.is_dev()
