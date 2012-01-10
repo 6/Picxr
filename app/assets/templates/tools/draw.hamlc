@@ -1,0 +1,4 @@
+#raphael-brush-preview
+#brush-size-slider
+%p
+  %input#brush-color-selector{:type => 'text', :value => "#{@default_color}"}

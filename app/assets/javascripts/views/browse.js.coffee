@@ -1,5 +1,5 @@
 class PicMixr.Views.Browse extends Backbone.View
-  el: '#canvas-wrap'
+  el: '#main-wrap'
   template: JST['browse']
   
   initialize: ->
