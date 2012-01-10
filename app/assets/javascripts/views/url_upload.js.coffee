@@ -13,4 +13,4 @@ class PicMixr.Views.UrlUpload extends Backbone.View
     e.preventDefault()
     url = $("#url").val()
     UT.p "PicMixr.Views.UrlUpload -> #{url}"
-    UT.route_bb "edit/#{url.replace(/\./g, '@')}"
+    UT.route_bb "edit/#{encodeURIComponent url.replace(/\./g, '@')}"
