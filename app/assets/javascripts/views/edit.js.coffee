@@ -24,13 +24,13 @@ class PicMixr.Views.Edit extends Backbone.View
     min_radius = 2
     $("#tool-well").html JST['tools/draw'](default_color: default_color)
     # brush
-    brush = new CanvasDrawing "draw",
+    @brush = new CanvasDrawing "draw",
       color: default_color
       lineWidth: default_radius * 2
       "background-color": "rgba(0,0,0,0)"
     # brush preview
     paper = Raphael "raphael-brush-preview", $("#raphael-brush-preview").width(), 60
-    preview = paper.circle(Math.round($("#raphael-brush-preview").width()/2), 30, default_radius).attr
+    @preview = paper.circle(Math.round($("#raphael-brush-preview").width()/2), 30, default_radius).attr
       fill: default_color
       stroke: 'none'
     # brush size slider
@@ -39,17 +39,17 @@ class PicMixr.Views.Edit extends Backbone.View
         min: 0
         max: 25
         value: default_radius - min_radius
-        slide: (e, ui) ->
-          preview.attr r: ui.value + min_radius
-          brush.setOption "lineWidth", (ui.value * 2) + min_radius
+        slide: (e, ui) =>
+          @preview.attr r: ui.value + min_radius
+          @brush.setOption "lineWidth", (ui.value * 2) + min_radius
     # brush color selector
-    $ ->
+    $ =>
       $("#brush-color-selector").spectrum
         flat: true
         theme: 'sp-light'
-        move: (color) ->
-          preview.attr fill: color.toHexString()
-          brush.setOption "color", color.toHexString()
+        move: (color) =>
+          @preview.attr fill: color.toHexString()
+          @brush.setOption "color", color.toHexString()
     @
 
   save: (e) ->
