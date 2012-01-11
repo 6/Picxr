@@ -27,6 +27,7 @@ function CanvasDrawing(canvasId, options) {
 			color: "#000",
 			"background-color": "white",
 			freeDrawing: true,
+			eyedropper: false,
 			smoothBrush: true
 		};
 	
@@ -131,6 +132,11 @@ CanvasDrawing.prototype.drawStart = function(x, y) {
 	var cd = CanvasDrawing.prototype;
 
 	cd.drawing = true;
+	
+	if(cd.eyedropper) {
+	  cd.eyedropper_cb(x, y);
+	  cd.disableEyedropper();
+	}
 
 	// setup common brush attributes
 	cd.context.strokeStyle = cd.options.color;
@@ -186,6 +192,7 @@ CanvasDrawing.prototype.brush = {
 	
 	fill: function() {
 		this.reset();
+		if(this.cd.eyedropper) return;
 		this.cd.context.fillStyle = this.cd.options.color;
 		this.cd.context.fillRect(0, 0, this.cd.canvas.width, this.cd.canvas.height);
 	},
@@ -202,6 +209,7 @@ CanvasDrawing.prototype.brush = {
 			delta2X, delta2Y,
 			lx, ly;
 		
+		if(cd.eyedropper) return;
 		cd.context.beginPath();
 		cd.context.moveTo(cd.oldX, cd.oldY);
 		
@@ -242,6 +250,7 @@ CanvasDrawing.prototype.brush = {
 		
 		var cd = this.cd;
 		
+		if(cd.eyedropper) return;
 		// setup brush
 		cd.context.globalAlpha = 1;
 		cd.context.lineCap = "round";
@@ -254,6 +263,7 @@ CanvasDrawing.prototype.brush = {
 
 		this.reset();
 
+    if(this.cd.eyedropper) return;
 		// TODO: round brush
 
 		var i, randX, randY, density = 3;
@@ -298,6 +308,11 @@ CanvasDrawing.prototype.drawResume = function(x, y) {
  */
 CanvasDrawing.prototype.drawStop = function() {
 	CanvasDrawing.prototype.drawing = false;
+	var cd = CanvasDrawing.prototype;
+	if(cd.disable_eyedropper_on_stop) {
+	  cd.eyedropper = false;
+	  cd.disable_eyedropper_on_stop = false;
+  }
 };
 
 /**
@@ -311,6 +326,22 @@ CanvasDrawing.prototype.clearCanvas = function() {
 	cd.context.globalAlpha = 1;
 	cd.context.fillStyle = cd.options["background-color"];
 	cd.context.fillRect(0, 0, cd.canvas.width, cd.canvas.height);
+};
+
+CanvasDrawing.prototype.enableEyedropper = function(cb) {
+  var cd = CanvasDrawing.prototype;
+  cd.eyedropper = true;
+  cd.eyedropper_cb = cb;
+};
+
+CanvasDrawing.prototype.disableEyedropper = function() {
+  var cd = CanvasDrawing.prototype;
+  if(cd.drawing) {
+    cd.disable_eyedropper_on_stop = true;
+  }
+  else {
+    cd.eyedropper = false;
+  }
 };
 
 

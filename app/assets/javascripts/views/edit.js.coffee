@@ -4,6 +4,7 @@ class PicMixr.Views.Edit extends Backbone.View
   events:
     'click .route-bb': 'back'
     'click .save': 'save'
+    'click #eyedropper': 'eyedropper'
   
   initialize: ->
     @pic = arguments[0].pic
@@ -15,6 +16,7 @@ class PicMixr.Views.Edit extends Backbone.View
     $(@el).html @template(width: @size.width, height: @size.height)
     $("#toolbox-wrap").html JST['toolbox']()
     @base_ctx = $("#base-image")[0].getContext('2d')
+    @draw_ctx = $("#draw")[0].getContext('2d')
     UT.poorman_image_resize(@pic, @base_ctx, @size.width, @size.height)
     @
   
@@ -51,6 +53,28 @@ class PicMixr.Views.Edit extends Backbone.View
           @preview.attr fill: color.toHexString()
           @brush.setOption "color", color.toHexString()
     @
+  
+  eyedropper: (e) ->
+    e.preventDefault()
+    if $("#eyedropper").hasClass("primary")
+      @brush.disableEyedropper()
+      $("#eyedropper").removeClass("primary")
+      $("#draw").attr("style", "")
+    else
+      $("#eyedropper").addClass("primary")
+      $("#draw").attr("style", "cursor:crosshair")
+      @brush.enableEyedropper (x, y) =>
+        $("#eyedropper").removeClass("primary")
+        $("#draw").attr("style", "")
+        pixel = UT.get_pixel(@draw_ctx, x, y)
+        if pixel.a is 0
+          pixel = UT.get_pixel(@base_ctx, x, y)
+        #TODO take into account if alpha transparency (calc lower layers)
+        rgb = "rgb(#{pixel.r},#{pixel.g},#{pixel.b})"
+        @preview.attr fill: rgb
+        @brush.setOption "color", rgb
+        $("#brush-color-selector").spectrum("set", rgb)
+      @
 
   save: (e) ->
     e.preventDefault()

@@ -52,6 +52,10 @@ UT.poorman_image_resize = (image, receiving_ctx, new_width, new_height) ->
 UT.merge_layers = (base_ctx, layer_canvas, layer_width, layer_height) ->
   base_ctx.drawImage(layer_canvas, 0, 0, layer_width, layer_height)
 
+UT.get_pixel = (ctx, x, y) ->
+  data = ctx.getImageData(x, y, 1, 1).data
+  {r: data[0], g: data[1], b: data[2], a: data[3]}
+
 UT.loading = (text) ->
   $("#main-wrap").html JST['loading']({text: text})
 

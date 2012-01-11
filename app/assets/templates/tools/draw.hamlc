@@ -2,3 +2,5 @@
 #brush-size-slider
 %p
   %input#brush-color-selector{:type => 'text', :value => "#{@default_color}"}
+%p.align-center
+  %a#eyedropper.btn{:href => "#"} Eyedropper
