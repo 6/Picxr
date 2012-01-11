@@ -27,7 +27,7 @@ class PicMixr.Views.Edit extends Backbone.View
     brush = new CanvasDrawing "draw",
       color: default_color
       lineWidth: default_radius * 2
-      clearRect: true
+      "background-color": "rgba(0,0,0,0)"
     # brush preview
     paper = Raphael "raphael-brush-preview", $("#raphael-brush-preview").width(), 60
     preview = paper.circle(Math.round($("#raphael-brush-preview").width()/2), 30, default_radius).attr
