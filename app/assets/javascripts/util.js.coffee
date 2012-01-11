@@ -56,7 +56,7 @@ UT.loading = (text) ->
   $("#main-wrap").html JST['loading']({text: text})
 
 UT.non_ajax_post = (url, data_list) ->
-  html = "<form method='post' action='#{url}'>"
+  html = "<form method='post' action='#{url}' class='hide'>"
   for data in data_list
     html += "<input name='#{data.name}' value='#{data.value}'>"
-  $("#{html}</form>").submit()
+  $("#{html}</form>").appendTo('body').submit()
