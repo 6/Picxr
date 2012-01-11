@@ -24,7 +24,7 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
     if Face.active()
       UT.p "Route ALBUM for album #{album_id}"
       pics = new PicMixr.Collections.Pictures
-      view = new PicMixr.Views.Browse collection: pics
+      view = new PicMixr.Views.Browse collection: pics, title: "[TODO album title]"
       Face.album_photos album_id, (pics_models) ->
         pics.add pics_models
     else
