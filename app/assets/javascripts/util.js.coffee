@@ -20,7 +20,7 @@ UT.default_cb_href = ->
   $("html").data("fb-cb-default")
 
 UT.top_href = ->
-  if UT.is_framed() then framed_cb_href() else default_cb_href()
+  if UT.is_framed() then UT.framed_cb_href() else UT.default_cb_href()
 
 UT.route_bb = (href, e) ->
   # remove preceding "/" if it exists
