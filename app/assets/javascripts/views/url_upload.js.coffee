@@ -1,4 +1,4 @@
-class PicMixr.Views.UrlUpload extends Backbone.View
+class PicMixr.Views.UrlUpload extends PicMixr.Views.BaseView
   el: '#main-wrap'
   template: JST['forms/url_upload']
   events:
