@@ -30,7 +30,6 @@ update_status = (res) ->
     Face.update_status_cb() if Face.update_status_cb?
   else if !user_id?
     # user is not connected to your app or logged out
-    Face.update_status_cb = null
     toggle_login_html()
     UT.p "no facebook user_id"
     
