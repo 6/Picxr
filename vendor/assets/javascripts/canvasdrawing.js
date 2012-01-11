@@ -45,7 +45,7 @@ function CanvasDrawing(canvasId, options) {
   }
 
   if(cd.options.clearRect) {
-    cd.context.clearRect();
+    cd.context.clearRect(0, 0, cd.canvas.width, cd.canvas.height);
   }
 
 	// setup user drawing controls, specific functions are used to translate the MouseEvent to x / y coordinates
