@@ -1,9 +1,11 @@
 class PicMixr.Views.Edit extends PicMixr.Views.BaseView
   el: '#main-wrap'
   template: JST['edit']
-  events:
-    'click .save': 'save'
-    'click #eyedropper': 'eyedropper'
+  
+  events: ->
+    _.extend super,
+      'click .save': 'save'
+      'click #eyedropper': 'eyedropper'
   
   initialize: ->
     @pic = arguments[0].pic
