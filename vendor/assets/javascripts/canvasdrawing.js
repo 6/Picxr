@@ -378,6 +378,7 @@ MouseEvent.prototype.offset = function() {
 		y = this.offsetY;
 	} else {
 
+		/*
 		if (this.pageX || this.pageY) {
 			x = this.pageX;
 			y = this.pageY;
@@ -389,6 +390,11 @@ MouseEvent.prototype.offset = function() {
 		// make the position relative to the element
 		x -= this.target.offsetLeft;
 		y -= this.target.offsetTop;
+		*/
+		// http://stackoverflow.com/questions/55677/how-do-i-get-the-coordinates-of-a-mouse-click-on-a-canvas-element
+		var canoffset = $(CanvasDrawing.prototype.canvas).offset();
+		x = this.clientX + document.body.scrollLeft + document.documentElement.scrollLeft - Math.floor(canoffset.left);
+    y = this.clientY + document.body.scrollTop + document.documentElement.scrollTop - Math.floor(canoffset.top) + 1;
 	}
 	
 	return {"x": x, "y": y};
