@@ -15,6 +15,7 @@
 //= require hamlcoffee
 //= require raphael
 //= require spectrum
+//= require mousefu
 //= require canvasdrawing
 //= require on_ready
 //= require pic_mixr
