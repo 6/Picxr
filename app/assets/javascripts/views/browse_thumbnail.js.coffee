@@ -1,8 +1,8 @@
-class PicMixr.Views.BrowseThumbnail extends Backbone.View
+class PicMixr.Views.BrowseThumbnail extends PicMixr.Views.BaseView
   tagName: 'li'
   template: JST['browse_thumbnail']
   events:
-    'click .route-bb': 'clicked'
+    'click .thumb-href': 'clicked'
   render: ->
     $(@el).html @template(pic: @model)
     @

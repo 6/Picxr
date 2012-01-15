@@ -12,8 +12,9 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
   user_albums: (user_id) ->
     if Face.active()
       UT.p "Route ALBUMS for user #{user_id}"
+      @destroy_view()
       albums = new PicMixr.Collections.Pictures
-      view = new PicMixr.Views.Browse collection: albums, title: "[TODO: #{user_id}'s name]'s albums (fetch only once)"
+      @view = new PicMixr.Views.Browse collection: albums, title: "[TODO: #{user_id}'s name]'s albums (fetch only once)"
       Face.user_albums user_id, (albums_models) ->
         albums.add albums_models
     else
@@ -23,8 +24,9 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
   album: (album_id) ->
     if Face.active()
       UT.p "Route ALBUM for album #{album_id}"
+      @destroy_view()
       pics = new PicMixr.Collections.Pictures
-      view = new PicMixr.Views.Browse collection: pics
+      @view = new PicMixr.Views.Browse collection: pics, title: "[TODO album title]"
       Face.album_photos album_id, (pics_models) ->
         pics.add pics_models
     else
@@ -32,26 +34,33 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
       Face.update_status_cb = -> PicMixr.router.album(album_id)
 
   edit: (url) ->
+    @destroy_view()
     clean_url = decodeURIComponent url.replace(/@/g, ".")
     url = "#{UT.default_cb_href()}image-proxy/#{encodeURIComponent(clean_url).replace(/\./g, '@')}"
     UT.p "Route EDIT", clean_url, "through", url
     UT.loading "Loading"
     pic = new Image()
     #TODO handle onerror, onabort
-    pic.onload = ->
-      view = new PicMixr.Views.Edit pic: pic
-      view.render().show_draw()
+    pic.onload = =>
+      @view = new PicMixr.Views.Edit pic: pic
+      @view.render().show_draw()
     pic.src = url
     
   url_upload: ->
-    view = new PicMixr.Views.UrlUpload
-    view.render()
+    @view = new PicMixr.Views.UrlUpload
+    @view.render()
   
   index: ->
     UT.p "Route INDEX"
     if Face.active()
       UT.route_bb Face.default_route()
     else
+      @destroy_view()
       Face.update_status_cb = -> PicMixr.router.index()
       $("#main-wrap").html JST['home']()
       $("#toolbox-wrap").html JST['toolbox']()
+  
+  destroy_view: ->
+    UT.p "destroy view if active:", @view
+    @view.destroy() if @view? and @view.destroy?
+    @view = null

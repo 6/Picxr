@@ -59,7 +59,7 @@ fb_login = ->
   
 fb_logout = ->
   user_id = null
-  FB.logout (res) -> redirect "logout"
+  FB.logout (res) -> UT.redirect "logout"
 
 create_session = (user_id, name) ->
   $.post '/session/facebook',

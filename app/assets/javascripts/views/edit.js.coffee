@@ -1,10 +1,11 @@
-class PicMixr.Views.Edit extends Backbone.View
+class PicMixr.Views.Edit extends PicMixr.Views.BaseView
   el: '#main-wrap'
   template: JST['edit']
-  events:
-    'click .route-bb': 'back'
-    'click .save': 'save'
-    'click #eyedropper': 'eyedropper'
+  
+  events: ->
+    _.extend super,
+      'click .save': 'save'
+      'click #eyedropper': 'eyedropper'
   
   initialize: ->
     @pic = arguments[0].pic
@@ -83,8 +84,4 @@ class PicMixr.Views.Edit extends Backbone.View
     # remove "data:image/jpeg;base64,"
     data = data.substr(data.indexOf(',') + 1).toString()
     UT.non_ajax_post '/save-image', [{name: 'imgdata', value: data}]
-    @
-
-  back: (e) ->
-    UT.route_bb "/", e
     @

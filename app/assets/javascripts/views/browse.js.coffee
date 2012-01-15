@@ -1,4 +1,4 @@
-class PicMixr.Views.Browse extends Backbone.View
+class PicMixr.Views.Browse extends PicMixr.Views.BaseView
   el: '#main-wrap'
   template: JST['browse']
   

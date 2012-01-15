@@ -3,4 +3,4 @@
   #save-image-well.well
     %p
       %a.save.btn.large.success{:href => "#"} Done Editing
-    %a.route-bb{:href => "/"} Choose a different image
+    %a.route-default{:href => "/"} Choose a different image
