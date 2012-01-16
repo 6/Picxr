@@ -74,7 +74,6 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
   eyedropper: (e) ->
     e.preventDefault()
     if $("#eyedropper").hasClass("primary")
-      #@brush.disableEyedropper()
       @canvas.isDrawingMode = yes #TODO go back to previous mode
       @canvas.isEyedropperMode = no
       $("#eyedropper").removeClass("primary")
