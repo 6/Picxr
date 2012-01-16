@@ -28,6 +28,6 @@ class MixrController < ApplicationController
   
   def save
     bytes = ActiveSupport::Base64.decode64(params[:imgdata])
-    send_data bytes, :filename => 'picmixr.png'
+    send_data bytes, :filename => 'picmixr.jpg'
   end
 end
