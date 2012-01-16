@@ -16,9 +16,15 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     @size = UT.fit_dimensions(@pic.width, @pic.height, 558, 600)
     $(@el).html @template(width: @size.width, height: @size.height)
     $("#toolbox-wrap").html JST['toolbox']()
-    @base_ctx = $("#base-image")[0].getContext('2d')
-    @draw_ctx = $("#draw")[0].getContext('2d')
-    UT.poorman_image_resize(@pic, @base_ctx, @size.width, @size.height)
+    @
+  
+  init_fabric: ->
+    @canvas = new fabric.Canvas 'fabric', {selection: no}
+    @ctx = $("#fabric")[0].getContext('2d')
+    fabric.Image.fromURL @pic.src, (img) =>
+      centered = img.scaleToWidth(@size.width).set(top: @size.height / 2, left: @size.width / 2)
+      centered.set 'selectable', no
+      @canvas.add centered
     @
   
   show_draw: ->
@@ -27,10 +33,11 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     min_radius = 2
     $("#tool-well").html JST['tools/draw'](default_color: default_color)
     # brush
-    @brush = new CanvasDrawing "draw",
-      color: default_color
-      lineWidth: default_radius * 2
-      "background-color": "rgba(0,0,0,0)"
+    @canvas.isDrawingMode = yes
+    @canvas.freeDrawingColor = default_color
+    @canvas.freeDrawingLineWidth = default_radius * 2
+    @canvas.observe 'path:created', (e) =>
+      e.memo.path.set 'selectable', no
     # brush preview
     paper = Raphael "raphael-brush-preview", $("#raphael-brush-preview").width(), 60
     @preview = paper.circle(Math.round($("#raphael-brush-preview").width()/2), 30, default_radius).attr
@@ -44,7 +51,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
         value: default_radius - min_radius
         slide: (e, ui) =>
           @preview.attr r: ui.value + min_radius
-          @brush.setOption "lineWidth", (ui.value * 2) + min_radius
+          @canvas.freeDrawingLineWidth = (ui.value * 2) + min_radius
     # brush color selector
     $ =>
       $("#brush-color-selector").spectrum
@@ -52,36 +59,37 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
         theme: 'sp-light'
         move: (color) =>
           @preview.attr fill: color.toHexString()
-          @brush.setOption "color", color.toHexString()
+          @canvas.freeDrawingColor = color.toHexString()
     @
   
   eyedropper: (e) ->
     e.preventDefault()
     if $("#eyedropper").hasClass("primary")
-      @brush.disableEyedropper()
+      #@brush.disableEyedropper()
+      @canvas.isDrawingMode = yes #TODO go back to previous mode
+      @canvas.isEyedropperMode = no
       $("#eyedropper").removeClass("primary")
-      $("#draw").attr("style", "")
     else
       $("#eyedropper").addClass("primary")
-      $("#draw").attr("style", "cursor:crosshair")
-      @brush.enableEyedropper (x, y) =>
-        $("#eyedropper").removeClass("primary")
-        $("#draw").attr("style", "")
-        pixel = UT.get_pixel(@draw_ctx, x, y)
-        if pixel.a is 0
-          pixel = UT.get_pixel(@base_ctx, x, y)
-        #TODO take into account if alpha transparency (calc lower layers)
-        rgb = "rgb(#{pixel.r},#{pixel.g},#{pixel.b})"
-        @preview.attr fill: rgb
-        @brush.setOption "color", rgb
-        $("#brush-color-selector").spectrum("set", rgb)
+      @canvas.isDrawingMode = no #TODO disable current mode
+      @canvas.isEyedropperMode = yes
+      @canvas.observe 'mouse:up', @_on_eyedropper
       @
 
   save: (e) ->
     e.preventDefault()
-    UT.merge_layers @base_ctx, $("#draw")[0], @size.width, @size.height
-    data = $("#base-image")[0].toDataURL("image/jpeg")
+    data = @canvas.toDataURL("jpeg")
     # remove "data:image/jpeg;base64,"
     data = data.substr(data.indexOf(',') + 1).toString()
     UT.non_ajax_post '/save-image', [{name: 'imgdata', value: data}]
     @
+    
+  _on_eyedropper: (e) =>
+    @canvas.stopObserving 'mouse:up', @_on_eyedropper
+    location = @canvas.getPointer(e.memo.e)
+    pixel = UT.get_pixel @ctx, location.x, location.y
+    rgb = "rgb(#{pixel.r},#{pixel.g},#{pixel.b})"
+    @preview.attr fill: rgb
+    @canvas.freeDrawingColor = rgb
+    $("#brush-color-selector").spectrum("set", rgb)
+    $("#eyedropper").click()

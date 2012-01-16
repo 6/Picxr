@@ -5508,6 +5508,11 @@ fabric.util.string = {
     CURSOR:                 'default',
     
     /**
+     * Cursor for eyedropper tool
+     */
+     EYEDROPPER_CURSOR: 'crosshair',
+    
+    /**
      * Default element class that's given to wrapper (div) element of canvas
      * @constant
      * @type String
@@ -5765,7 +5770,12 @@ fabric.util.string = {
               this._objects[i].setActive(false);
             }
           }
-          style.cursor = this.CURSOR;
+          if(this.isEyedropperMode) {
+            style.cursor = this.EYEDROPPER_CURSOR;
+          }
+          else {
+            style.cursor = this.CURSOR;
+          }
         }
         else {
           // set proper cursor 
@@ -6147,7 +6157,12 @@ fabric.util.string = {
     _setCursorFromEvent: function (e, target) {
       var s = this.upperCanvasEl.style;
       if (!target) {
-        s.cursor = this.CURSOR;
+        if(this.isEyedropperMode) {
+          s.cursor = this.EYEDROPPER_CURSOR;
+        }
+        else {
+          s.cursor = this.CURSOR;
+        }
         return false;
       }
       else {
@@ -6157,7 +6172,10 @@ fabric.util.string = {
                       && (!activeGroup || !activeGroup.contains(target)) 
                       && target._findTargetCorner(e, this._offset);
 
-        if (!corner) {
+        if(this.isEyedropperMode) {
+          s.cursor = this.EYEDROPPER_CURSOR;
+        }
+        else if(!corner) {
           s.cursor = this.HOVER_CURSOR;
         }
         else {

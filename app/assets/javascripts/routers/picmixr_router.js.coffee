@@ -43,7 +43,7 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
     #TODO handle onerror, onabort
     pic.onload = =>
       @view = new PicMixr.Views.Edit pic: pic
-      @view.render().show_draw()
+      @view.render().init_fabric().show_draw()
     pic.src = url
     
   url_upload: ->

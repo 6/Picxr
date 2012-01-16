@@ -17,7 +17,6 @@
 //= require fabric-all
 //= require spectrum
 //= require mousefu
-//= require canvasdrawing
 //= require on_ready
 //= require pic_mixr
 //= require_tree ../templates

@@ -40,14 +40,6 @@ UT.fit_dimensions = (width, height, max_width, max_height) ->
   width = Math.min max_width, Math.ceil(width * ratio)
   height = Math.min max_height, Math.ceil(height * ratio)
   {width: width, height: height}
-
-UT.poorman_image_resize = (image, receiving_ctx, new_width, new_height) ->
-  temp_canvas = document.createElement("canvas")
-  temp_canvas.width = image.width
-  temp_canvas.height = image.height
-  temp_ctx = temp_canvas.getContext("2d")
-  temp_ctx.drawImage(image, 0, 0)
-  receiving_ctx.drawImage(temp_canvas, 0, 0, new_width, new_height)
   
 UT.merge_layers = (base_ctx, layer_canvas, layer_width, layer_height) ->
   base_ctx.drawImage(layer_canvas, 0, 0, layer_width, layer_height)
