@@ -6,9 +6,13 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     _.extend super,
       'click .save': 'save'
       'click #eyedropper': 'eyedropper'
+      'click #undo': 'undo'
+      'click #redo': 'redo'
   
   initialize: ->
     @pic = arguments[0].pic
+    @saved_states = []
+    @cur_state_idx = null
     UT.p "PicMixr.Views.Edit -> initialize", @pic
   
   render: ->
@@ -23,9 +27,10 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     @ctx = $("#fabric")[0].getContext('2d')
     @draw_canvas = $(".upper-canvas")[0]
     fabric.Image.fromURL @pic.src, (img) =>
-      centered = img.scaleToWidth(@size.width).set(top: @size.height / 2, left: @size.width / 2)
-      centered.set 'selectable', no
+      centered = img.scaleToWidth(@size.width).set(selectable:no, top: @size.height / 2, left: @size.width / 2, isBgImage: yes)
       @canvas.add centered
+      @_save_state()
+      @_after_state_change()
     @
   
   show_draw: ->
@@ -44,6 +49,8 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
         img = new fabric.Image(temp_img)
         img.set(selectable:no, width:@size.width, height:@size.height, top: @size.height / 2, left: @size.width / 2)
         @canvas.add img
+        @_save_state()
+        @_after_state_change()
     # brush preview
     paper = Raphael "raphael-brush-preview", $("#raphael-brush-preview").width(), 60
     @preview = paper.circle(Math.round($("#raphael-brush-preview").width()/2), 30, default_radius).attr
@@ -80,6 +87,18 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       @canvas.isEyedropperMode = yes
       @canvas.observe 'mouse:up', @_on_eyedropper
       @
+  
+  undo: (e) ->
+    e.preventDefault()
+    return if $("#undo").hasClass("disabled")
+    @_restore_state(-1)
+    @_after_state_change()
+  
+  redo: (e) ->
+    e.preventDefault()
+    return if $("#redo").hasClass("disabled")
+    @_restore_state(1)
+    @_after_state_change()
 
   save: (e) ->
     e.preventDefault()
@@ -88,6 +107,30 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     data = data.substr(data.indexOf(',') + 1).toString()
     UT.non_ajax_post '/save-image', [{name: 'imgdata', value: data}]
     @
+  
+  _save_state: =>
+    if @cur_state_idx? and @cur_state_idx < @saved_states.length - 1
+      # overwrite (remove) existing "redo" states
+      @saved_states.splice(@cur_state_idx + 1)
+    @saved_states.push @canvas.toJSON()
+    @cur_state_idx = if @cur_state_idx? then @cur_state_idx + 1 else 0
+    
+  _restore_state: (idx_delta) =>
+    new_idx = @cur_state_idx + idx_delta
+    unless new_idx < 0 or new_idx > @saved_states.length - 1
+      @cur_state_idx = new_idx
+      @canvas.loadFromDatalessJSON @saved_states[@cur_state_idx]
+    
+  _after_state_change: =>
+    # toggle whether or not undo/redo button is clickable
+    if !@cur_state_idx? or @cur_state_idx is 0
+      $("#undo").addClass("disabled")
+    else
+      $("#undo").removeClass("disabled")
+    if !@cur_state_idx? or @cur_state_idx is @saved_states.length - 1
+      $("#redo").addClass("disabled")
+    else
+      $("#redo").removeClass("disabled")
     
   _on_eyedropper: (e) =>
     @canvas.stopObserving 'mouse:up', @_on_eyedropper

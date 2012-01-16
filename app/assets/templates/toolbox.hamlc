@@ -1,4 +1,7 @@
 #toolbox
+  #global-feature-well.well
+    %a#undo.btn{:href => "#"} Undo
+    %a#redo.btn{:href => "#"} Redo
   #tool-well.well
   #save-image-well.well
     %p
