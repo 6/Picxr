@@ -16,6 +16,7 @@
 //= require raphael
 //= require fabric-all
 //= require spectrum
+//= require jquery.mousewheel
 //= require mousefu
 //= require on_ready
 //= require pic_mixr
