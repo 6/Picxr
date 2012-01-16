@@ -10,6 +10,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       'click #redo': 'redo'
   
   initialize: ->
+    @confirm_leave = "Are you sure you want to leave without saving?"
     @pic = arguments[0].pic
     @saved_states = []
     @cur_state_idx = null

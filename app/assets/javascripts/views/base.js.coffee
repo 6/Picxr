@@ -6,11 +6,15 @@ class PicMixr.Views.BaseView extends Backbone.View
   
   route_bb: (e) ->
     UT.p "PicMixr.Views.BaseView -> route_bb #{e.target.pathname}"
+    leave = @_confirm_leave_if_enabled e
+    return @ unless leave
     UT.route_bb e.target.pathname, e
     @
   
   route_default: (e) ->
     UT.p "PicMixr.Views.BaseView -> route_default"
+    leave = @_confirm_leave_if_enabled e
+    return @ unless leave
     if Face.active()
       UT.route_bb Face.default_route(), e
     else
@@ -19,3 +23,10 @@ class PicMixr.Views.BaseView extends Backbone.View
   
   destroy: ->
     $(@el).removeData().unbind()
+  
+  _confirm_leave_if_enabled: (e) =>
+    if @confirm_leave?
+      r = confirm @confirm_leave
+      e.preventDefault() unless r
+      r
+    else true
