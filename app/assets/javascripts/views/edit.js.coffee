@@ -21,6 +21,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
   init_fabric: ->
     @canvas = new fabric.Canvas 'fabric', {selection: no}
     @ctx = $("#fabric")[0].getContext('2d')
+    @draw_canvas = $(".upper-canvas")[0]
     fabric.Image.fromURL @pic.src, (img) =>
       centered = img.scaleToWidth(@size.width).set(top: @size.height / 2, left: @size.width / 2)
       centered.set 'selectable', no
@@ -36,6 +37,14 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     @canvas.isDrawingMode = yes
     @canvas.freeDrawingColor = default_color
     @canvas.freeDrawingLineWidth = default_radius * 2
+    @canvas.observe 'drawing:completed', (e) =>
+      temp_img = document.createElement('img')
+      temp_img.src = @draw_canvas.toDataURL("image/png")
+      temp_img.onload = =>
+        img = new fabric.Image(temp_img)
+        img.set(selectable:no, width:@size.width, height:@size.height, top: @size.height / 2, left: @size.width / 2)
+        @canvas.add img
+      
     @canvas.observe 'path:created', (e) =>
       e.memo.path.set 'selectable', no
     # brush preview

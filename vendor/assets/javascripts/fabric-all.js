@@ -6049,6 +6049,8 @@ fabric.util.string = {
           xPoints = this._freeDrawingXPoints,
           yPoints = this._freeDrawingYPoints;
 
+      this.fire('drawing:completed', { xPoints: xPoints, yPoints:yPoints, ctx: ctx });
+      /*
       path.push('M ', xPoints[0] - minX, ' ', yPoints[0] - minY, ' ');
 
       for (var i = 1; xPoint = xPoints[i], yPoint = yPoints[i]; i++) {
@@ -6075,6 +6077,7 @@ fabric.util.string = {
       p.set("left", minX + (maxX - minX) / 2).set("top", minY + (maxY - minY) / 2).setCoords();
       this.renderAll();
       this.fire('path:created', { path: p });
+      */
     },
 
     /**
