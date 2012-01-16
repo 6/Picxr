@@ -44,9 +44,6 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
         img = new fabric.Image(temp_img)
         img.set(selectable:no, width:@size.width, height:@size.height, top: @size.height / 2, left: @size.width / 2)
         @canvas.add img
-      
-    @canvas.observe 'path:created', (e) =>
-      e.memo.path.set 'selectable', no
     # brush preview
     paper = Raphael "raphael-brush-preview", $("#raphael-brush-preview").width(), 60
     @preview = paper.circle(Math.round($("#raphael-brush-preview").width()/2), 30, default_radius).attr
