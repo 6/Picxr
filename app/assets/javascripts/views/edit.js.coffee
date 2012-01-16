@@ -28,10 +28,16 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     @ctx = $("#fabric")[0].getContext('2d')
     @draw_canvas = $(".upper-canvas")[0]
     fabric.Image.fromURL @pic.src, (img) =>
-      centered = img.scaleToWidth(@size.width).set(selectable:no, top: @size.height / 2, left: @size.width / 2, isBgImage: yes)
-      @canvas.add centered
-      @_save_state()
-      @_after_state_change()
+      img.toDataURL (data) =>
+        # grab image DataURL to store in memory
+        temp_img = document.createElement('img')
+        temp_img.src = data
+        temp_img.onload = =>
+          dimg = new fabric.Image(temp_img)
+          dimg.scaleToWidth(@size.width).set(selectable:no, top: @size.height / 2, left: @size.width / 2, isBgImage: yes)
+          @canvas.add dimg
+          @_save_state()
+          @_after_state_change()
     @
   
   show_draw: ->
