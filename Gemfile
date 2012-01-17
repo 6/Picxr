@@ -7,7 +7,7 @@ gem 'newrelic_rpm'
 gem 'haml-rails'
 gem 'backbone-on-rails'
 gem 'rmagick'
-gem "paperclip", "~> 2.0"
+gem "aws-s3"
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'

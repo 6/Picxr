@@ -33,6 +33,10 @@ GEM
     addressable (2.2.6)
     ansi (1.4.1)
     arel (2.2.1)
+    aws-s3 (0.6.2)
+      builder
+      mime-types
+      xml-simple
     backbone-on-rails (0.5.3.2)
       eco (~> 1.0.0)
       ejs (~> 1.0.0)
@@ -40,7 +44,6 @@ GEM
       rails (~> 3.1.0)
     bcrypt-ruby (3.0.1)
     builder (3.0.0)
-    cocaine (0.2.1)
     coffee-rails (3.1.1)
       coffee-script (>= 2.2.0)
       railties (~> 3.1.0)
@@ -101,11 +104,6 @@ GEM
     mime-types (1.17.2)
     multi_json (1.0.4)
     newrelic_rpm (3.3.1)
-    paperclip (2.5.0)
-      activerecord (>= 2.3.0)
-      activesupport (>= 2.3.2)
-      cocaine (>= 0.0.2)
-      mime-types
     pg (0.12.0)
       rake-compiler (~> 0.7)
     polyglot (0.3.3)
@@ -175,11 +173,13 @@ GEM
     uglifier (1.2.1)
       execjs (>= 0.3.0)
       multi_json (>= 1.0.2)
+    xml-simple (1.1.1)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  aws-s3
   backbone-on-rails
   coffee-rails (~> 3.1.0)
   execjs
@@ -189,7 +189,6 @@ DEPENDENCIES
   heroku
   jquery-rails
   newrelic_rpm
-  paperclip (~> 2.0)
   pg
   rails (= 3.1.0)
   rmagick
