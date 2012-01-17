@@ -30,6 +30,6 @@ PicMixr::Application.configure do
   
   ENV["FACEBOOK_APP_ID"] = "207270859352264"
   ENV["FACEBOOK_SECRET"] = "c57d75025833869ae9b0cee2578f6058"
-  ENV["FACEBOOK_CB_DEFAULT"] = "http://localhost:3000/"
+  ENV["FACEBOOK_CB_DEFAULT"] = "http://localhost:5000/"
   ENV["FACEBOOK_CB_FRAME"] = "https://apps.facebook.com/picmixrlocal/"
 end
