@@ -8,6 +8,7 @@ UT.p = (args...) ->
   console.log args... if UT.is_dev()
 
 UT.redirect = (path) ->
+  path = path.substring(1) if path.substring(0 ,1) is "/"
   top.location.href = "#{UT.top_href()}#{path}"
   
 UT.is_framed = ->
