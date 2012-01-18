@@ -10,7 +10,6 @@ gem 'rmagick'
 gem "paperclip", "~> 2.0"
 gem "aws-s3"
 gem 'aws-sdk'
-gem "url_safe_base64", "~> 0.2.1"
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'

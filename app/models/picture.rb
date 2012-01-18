@@ -1,3 +1,5 @@
+require 'base_encoder'
+
 class Picture < ActiveRecord::Base
   after_create :set_b64_id
   
@@ -14,6 +16,6 @@ class Picture < ActiveRecord::Base
   private
   
   def set_b64_id
-    self.update_attributes(:b64_id => UrlSafeBase64.encode64(self.id.to_s))
+    self.update_attributes(:b64_id => BaseEncoder.encode(self.id + 3530000000000))
   end
 end

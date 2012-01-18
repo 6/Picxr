@@ -112,8 +112,8 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     data = @canvas.toDataURL("png")
     # remove "data:image/png;base64,"
     data = data.substr(data.indexOf(',') + 1).toString()
-    $.post '/save-image', {imgdata: data}, (id) ->
-      UT.redirect "/i/#{id}"
+    $.post '/save', {imgdata: data}, (id) ->
+      UT.redirect "/#{id}"
     @
   
   _save_state: =>

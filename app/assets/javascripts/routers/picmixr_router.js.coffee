@@ -4,9 +4,9 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
     @route.apply @, [/edit\/([^\s]+)/, 'edit', @edit]
   
   routes:
-    "user-albums/:user_id": "user_albums"
+    "albums/:user_id": "user_albums"
     "album/:album_id": "album"
-    "url-upload": "url_upload"
+    "upload/:type": "upload"
     "": "index"
   
   user_albums: (user_id) ->
@@ -36,7 +36,7 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
   edit: (url) ->
     @destroy_view()
     clean_url = decodeURIComponent url.replace(/@/g, ".")
-    url = "#{UT.default_cb_href()}image-proxy/#{encodeURIComponent(clean_url).replace(/\./g, '@')}"
+    url = "#{UT.default_cb_href()}iproxy/#{encodeURIComponent(clean_url).replace(/\./g, '@')}"
     UT.p "Route EDIT", clean_url, "through", url
     UT.loading "Loading"
     pic = new Image()
@@ -47,9 +47,12 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
       UT.message "Error loading image."
     pic.src = url
     
-  url_upload: ->
-    @view = new PicMixr.Views.UrlUpload
-    @view.render()
+  upload: (type) ->
+    if type is "url"
+      @view = new PicMixr.Views.UrlUpload
+      @view.render()
+    else
+      #TODO upload from desktop
   
   index: ->
     UT.p "Route INDEX"

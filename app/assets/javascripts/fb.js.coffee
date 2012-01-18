@@ -4,7 +4,7 @@ access_token = null
 window.Face =
   active: -> user_id?
   update_status_cb: null
-  default_route: -> "user-albums/#{user_id}"
+  default_route: -> "albums/#{user_id}"
 
 window.fbAsyncInit = ->
   UT.p "fbAsyncInit"

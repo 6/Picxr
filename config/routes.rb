@@ -5,18 +5,21 @@ PicMixr::Application.routes.draw do
   match "/session/:provider" => "sessions#create", :via => :post
   match "/logout" => "sessions#destroy", :as => :logout
   
-  match "/i/:id" => "pictures#show"
-  
-  match "/image-proxy/:url" => 'mixr#proxy'
-  match "/save-image" => 'mixr#save', :via => :post
+  match "/iproxy/:url" => 'mixr#proxy'
+  match "/save" => 'mixr#save', :via => :post
   
   # handled by backbone router
-  match '/user-albums/:id' => 'home#index'
+  match '/albums/:id' => 'home#index'
   match '/album/:id' => 'home#index'
   match '/edit/:url' => 'home#index'
-  match '/url-upload' => 'home#index'
+  match '/upload/:type' => 'home#index'
   
-  match ':action' => 'static#:action' # this should always be the last route
+  match '/about' => 'static#about'
+  match '/contact' => 'static#contact'
+  match '/terms' => 'static#terms'
+
+  match "/:id" => "pictures#show" # this should always be the last route
+  
   
   # The priority is based upon order of creation:
   # first created -> highest priority.
