@@ -52,7 +52,7 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
       @view = new PicMixr.Views.UrlUpload
       @view.render()
     else
-      #TODO upload from desktop
+      $("#main-wrap").html JST['forms/desktop_upload']()
   
   index: ->
     UT.p "Route INDEX"

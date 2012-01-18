@@ -7,11 +7,12 @@ PicMixr::Application.routes.draw do
   
   match "/iproxy/:url" => 'mixr#proxy'
   match "/save" => 'mixr#save', :via => :post
+  match "/upload" => 'pictures#create', :via => :post
   
   # handled by backbone router
   match '/albums/:id' => 'home#index'
   match '/album/:id' => 'home#index'
-  match '/edit/:url' => 'home#index'
+  match '/edit/:url' => 'home#index', :as => "edit"
   match '/upload/:type' => 'home#index'
   
   match '/about' => 'static#about'
