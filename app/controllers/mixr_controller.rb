@@ -33,7 +33,8 @@ class MixrController < ApplicationController
     sio.content_type = "image/png"
     picture = Picture.new
     picture.picture = sio
+    picture.creator_id = session[:user_id] unless session[:user_id].nil?
     picture.save
-    render :text => UrlSafeBase64.encode64(picture.id.to_s)
+    render :text => picture.b64_id
   end
 end
