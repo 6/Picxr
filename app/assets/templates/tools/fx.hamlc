@@ -1,0 +1,2 @@
+%a#grayscale.btn{:href => "#"} Grayscale
+%a#invert.btn{:href => "#"} Invert

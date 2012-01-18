@@ -2,6 +2,9 @@
   #global-feature-well.well
     %a#undo.btn{:href => "#"} Undo
     %a#redo.btn{:href => "#"} Redo
+  #tool-selector-well.well
+    %a#show-draw.btn{:href => "#"} Draw
+    %a#show-fx.btn{:href => "#"} Fx
   #tool-well.well
   #save-image-well.well
     %p

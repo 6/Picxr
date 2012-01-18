@@ -4,10 +4,16 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
   
   events: ->
     _.extend super,
+      # global events
       'click .save': 'save'
-      'click #eyedropper': 'eyedropper'
       'click #undo': 'undo'
       'click #redo': 'redo'
+      'click #show-draw': 'show_draw'
+      'click #show-fx': 'show_fx'
+      # specific to partials
+      'click #eyedropper': 'eyedropper'
+      'click #grayscale': 'grayscale'
+      'click #invert': 'invert'
   
   initialize: ->
     @confirm_leave = "Are you sure you want to leave without saving?"
@@ -39,8 +45,33 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
           @_save_state()
           @_after_state_change()
     @
+    
+  show_fx: (e) ->
+    e.preventDefault() if e?
+    return @ if $("#show-fx").hasClass("disabled")
+    #TODO need a better way to stopObserving ALL events and change modes
+    @canvas.isDrawingMode = no
+    $("#eyedropper").click() if @canvas.isEyedropperMode
+    @canvas.stopObserving 'drawing:completed', @_on_drawing_completed
+    #END TODO
+    $("#tool-well").html JST['tools/fx']()
+    $("#tool-selector-well > .btn").removeClass("disabled")
+    $("#show-fx").addClass("disabled")
+    @
   
-  show_draw: ->
+  grayscale: (e) ->
+    e.preventDefault()
+    @_apply_filter 0, new fabric.Image.filters.Grayscale()
+    @
+  
+  invert: (e) ->
+    e.preventDefault()
+    @_apply_filter 1, new fabric.Image.filters.Invert()
+    @
+  
+  show_draw: (e) ->
+    e.preventDefault() if e?
+    return @ if $("#show-draw").hasClass("disabled")
     default_color = "#22ee55"
     default_radius = 10
     min_radius = 2
@@ -49,15 +80,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     @canvas.isDrawingMode = yes
     @canvas.freeDrawingColor = default_color
     @canvas.freeDrawingLineWidth = default_radius * 2
-    @canvas.observe 'drawing:completed', (e) =>
-      temp_img = document.createElement('img')
-      temp_img.src = @draw_canvas.toDataURL("image/png")
-      temp_img.onload = =>
-        img = new fabric.Image(temp_img)
-        img.set(selectable:no, width:@size.width, height:@size.height, top: @size.height / 2, left: @size.width / 2)
-        @canvas.add img
-        @_save_state()
-        @_after_state_change()
+    @canvas.observe 'drawing:completed', @_on_drawing_completed
     # brush preview
     paper = Raphael "raphael-brush-preview", $("#raphael-brush-preview").width(), 60
     @preview = paper.circle(Math.round($("#raphael-brush-preview").width()/2), 30, default_radius).attr
@@ -80,6 +103,8 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
         move: (color) =>
           @preview.attr fill: color.toHexString()
           @canvas.freeDrawingColor = color.toHexString()
+    $("#tool-selector-well > .btn").removeClass("disabled")
+    $("#show-draw").addClass("disabled")
     @
   
   eyedropper: (e) ->
@@ -127,7 +152,11 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     new_idx = @cur_state_idx + idx_delta
     unless new_idx < 0 or new_idx > @saved_states.length - 1
       @cur_state_idx = new_idx
-      @canvas.loadFromDatalessJSON @saved_states[@cur_state_idx]
+      @canvas.loadFromDatalessJSON @saved_states[@cur_state_idx], =>
+        @canvas.forEachObject((obj) =>
+          if obj.get('type') is 'image'
+            obj.applyFilters(@canvas.renderAll.bind(@canvas))
+        , @canvas)
     
   _after_state_change: =>
     # toggle whether or not undo/redo button is clickable
@@ -139,6 +168,15 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       $("#redo").addClass("disabled")
     else
       $("#redo").removeClass("disabled")
+  
+  _apply_filter: (filter_idx, filter) =>
+    @canvas.forEachObject((obj) =>
+      if obj.get('type') is 'image'
+        obj.filters[filter_idx] = filter
+        obj.applyFilters(@canvas.renderAll.bind(@canvas))
+    , @canvas)
+    @_save_state()
+    @_after_state_change()
     
   _on_eyedropper: (e) =>
     @canvas.stopObserving 'mouse:up', @_on_eyedropper
@@ -149,3 +187,13 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     @canvas.freeDrawingColor = rgb
     $("#brush-color-selector").spectrum("set", rgb)
     $("#eyedropper").click()
+  
+  _on_drawing_completed: (e) =>
+    temp_img = document.createElement('img')
+    temp_img.src = @draw_canvas.toDataURL("image/png")
+    temp_img.onload = =>
+      img = new fabric.Image(temp_img)
+      img.set(selectable:no, width:@size.width, height:@size.height, top: @size.height / 2, left: @size.width / 2)
+      @canvas.add img
+      @_save_state()
+      @_after_state_change()
