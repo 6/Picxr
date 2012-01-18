@@ -51,6 +51,7 @@ UT.get_pixel = (ctx, x, y) ->
 UT.loading = (text) ->
   $("#main-wrap").html JST['loading']({text: text})
 
+# NOTE: do not use this for if data.value is large (gets cut off at 393 KB
 UT.non_ajax_post = (url, data_list) ->
   html = "<form method='post' action='#{url}' class='hide'>"
   for data in data_list

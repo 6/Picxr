@@ -109,10 +109,11 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
 
   save: (e) ->
     e.preventDefault()
-    data = @canvas.toDataURL("jpeg")
-    # remove "data:image/jpeg;base64,"
+    data = @canvas.toDataURL("png")
+    # remove "data:image/png;base64,"
     data = data.substr(data.indexOf(',') + 1).toString()
-    UT.non_ajax_post '/save-image', [{name: 'imgdata', value: data}]
+    $.post '/save-image', {imgdata: data}, (id) ->
+      console.log id, "TODO redirect to new photo"
     @
   
   _save_state: =>

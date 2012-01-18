@@ -27,7 +27,13 @@ class MixrController < ApplicationController
   end
   
   def save
-    bytes = ActiveSupport::Base64.decode64(params[:imgdata])
-    send_data bytes, :filename => 'picmixr.jpg'
+    sio = StringIO.new(Base64.decode64(params[:imgdata]))
+    sio.class.class_eval { attr_accessor :original_filename, :content_type }
+    sio.original_filename = "picmixr.png"
+    sio.content_type = "image/png"
+    picture = Picture.new
+    picture.picture = sio
+    picture.save
+    render :text => "TODO - url-safe base64 encoded ID"
   end
 end
