@@ -11,7 +11,6 @@ fabric.Image.filters.Brightness = fabric.util.createClass
     console.log data[0]
 
     for i in [0..data.length - 1]
-      #console.log i,"f",data[i],  "->", Math.min(255, Math.max(0, data[i] + @delta))
       data[i] = Math.min(255, Math.max(0, data[i] + @delta))
 
     context.putImageData(imageData, 0, 0)
