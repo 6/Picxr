@@ -1,3 +1,6 @@
 %p
   %a{:href => "#{@pic.picture.url(:original, false)}", :target => "_blank"}
     %img{:src => "#{@pic.picture.url(:original, false)}"}
+%p
+  %h5 Share this image
+  %input.on-focus-highlight{:type => 'text', :value => "#{root_url}#{request.fullpath[1..-1]}"}

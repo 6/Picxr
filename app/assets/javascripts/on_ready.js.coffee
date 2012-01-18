@@ -14,3 +14,5 @@ init_bootstrap = ->
   )
   $(".open-modal").click ->
     domModal.toggle()
+  $(".on-focus-highlight").mouseup ->
+    $(@).focus().select()
