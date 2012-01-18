@@ -55,6 +55,19 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     @canvas.stopObserving 'drawing:completed', @_on_drawing_completed
     #END TODO
     $("#tool-well").html JST['tools/fx']()
+      
+    # brightness slider
+    $("#brightness-slider").slider
+        range: "min"
+        min: -25
+        max: 25
+        value: 0
+        slide: (e, ui) =>
+          @_apply_filter 3, new fabric.Image.filters.Brightness(delta:ui.value * 3), no
+        stop: (e, ui) =>
+          @_save_state()
+          @_after_state_change()
+    
     $("#tool-selector-well > .btn").removeClass("disabled")
     $("#show-fx").addClass("disabled")
     @
@@ -169,14 +182,15 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     else
       $("#redo").removeClass("disabled")
   
-  _apply_filter: (filter_idx, filter) =>
+  _apply_filter: (filter_idx, filter, is_save_state = yes) =>
     @canvas.forEachObject((obj) =>
       if obj.get('type') is 'image'
         obj.filters[filter_idx] = filter
         obj.applyFilters(@canvas.renderAll.bind(@canvas))
     , @canvas)
-    @_save_state()
-    @_after_state_change()
+    if is_save_state
+      @_save_state()
+      @_after_state_change()
     
   _on_eyedropper: (e) =>
     @canvas.stopObserving 'mouse:up', @_on_eyedropper

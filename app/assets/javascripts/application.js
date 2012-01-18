@@ -15,6 +15,7 @@
 //= require hamlcoffee
 //= require raphael
 //= require fabric-all
+//= require fabric_filters
 //= require spectrum
 //= require jquery.mousewheel
 //= require mousefu

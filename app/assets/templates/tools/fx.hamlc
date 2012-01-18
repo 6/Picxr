@@ -1,2 +1,6 @@
+%span Brightness
+#brightness-slider
+%br
+
 %a#grayscale.btn{:href => "#"} Grayscale
 %a#invert.btn{:href => "#"} Invert
