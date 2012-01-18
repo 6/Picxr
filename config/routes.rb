@@ -5,6 +5,8 @@ PicMixr::Application.routes.draw do
   match "/session/:provider" => "sessions#create", :via => :post
   match "/logout" => "sessions#destroy", :as => :logout
   
+  match "/i/:id" => "pictures#show"
+  
   match "/image-proxy/:url" => 'mixr#proxy'
   match "/save-image" => 'mixr#save', :via => :post
   

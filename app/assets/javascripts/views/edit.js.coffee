@@ -113,7 +113,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     # remove "data:image/png;base64,"
     data = data.substr(data.indexOf(',') + 1).toString()
     $.post '/save-image', {imgdata: data}, (id) ->
-      console.log id, "TODO redirect to new photo"
+      UT.redirect "/i/#{id}"
     @
   
   _save_state: =>

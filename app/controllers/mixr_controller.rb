@@ -34,6 +34,6 @@ class MixrController < ApplicationController
     picture = Picture.new
     picture.picture = sio
     picture.save
-    render :text => "TODO - url-safe base64 encoded ID"
+    render :text => UrlSafeBase64.encode64(picture.id.to_s)
   end
 end
