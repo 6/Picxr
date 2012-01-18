@@ -26,6 +26,7 @@ group :development do
   gem 'heroku'
   gem 'foreman'
   gem 'growl_notify'
+  gem 'annotate'
 end
 
 group :test do
