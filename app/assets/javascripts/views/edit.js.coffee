@@ -95,10 +95,14 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     @canvas.freeDrawingLineWidth = default_radius * 2
     @canvas.observe 'drawing:completed', @_on_drawing_completed
     # brush preview
-    paper = Raphael "raphael-brush-preview", $("#raphael-brush-preview").width(), 60
-    @preview = paper.circle(Math.round($("#raphael-brush-preview").width()/2), 30, default_radius).attr
+    @brush_preview = new fabric.Canvas 'brush-preview-canvas', {selection: no}
+    tl = Math.round($("#brush-preview-canvas").width()/2)
+    @brush_preview.add new fabric.Circle
+      top: tl
+      left: tl
+      radius: default_radius
       fill: default_color
-      stroke: 'none'
+      selectable: no
     # brush size slider
     $("#brush-size-slider").slider
         range: "min"
@@ -106,7 +110,8 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
         max: 25
         value: default_radius - min_radius
         slide: (e, ui) =>
-          @preview.attr r: ui.value + min_radius
+          @brush_preview.item(0).set 'radius', ui.value + min_radius
+          @brush_preview.renderAll()
           @canvas.freeDrawingLineWidth = (ui.value * 2) + min_radius
     # brush color selector
     $ =>
@@ -114,7 +119,8 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
         flat: true
         theme: 'sp-light'
         move: (color) =>
-          @preview.attr fill: color.toHexString()
+          @brush_preview.item(0).set 'fill', color.toHexString()
+          @brush_preview.renderAll()
           @canvas.freeDrawingColor = color.toHexString()
     $("#tool-selector-well > .btn").removeClass("disabled")
     $("#show-draw").addClass("disabled")
@@ -197,7 +203,8 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     location = @canvas.getPointer(e.memo.e)
     pixel = UT.get_pixel @ctx, location.x, location.y
     rgb = "rgb(#{pixel.r},#{pixel.g},#{pixel.b})"
-    @preview.attr fill: rgb
+    @brush_preview.item(0).set 'fill', rgb
+    @brush_preview.renderAll()
     @canvas.freeDrawingColor = rgb
     $("#brush-color-selector").spectrum("set", rgb)
     $("#eyedropper").click()

@@ -13,7 +13,6 @@
 //= require backbone_rails_authtoken_adapter
 //= require backbone_rails_parse_tojson_adapter
 //= require hamlcoffee
-//= require raphael
 //= require fabric-all
 //= require fabric_filters
 //= require spectrum

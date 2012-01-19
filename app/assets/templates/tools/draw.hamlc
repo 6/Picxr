@@ -1,4 +1,4 @@
-#raphael-brush-preview
+%canvas#brush-preview-canvas{:width => "60", :height => "60", :style => "width:60px;height:60px"}
 #brush-size-slider
 %p
   %input#brush-color-selector{:type => 'text', :value => "#{@default_color}"}
