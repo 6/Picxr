@@ -1,6 +1,19 @@
 %span Brightness
 #brightness-slider
 %br
+%span Contrast
+#contrast-slider
+%br
+%span Saturation
+#saturation-slider
+%br
+%span Hue
+#hue-slider
+%br
 
 %a#grayscale.btn{:href => "#"} Grayscale
 %a#invert.btn{:href => "#"} Invert
+%a#grungy.btn{:href => "#"} Grunge
+%a#lomo.btn{:href => "#"} Lomography
+%a#vintage.btn{:href => "#"} Vintage
+%a#hazyDays.btn{:href => "#"} Hazy

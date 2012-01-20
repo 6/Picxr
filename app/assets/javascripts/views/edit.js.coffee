@@ -14,6 +14,10 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       'click #eyedropper': 'eyedropper'
       'click #grayscale': 'grayscale'
       'click #invert': 'invert'
+      'click #grungy': 'grungy'
+      'click #lomo': 'lomo'
+      'click #vintage': 'vintage'
+      'click #hazyDays': 'hazyDays'
   
   initialize: ->
     @confirm_leave = "Are you sure you want to leave without saving?"
@@ -60,7 +64,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     @_set_edit_mode "fx"
     $("#tool-well").html JST['tools/fx']()
       
-    # brightness slider
+    #TODO reduce duplicate slider code
     $("#brightness-slider").slider
         range: "min"
         min: -5
@@ -75,6 +79,48 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
         stop: (e, ui) =>
           @_save_state()
           @_after_state_change()
+    $("#contrast-slider").slider
+        range: "min"
+        min: -5
+        max: 5
+        value: 0
+        slide: (e, ui) =>
+          global_this = @
+          @_prepare_filter () ->
+            Caman "#caman-img", () ->
+              @contrast(ui.value).render () ->
+                global_this._after_filter(no)
+        stop: (e, ui) =>
+          @_save_state()
+          @_after_state_change()
+      $("#saturation-slider").slider
+          range: "min"
+          min: -100
+          max: 100
+          value: 0
+          slide: (e, ui) =>
+            global_this = @
+            @_prepare_filter () ->
+              Caman "#caman-img", () ->
+                @saturation(ui.value).render () ->
+                  global_this._after_filter(no)
+          stop: (e, ui) =>
+            @_save_state()
+            @_after_state_change()
+      $("#hue-slider").slider
+          range: "min"
+          min: 0
+          max: 100
+          value: 0
+          slide: (e, ui) =>
+            global_this = @
+            @_prepare_filter () ->
+              Caman "#caman-img", () ->
+                @hue(ui.value).render () ->
+                  global_this._after_filter(no)
+          stop: (e, ui) =>
+            @_save_state()
+            @_after_state_change()
     
     $("#tool-selector-well > .btn").removeClass("disabled")
     $("#show-fx").addClass("disabled")
@@ -94,6 +140,38 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     @_prepare_filter () ->
       Caman "#caman-img", () ->
         @invert().render global_this._after_filter
+    @
+    
+  grungy: (e) ->
+    e.preventDefault()
+    global_this = @
+    @_prepare_filter () ->
+      Caman "#caman-img", () ->
+        @grungy().render global_this._after_filter
+    @
+    
+  lomo: (e) ->
+    e.preventDefault()
+    global_this = @
+    @_prepare_filter () ->
+      Caman "#caman-img", () ->
+        @lomo().render global_this._after_filter
+    @
+    
+  vintage: (e) ->
+    e.preventDefault()
+    global_this = @
+    @_prepare_filter () ->
+      Caman "#caman-img", () ->
+        @vintage().render global_this._after_filter
+    @
+
+  hazyDays: (e) ->
+    e.preventDefault()
+    global_this = @
+    @_prepare_filter () ->
+      Caman "#caman-img", () ->
+        @hazyDays().render global_this._after_filter
     @
   
   _prepare_filter: (cb) =>
