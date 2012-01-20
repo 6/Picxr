@@ -25,6 +25,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     @saved_states = []
     @cur_state_idx = null
     @edit_mode = {draw: no, fx: no}
+    @sliders = []
     UT.p "PicMixr.Views.Edit -> initialize", @pic
   
   render: ->
@@ -60,7 +61,6 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
   show_fx: (e) ->
     e.preventDefault() if e?
     return @ if $("#show-fx").hasClass("disabled")
-    @_destruct_events()
     @_set_edit_mode "fx"
     $("#tool-well").html JST['tools/fx']()
       
@@ -79,6 +79,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
         stop: (e, ui) =>
           @_save_state()
           @_after_state_change()
+    @sliders.push("#brightness-slider")
     $("#contrast-slider").slider
         range: "min"
         min: -5
@@ -93,6 +94,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
         stop: (e, ui) =>
           @_save_state()
           @_after_state_change()
+      @sliders.push("#contrast-slider")
       $("#saturation-slider").slider
           range: "min"
           min: -100
@@ -107,6 +109,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
           stop: (e, ui) =>
             @_save_state()
             @_after_state_change()
+      @sliders.push("#saturation-slider")
       $("#hue-slider").slider
           range: "min"
           min: 0
@@ -121,6 +124,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
           stop: (e, ui) =>
             @_save_state()
             @_after_state_change()
+      @sliders.push("#hue-slider")
     
     $("#tool-selector-well > .btn").removeClass("disabled")
     $("#show-fx").addClass("disabled")
@@ -187,7 +191,6 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
   show_draw: (e) ->
     e.preventDefault() if e?
     return @ if $("#show-draw").hasClass("disabled")
-    @_destruct_events()
     @_set_edit_mode "draw"
     default_color = "#22ee55"
     default_radius = 10
@@ -293,13 +296,15 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     else
       $("#redo").removeClass("disabled")
   
-  _destruct_events: =>
+  _set_edit_mode: (key) =>
+    # destruct/unbind events
     if @edit_mode.draw
       $("#eyedropper").click() if @canvas.isEyedropperMode
       @canvas.stopObserving 'drawing:completed', @_on_drawing_completed
       @canvas.isDrawingMode = no
-  
-  _set_edit_mode: (key) =>
+    # destroy sliders
+    $(slider_el).slider("destroy") for slider_el in @sliders
+    # set the new edit mode
     for k, v of @edit_mode
       @edit_mode[k] = no
     @edit_mode[key] = yes
