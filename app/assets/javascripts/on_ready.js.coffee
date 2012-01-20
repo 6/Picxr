@@ -1,5 +1,7 @@
 $ ->
   init_bootstrap()
+  $(".on-focus-highlight").mouseup ->
+    $(@).focus().select()
   
 init_bootstrap = ->
   $("body > .topbar").scrollSpy()
@@ -14,5 +16,3 @@ init_bootstrap = ->
   )
   $(".open-modal").click ->
     domModal.toggle()
-  $(".on-focus-highlight").mouseup ->
-    $(@).focus().select()
