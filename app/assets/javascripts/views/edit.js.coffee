@@ -27,12 +27,17 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     @size = UT.fit_dimensions(@pic.width, @pic.height, 558, 600)
     $(@el).html @template(width: @size.width, height: @size.height)
     $("#toolbox-wrap").html JST['toolbox']()
+    @merge_canvas = document.createElement('canvas')
+    $(@merge_canvas).attr("width", @size.width).attr("height", @size.height).attr("style", "width:#{@size.width}px;height:#{@size.height}px")
+    @merge_ctx = @merge_canvas.getContext('2d')
     @
   
   init_fabric: ->
     @canvas = new fabric.Canvas 'fabric', {selection: no}
-    @ctx = $("#fabric")[0].getContext('2d')
+    @lower_canvas = $("#fabric")[0]
+    @lower_ctx = @lower_canvas.getContext('2d')
     @draw_canvas = $(".upper-canvas")[0]
+    @draw_ctx = @draw_canvas.getContext('2d')
     fabric.Image.fromURL @pic.src, (img) =>
       img.toDataURL (data) =>
         # grab image DataURL to store in memory
@@ -201,7 +206,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
   _on_eyedropper: (e) =>
     @canvas.stopObserving 'mouse:up', @_on_eyedropper
     location = @canvas.getPointer(e.memo.e)
-    pixel = UT.get_pixel @ctx, location.x, location.y
+    pixel = UT.get_pixel @lower_ctx, location.x, location.y
     rgb = "rgb(#{pixel.r},#{pixel.g},#{pixel.b})"
     @brush_preview.item(0).set 'fill', rgb
     @brush_preview.renderAll()
@@ -210,11 +215,16 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     $("#eyedropper").click()
   
   _on_drawing_completed: (e) =>
+    @merge_ctx.clearRect(0, 0, @size.width, @size.height)
+    @merge_ctx.drawImage(@lower_canvas, 0, 0, @size.width, @size.height)
+    @merge_ctx.drawImage(@draw_canvas, 0, 0, @size.width, @size.height)
+    
     temp_img = document.createElement('img')
-    temp_img.src = @draw_canvas.toDataURL("image/png")
     temp_img.onload = =>
-      img = new fabric.Image(temp_img)
+      img = new fabric.Image temp_img
       img.set(selectable:no, width:@size.width, height:@size.height, top: @size.height / 2, left: @size.width / 2)
       @canvas.add img
+      @canvas.remove @canvas.item(0)
       @_save_state()
       @_after_state_change()
+    temp_img.src = @merge_canvas.toDataURL("image/png")
