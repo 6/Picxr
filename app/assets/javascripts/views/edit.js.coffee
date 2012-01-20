@@ -20,6 +20,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     @pic = arguments[0].pic
     @saved_states = []
     @cur_state_idx = null
+    @edit_mode = {draw: no, fx: no}
     UT.p "PicMixr.Views.Edit -> initialize", @pic
   
   render: ->
@@ -55,11 +56,8 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
   show_fx: (e) ->
     e.preventDefault() if e?
     return @ if $("#show-fx").hasClass("disabled")
-    #TODO need a better way to stopObserving ALL events and change modes
-    @canvas.isDrawingMode = no
-    $("#eyedropper").click() if @canvas.isEyedropperMode
-    @canvas.stopObserving 'drawing:completed', @_on_drawing_completed
-    #END TODO
+    @_destruct_events()
+    @_set_edit_mode "fx"
     $("#tool-well").html JST['tools/fx']()
       
     # brightness slider
@@ -91,6 +89,8 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
   show_draw: (e) ->
     e.preventDefault() if e?
     return @ if $("#show-draw").hasClass("disabled")
+    @_destruct_events()
+    @_set_edit_mode "draw"
     default_color = "#22ee55"
     default_radius = 10
     min_radius = 2
@@ -135,13 +135,13 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
   eyedropper: (e) ->
     e.preventDefault()
     if $("#eyedropper").hasClass("primary")
-      @canvas.isDrawingMode = yes #TODO go back to previous mode
+      @canvas.isDrawingMode = yes
       @canvas.isEyedropperMode = no
       $("#eyedropper").removeClass("primary")
       @canvas.stopObserving 'mouse:up', @_on_eyedropper
     else
       $("#eyedropper").addClass("primary")
-      @canvas.isDrawingMode = no #TODO disable current mode
+      @canvas.isDrawingMode = no
       @canvas.isEyedropperMode = yes
       @canvas.observe 'mouse:up', @_on_eyedropper
     @
@@ -194,6 +194,17 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       $("#redo").addClass("disabled")
     else
       $("#redo").removeClass("disabled")
+  
+  _destruct_events: =>
+    if @edit_mode.draw
+      $("#eyedropper").click() if @canvas.isEyedropperMode
+      @canvas.stopObserving 'drawing:completed', @_on_drawing_completed
+      @canvas.isDrawingMode = no
+  
+  _set_edit_mode: (key) =>
+    for k, v of @edit_mode
+      @edit_mode[k] = no
+    @edit_mode[key] = yes
   
   _apply_filter: (filter_idx, filter, is_save_state = yes) =>
     @canvas.forEachObject((obj) =>
