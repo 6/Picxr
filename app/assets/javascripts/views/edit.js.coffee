@@ -138,12 +138,13 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       @canvas.isDrawingMode = yes #TODO go back to previous mode
       @canvas.isEyedropperMode = no
       $("#eyedropper").removeClass("primary")
+      @canvas.stopObserving 'mouse:up', @_on_eyedropper
     else
       $("#eyedropper").addClass("primary")
       @canvas.isDrawingMode = no #TODO disable current mode
       @canvas.isEyedropperMode = yes
       @canvas.observe 'mouse:up', @_on_eyedropper
-      @
+    @
   
   undo: (e) ->
     e.preventDefault()
