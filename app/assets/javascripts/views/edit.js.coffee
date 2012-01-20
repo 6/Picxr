@@ -42,9 +42,10 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       img.toDataURL (data) =>
         # grab image DataURL to store in memory
         temp_img = document.createElement('img')
+        $(temp_img).attr("width", @size.width).attr("height", @size.height)
         temp_img.onload = =>
           dimg = new fabric.Image(temp_img)
-          dimg.scaleToWidth(@size.width).set(selectable:no, top: @size.height / 2, left: @size.width / 2, isBgImage: yes)
+          dimg.set(selectable:no, top: @size.height / 2, left: @size.width / 2, isBgImage: yes)
           @canvas.add dimg
           @_save_state()
           @_after_state_change()
