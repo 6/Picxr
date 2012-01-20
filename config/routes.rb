@@ -22,12 +22,6 @@ PicMixr::Application.routes.draw do
 
   match "/:id" => "pictures#show" # this should always be the last route
   
-  # redirect non-www to www
-  constraints(:host => "picmixr.com") do
-    match "(*x)" => redirect { |params, request|
-      URI.parse(request.url).tap { |x| x.host = "www.picmixr.com" }.to_s
-    }
-  end
   
   # The priority is based upon order of creation:
   # first created -> highest priority.
