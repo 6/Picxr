@@ -63,11 +63,15 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     # brightness slider
     $("#brightness-slider").slider
         range: "min"
-        min: -25
-        max: 25
+        min: -5
+        max: 5
         value: 0
         slide: (e, ui) =>
-          @_apply_filter 3, new fabric.Image.filters.Brightness(delta:ui.value * 3), no
+          global_this = @
+          @_prepare_filter () ->
+            Caman "#caman-img", () ->
+              @brightness(ui.value).render () ->
+                global_this._after_filter(no)
         stop: (e, ui) =>
           @_save_state()
           @_after_state_change()
@@ -78,14 +82,30 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
   
   grayscale: (e) ->
     e.preventDefault()
-    @_apply_filter 0, new fabric.Image.filters.Grayscale()
+    global_this = @
+    @_prepare_filter () ->
+      Caman "#caman-img", () ->
+        @greyscale().render global_this._after_filter
     @
   
   invert: (e) ->
     e.preventDefault()
-    @_apply_filter 1, new fabric.Image.filters.Invert()
+    global_this = @
+    @_prepare_filter () ->
+      Caman "#caman-img", () ->
+        @invert().render global_this._after_filter
     @
   
+  _prepare_filter: (cb) =>
+    #$("#hidden-elements").html("")
+    caman_img = document.createElement('img')
+    $(caman_img).attr("id", "caman-img").data("camanwidth", @size.width).data("camanheight", @size.height).appendTo("#hidden-elements")
+    caman_img.onload = => cb()
+    caman_img.src = @lower_canvas.toDataURL("image/png")
+  
+  _after_filter: (is_save_state = yes) =>
+    @_replace_fabric_image_from_canvas $("canvas#caman-img")[0], is_save_state
+    
   show_draw: (e) ->
     e.preventDefault() if e?
     return @ if $("#show-draw").hasClass("disabled")
@@ -205,16 +225,6 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     for k, v of @edit_mode
       @edit_mode[k] = no
     @edit_mode[key] = yes
-  
-  _apply_filter: (filter_idx, filter, is_save_state = yes) =>
-    @canvas.forEachObject((obj) =>
-      if obj.get('type') is 'image'
-        obj.filters[filter_idx] = filter
-        obj.applyFilters(@canvas.renderAll.bind(@canvas))
-    , @canvas)
-    if is_save_state
-      @_save_state()
-      @_after_state_change()
     
   _on_eyedropper: (e) =>
     @canvas.stopObserving 'mouse:up', @_on_eyedropper
@@ -231,13 +241,16 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     @merge_ctx.clearRect(0, 0, @size.width, @size.height)
     @merge_ctx.drawImage(@lower_canvas, 0, 0, @size.width, @size.height)
     @merge_ctx.drawImage(@draw_canvas, 0, 0, @size.width, @size.height)
+    @_replace_fabric_image_from_canvas @merge_canvas, yes
     
+  _replace_fabric_image_from_canvas: (canvas, is_save_state) =>
     temp_img = document.createElement('img')
     temp_img.onload = =>
       img = new fabric.Image temp_img
       img.set(selectable:no, width:@size.width, height:@size.height, top: @size.height / 2, left: @size.width / 2)
       @canvas.add img
       @canvas.remove @canvas.item(0)
-      @_save_state()
-      @_after_state_change()
-    temp_img.src = @merge_canvas.toDataURL("image/png")
+      if is_save_state
+        @_save_state()
+        @_after_state_change()
+    temp_img.src = canvas.toDataURL("image/png")
