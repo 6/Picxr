@@ -251,13 +251,11 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     e.preventDefault()
     return if $("#undo").hasClass("disabled")
     @_restore_state(-1)
-    @_after_state_change()
   
   redo: (e) ->
     e.preventDefault()
     return if $("#redo").hasClass("disabled")
     @_restore_state(1)
-    @_after_state_change()
 
   save: (e) ->
     e.preventDefault()
@@ -279,11 +277,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     new_idx = @cur_state_idx + idx_delta
     unless new_idx < 0 or new_idx > @saved_states.length - 1
       @cur_state_idx = new_idx
-      @canvas.loadFromDatalessJSON @saved_states[@cur_state_idx], =>
-        @canvas.forEachObject((obj) =>
-          if obj.get('type') is 'image'
-            obj.applyFilters(@canvas.renderAll.bind(@canvas))
-        , @canvas)
+      @canvas.loadFromDatalessJSON @saved_states[@cur_state_idx], @_after_state_change
     
   _after_state_change: =>
     # toggle whether or not undo/redo button is clickable
