@@ -14,6 +14,7 @@
 //= require backbone_rails_parse_tojson_adapter
 //= require hamlcoffee
 //= require fabric-all
+//= require caman.full
 //= require fabric_filters
 //= require spectrum
 //= require jquery.mousewheel
