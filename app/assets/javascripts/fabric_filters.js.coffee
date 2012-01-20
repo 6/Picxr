@@ -8,7 +8,6 @@ fabric.Image.filters.Brightness = fabric.util.createClass
     context = canvasEl.getContext('2d')
     imageData = context.getImageData(0, 0, canvasEl.width, canvasEl.height)
     data = imageData.data
-    console.log data[0]
 
     for i in [0..data.length - 1]
       data[i] = Math.min(255, Math.max(0, data[i] + @delta))
