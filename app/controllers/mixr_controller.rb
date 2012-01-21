@@ -18,11 +18,15 @@ class MixrController < ApplicationController
     else
       "image/jpeg"
     end
-    open(url, "rb") do |file|
-      if %w[image/jpeg image/png image/gif].include? file.content_type
-        mime = file.content_type
+    begin
+      open(url, "rb") do |file|
+        if %w[image/jpeg image/png image/gif].include? file.content_type
+          mime = file.content_type
+        end
+        send_file file, :type => mime, :disposition => 'inline'
       end
-      send_file file, :type => mime, :disposition => 'inline'
+    rescue
+      render :text => 'no', :status => 400
     end
   end
   
