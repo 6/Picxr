@@ -1,4 +1,0 @@
-%span.fb-avatar-wrap
-  %img.fb-avatar{:src => "https://graph.facebook.com/#{@fb_user_id}/picture"}
-  %span.fb-name= @fb_name
-  

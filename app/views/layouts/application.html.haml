@@ -20,12 +20,7 @@
               %a{:href=> "/"}
                 %img#logo{:src => "/assets/logo-small.png", :alt => "picmixr", :title => "picmixr"}
             #cta.span9
-              .row
-                #cta-import-wrap.span
-                  %a#fb-auth.btn.medium.fb{:href => "#"} Import Facebook Photos
-                #user-info-wrap.span6
-                  %span#user-info.hide
-                  %a#fb-logout.hide{:href => "#"} Logout of Facebook
+              #cta-row.row
       =yield
     %footer#default-footer
       &copy; 2012 PicMixr.
