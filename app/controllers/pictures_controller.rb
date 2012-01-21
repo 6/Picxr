@@ -11,6 +11,6 @@ class PicturesController < ApplicationController
     @pic.picture = params[:picture]
     @pic.creator_id = session[:user_id] unless session[:user_id].nil?
     @pic.save
-    redirect_to edit_path(CGI.escape(@pic.picture.url(:original, false)).gsub(/\./, '@'))
+    redirect_to edit_path(CGI.escape(@pic.picture.url(:original, false).gsub(/\./, '@')))
   end
 end

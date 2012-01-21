@@ -35,8 +35,8 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
 
   edit: (url) ->
     @destroy_view()
-    clean_url = decodeURIComponent url.replace(/@/g, ".")
-    url = "#{UT.default_cb_href()}iproxy/#{encodeURIComponent(clean_url).replace(/\./g, '@')}"
+    clean_url = decodeURIComponent(url).replace(/@/g, ".")
+    url = "#{UT.default_cb_href()}iproxy/#{encodeURIComponent clean_url.replace(/\./g, '@')}"
     UT.p "Route EDIT", clean_url, "through", url
     UT.loading()
     pic = new Image()
