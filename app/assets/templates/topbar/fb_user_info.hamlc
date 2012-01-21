@@ -4,4 +4,4 @@
       %img.fb-avatar{:src => "https://graph.facebook.com/#{@fb_user_id}/picture"}
       %span.fb-name= @fb_name
   - unless UT.is_framed()
-    %a#fb-logout{:href => "#"} Logout of Facebook
+    %a#fb-logout{:href => "#"} Logout
