@@ -53,6 +53,22 @@ create_session = (user_id, name) ->
     info:
       name: name
 
+fb_share = (e) ->
+  info =
+    method: 'feed'
+    link: $(@).data('link')
+    display: 'popup'
+    # must be at least 50px by 50px and have a maximum aspect ratio of 3:1
+    picture: $(@).data('picture')
+    name:'picmixr - online photo editor'
+    caption: 'make your photos hilarious'
+    #description: 'description 123'
+  FB.ui info, (res) ->
+    if res?
+      UT.p "Published photo", res
+    else
+      UT.p "DENY"
+
 Face.user_albums = (uid, cb) ->
   UT.p "Face.user_albums #{uid}"
   albums = []
@@ -95,3 +111,4 @@ Face.album_photos = (aid, cb) ->
 $ ->
   Face.view = new PicMixr.Views.TopbarFbImport
   Face.view.render()
+  $("#fb-share").click fb_share

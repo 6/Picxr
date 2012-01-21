@@ -7,6 +7,7 @@
                 :'fb-cb-default' => "#{ENV['FACEBOOK_CB_DEFAULT']}"}}
   %head
     %meta{:charset => 'utf-8'}
+    =yield(:custom_metadata)
     %title= @page_title ? "#{@page_title} - PicMixr" : 'PicMixr - Make your photos hilarious'
     = stylesheet_link_tag    "application"
     = javascript_include_tag "application"

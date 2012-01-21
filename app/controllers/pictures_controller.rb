@@ -1,7 +1,9 @@
 class PicturesController < ApplicationController
 
   def show
-    @pic = Picture.find_by_b64_id(params[:id])
+    pic = Picture.find_by_b64_id(params[:id])
+    @pic_url = pic.picture.url(:original, false)
+    @permalink = "#{ENV['PERMALINK_ROOT']}#{request.fullpath[1..-1]}"
   end
   
   def create

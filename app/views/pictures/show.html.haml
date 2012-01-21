@@ -1,6 +1,11 @@
+- content_for :custom_metadata do
+  %meta{:name => "medium", :content => "image"}
+  %meta{:property => "og:image", :content => "#{@pic_url}"}
+
 %p
-  %a{:href => "#{@pic.picture.url(:original, false)}", :target => "_blank"}
-    %img{:src => "#{@pic.picture.url(:original, false)}"}
+  %a{:href => "#{@pic_url}", :target => "_blank"}
+    %img{:src => "#{@pic_url}"}
 %p
   %h5 Share this image
-  %input.on-focus-highlight{:type => 'text', :value => "#{root_url}#{request.fullpath[1..-1]}"}
+  %input.on-focus-highlight{:type => 'text', :value => "#{@permalink}"}
+  %a#fb-share.btn{:data => {:link => "#{@permalink}", :picture => "#{@pic_url}"}} Share on Facebook
