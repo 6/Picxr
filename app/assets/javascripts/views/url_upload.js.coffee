@@ -14,7 +14,7 @@ class PicMixr.Views.UrlUpload extends PicMixr.Views.BaseView
     e.preventDefault()
     url = $("#url").val()
     UT.p "PicMixr.Views.UrlUpload -> #{url}"
-    UT.route_bb "edit/#{encodeURIComponent url.replace(/\./g, '@')}"
+    UT.route_bb "edit/#{encodeURIComponent(url).replace(/\./g, '@')}"
     
   upload_on_enter: (e) ->
     @upload e if e.keyCode is 13
