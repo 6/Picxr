@@ -16,7 +16,6 @@
 //= require fabric-all
 //= require caman.full
 //= require spectrum
-//= require jquery.mousewheel
 //= require mousefu
 //= require on_ready
 //= require pic_mixr
