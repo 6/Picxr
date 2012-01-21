@@ -50,10 +50,10 @@ UT.get_pixel = (ctx, x, y) ->
   {r: data[0], g: data[1], b: data[2], a: data[3]}
 
 UT.loading = (text) ->
-  $("#main-wrap").html JST['loading']({text: text})
+  $("#main-wrap").html JST['tween/loading']({text: text})
 
 UT.message = (text) ->
-  $("#main-wrap").html JST['message']({text: text})
+  $("#main-wrap").html JST['tween/message']({text: text})
 
 # NOTE: do not use this for if data.value is large (gets cut off at 393 KB
 UT.non_ajax_post = (url, data_list) ->

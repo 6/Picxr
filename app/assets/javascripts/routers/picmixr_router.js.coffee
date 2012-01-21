@@ -18,7 +18,7 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
       Face.user_albums user_id, (albums_models) ->
         albums.add albums_models
     else
-      UT.loading "Loading"
+      UT.loading()
       Face.update_status_cb = -> PicMixr.router.user_albums(user_id)
     
   album: (album_id) ->
@@ -30,7 +30,7 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
       Face.album_photos album_id, (pics_models) ->
         pics.add pics_models
     else
-      UT.loading "Loading"
+      UT.loading()
       Face.update_status_cb = -> PicMixr.router.album(album_id)
 
   edit: (url) ->
@@ -38,7 +38,7 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
     clean_url = decodeURIComponent url.replace(/@/g, ".")
     url = "#{UT.default_cb_href()}iproxy/#{encodeURIComponent(clean_url).replace(/\./g, '@')}"
     UT.p "Route EDIT", clean_url, "through", url
-    UT.loading "Loading"
+    UT.loading()
     pic = new Image()
     pic.onload = =>
       @view = new PicMixr.Views.Edit pic: pic
@@ -57,7 +57,7 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
   index: ->
     UT.p "Route INDEX"
     if Face.active()
-      UT.loading "Loading"
+      UT.loading()
       UT.route_bb Face.default_route()
     else
       @destroy_view()

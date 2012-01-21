@@ -1,3 +1,4 @@
 .loading
-  %span= @text
+  - if @text
+    %span= @text
   %img{:src => '/assets/loading.gif'}
