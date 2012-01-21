@@ -1,8 +1,10 @@
 class PicMixr.Views.BrowseThumbnail extends PicMixr.Views.BaseView
   tagName: 'li'
   template: JST['browse_thumbnail']
-  events:
-    'click .thumb-href': 'clicked'
+  events: ->
+    _.extend super,
+      'click .thumb-href': 'clicked'
+
   render: ->
     $(@el).html @template(pic: @model)
     @

@@ -1,9 +1,10 @@
 class PicMixr.Views.UrlUpload extends PicMixr.Views.BaseView
   el: '#main-wrap'
   template: JST['forms/url_upload']
-  events:
-    'click #submit-url': 'upload'
-    'keypress #url': 'upload_on_enter'
+  events: ->
+    _.extend super,
+      'click #submit-url': 'upload'
+      'keypress #url': 'upload_on_enter'
     
   render: ->
     UT.p "PicMixr.Views.UrlUpload -> render"

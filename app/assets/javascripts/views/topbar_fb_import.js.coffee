@@ -1,8 +1,9 @@
 class PicMixr.Views.TopbarFbImport extends PicMixr.Views.BaseView
   el: '#cta-row'
   template: JST['topbar/fb_import']
-  events:
-    'click #fb-auth': 'fb_auth'
+  events: ->
+    _.extend super,
+      'click #fb-auth': 'fb_auth'
     
   render: ->
     UT.p "PicMixr.Views.TopbarFbImport -> render"
