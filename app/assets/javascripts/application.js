@@ -16,6 +16,7 @@
 //= require fabric-all
 //= require caman.full
 //= require spectrum
+//= require jquery.hotkeys
 //= require mousefu
 //= require on_ready
 //= require pic_mixr

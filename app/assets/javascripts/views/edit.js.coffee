@@ -26,6 +26,11 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     @cur_state_idx = null
     @edit_mode = {draw: no, fx: no}
     @sliders = []
+    # keyboard shortcuts
+    $(document).bind 'keydown', 'ctrl+z', @undo
+    $(document).bind 'keydown', 'meta+z', @undo
+    $(document).bind 'keydown', 'ctrl+y', @redo
+    $(document).bind 'keydown', 'meta+shift+z', @redo
     UT.p "PicMixr.Views.Edit -> initialize", @pic
   
   render: ->
@@ -36,6 +41,13 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     @merge_canvas = document.createElement('canvas')
     $(@merge_canvas).attr("width", @size.width).attr("height", @size.height).attr("style", "width:#{@size.width}px;height:#{@size.height}px")
     @merge_ctx = @merge_canvas.getContext('2d')
+    @
+  
+  destroy: =>
+    UT.p "PicMixr.Views.Edit -> destroy"
+    # unbind keyboard shortcuts
+    $(document).unbind('keydown', @undo)
+    $(document).unbind('keydown', @redo)
     @
   
   init_fabric: ->
@@ -247,12 +259,12 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       @canvas.observe 'mouse:up', @_on_eyedropper
     @
   
-  undo: (e) ->
+  undo: (e) =>
     e.preventDefault()
     return if $("#undo").hasClass("disabled")
     @_restore_state(-1)
   
-  redo: (e) ->
+  redo: (e) =>
     e.preventDefault()
     return if $("#redo").hasClass("disabled")
     @_restore_state(1)
