@@ -15,6 +15,7 @@
 //= require hamlcoffee
 //= require fabric-all
 //= require caman.full
+//= require glfx
 //= require spectrum
 //= require jquery.hotkeys
 //= require mousefu
