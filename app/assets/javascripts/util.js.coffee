@@ -61,3 +61,10 @@ UT.non_ajax_post = (url, data_list) ->
   for data in data_list
     html += "<input name='#{data.name}' value='#{data.value}'>"
   $("#{html}</form>").appendTo('body').submit()
+  
+UT.has_webgl = ->
+  try
+    canvas = document.createElement('canvas')
+    !!(window.WebGLRenderingContext && (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')))
+  catch e
+    no
