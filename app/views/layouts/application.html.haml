@@ -1,10 +1,10 @@
 !!! 5
-%html{:data => {:controller => "#{controller_name}",
-                :action => "#{action_name}",
-                :'is-dev' => "#{@is_dev}",
-                :'fb-app-id' => "#{ENV['FACEBOOK_APP_ID']}",
-                :'fb-cb-frame' => "#{ENV['FACEBOOK_CB_FRAME']}",
-                :'fb-cb-default' => "#{root_url}"}}
+%html{:data => {:controller => controller_name,
+                :action => action_name,
+                :'is-dev' => @is_dev,
+                :'fb-app-id' => ENV['FACEBOOK_APP_ID'],
+                :'fb-cb-frame' => ENV['FACEBOOK_CB_FRAME'],
+                :'fb-cb-default' => root_url}}
   %head
     %meta{:charset => 'utf-8'}
     =yield(:custom_metadata)
