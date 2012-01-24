@@ -29,6 +29,10 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     @saved_states = []
     @cur_state_idx = null
     @edit_mode = {draw: no, fx: no}
+    @size = UT.fit_dimensions(@pic.width, @pic.height, 558, 600)
+    @merge_canvas = document.createElement('canvas')
+    $(@merge_canvas).attr("width", @size.width).attr("height", @size.height).attr("style", "width:#{@size.width}px;height:#{@size.height}px")
+    @merge_ctx = @merge_canvas.getContext('2d')
     @sliders = []
     # keyboard shortcuts
     $(document).bind 'keydown', 'ctrl+z', @undo
@@ -39,12 +43,8 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
   
   render: ->
     UT.p "PicMixr.Views.Edit -> render"
-    @size = UT.fit_dimensions(@pic.width, @pic.height, 558, 600)
     $(@el).html @template(width: @size.width, height: @size.height)
     $("#toolbox-wrap").html JST['toolbox']()
-    @merge_canvas = document.createElement('canvas')
-    $(@merge_canvas).attr("width", @size.width).attr("height", @size.height).attr("style", "width:#{@size.width}px;height:#{@size.height}px")
-    @merge_ctx = @merge_canvas.getContext('2d')
     @
   
   destroy: =>
