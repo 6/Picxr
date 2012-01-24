@@ -19,6 +19,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       'click #vintage': 'vintage'
       'click #hazyDays': 'hazyDays'
       'click #swirl': 'swirl'
+      'click #bulge': 'bulge'
   
   initialize: ->
     @confirm_leave = "Are you sure you want to leave without saving?"
@@ -213,11 +214,30 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
         @_load_img data, (img) =>
           @_replace_fabric_image_from_canvas data, yes, @stop_swirl
   
-  stop_swirl: (e) =>
+  stop_swirl: =>
     @_hide_glfx()
     $("#glfx-canvas").mousefu_unbind('downleft move')
     $("#glfx-canvas").mousefu_unbind('upleft')
     $("#swirl").removeClass("primary")
+    
+  bulge: (e) ->
+    e.preventDefault()
+    return @stop_bulge() if $("#swirl").hasClass("primary")
+    @_show_glfx()
+    $("#bulge").addClass("primary")
+    $("#glfx-canvas").mousefu 'downleft move', (c) =>
+      @glfx.draw(@glfx_texture).bulgePinch(c.move.x, c.move.y, 150, 3).update()
+    $("#glfx-canvas").mousefu 'upleft',
+      start: (c) =>
+        data = @glfx.toDataURL('image/png')
+        @_load_img data, (img) =>
+          @_replace_fabric_image_from_canvas data, yes, @stop_bulge
+  
+  stop_bulge: =>
+    @_hide_glfx()
+    $("#glfx-canvas").mousefu_unbind('downleft move')
+    $("#glfx-canvas").mousefu_unbind('upleft')
+    $("#bulge").removeClass("primary")
     
   _show_glfx: ->
     unless $("#glfx-wrap").is(":visible")
