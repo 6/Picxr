@@ -82,6 +82,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
           @_save_state()
           @_after_state_change()
         temp_img.src = data
+    @canvas.observe 'object:modified', @_on_object_modified
     @
     
   show_text: (e) ->
@@ -102,6 +103,8 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       fontFamily: 'CA_BND_Web_Bold_700'
       fill: "#fff"
       fontSize: 50
+    @_save_state()
+    @_after_state_change()
 
   show_fx: (e) ->
     e.preventDefault() if e?
@@ -359,14 +362,14 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     if @cur_state_idx? and @cur_state_idx < @saved_states.length - 1
       # overwrite (remove) existing "redo" states
       @saved_states.splice(@cur_state_idx + 1)
-    @saved_states.push @canvas.toJSON()
+    @saved_states.push JSON.stringify(@canvas)
     @cur_state_idx = if @cur_state_idx? then @cur_state_idx + 1 else 0
     
   _restore_state: (idx_delta) =>
     new_idx = @cur_state_idx + idx_delta
     unless new_idx < 0 or new_idx > @saved_states.length - 1
       @cur_state_idx = new_idx
-      @canvas.loadFromDatalessJSON @saved_states[@cur_state_idx], () =>
+      @canvas.loadFromJSON @saved_states[@cur_state_idx], () =>
         if $("#glfx-wrap").is(":visible")
           # restore glfx canvas as well, since it's visible
           @_load_img @lower_canvas.toDataURL("png"), (img) =>
@@ -432,3 +435,8 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     temp_img = document.createElement('img')
     temp_img.onload = => cb(temp_img)
     temp_img.src = src
+    
+  _on_object_modified: (e) =>
+    if e.memo.target.type is "text"
+      @_save_state()
+      @_after_state_change()
