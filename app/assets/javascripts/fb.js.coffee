@@ -99,11 +99,12 @@ Face.album_photos = (aid, cb) ->
   q_photos.wait (results) ->
     photos = []
     $.each results, (i, photo) ->
+      src = photo.src_big or photo.src
       photos.push new PicMixr.Models.Picture(
         src_small: photo.src
         title: photo.caption
         alt: photo.caption
-        href: "/edit/#{encodeURIComponent(photo.src_big or photo.src).replace(/\./g, '@')}"
+        href: "/edit/#{encodeURIComponent src.replace(/\./g, '@')}"
       )
     UT.p "Found photos", photos
     cb photos
