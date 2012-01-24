@@ -18,6 +18,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       'click #lomo': 'lomo'
       'click #vintage': 'vintage'
       'click #hazyDays': 'hazyDays'
+      'click #swirl': 'swirl'
   
   initialize: ->
     @confirm_leave = "Are you sure you want to leave without saving?"
@@ -50,12 +51,19 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     $(document).unbind('keydown', @redo)
     @
   
-  init_fabric: ->
+  init_libraries: ->
     @canvas = new fabric.Canvas 'fabric', {selection: no}
     @lower_canvas = $("#fabric")[0]
     @lower_ctx = @lower_canvas.getContext('2d')
     @draw_canvas = $(".upper-canvas")[0]
     @draw_ctx = @draw_canvas.getContext('2d')
+    placeholder = document.getElementById('glfx-placeholder')
+    try
+      @glfx = fx.canvas()
+      @glfx.replace(placeholder)
+      $("#glfx-wrap > canvas").attr("id", "glfx-canvas")
+    catch e
+      placeholder.innerHTML = e
     fabric.Image.fromURL @pic.src, (img) =>
       img.toDataURL (data) =>
         # grab image DataURL to store in memory
@@ -65,11 +73,13 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
           dimg = new fabric.Image(temp_img)
           dimg.set(selectable:no, top: @size.height / 2, left: @size.width / 2, isBgImage: yes)
           @canvas.add dimg
+          @glfx_texture = @glfx.texture temp_img
+          @glfx.draw(@glfx_texture).update()
           @_save_state()
           @_after_state_change()
         temp_img.src = data
     @
-    
+
   show_fx: (e) ->
     e.preventDefault() if e?
     return @ if $("#show-fx").hasClass("disabled")
@@ -189,7 +199,39 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       Caman "#caman-img", () ->
         @hazyDays().render global_this._after_filter
     @
+    
+  swirl: (e) ->
+    e.preventDefault()
+    return @stop_swirl() if $("#swirl").hasClass("primary")
+    @_show_glfx()
+    $("#swirl").addClass("primary")
+    $("#glfx-canvas").mousefu 'downleft move', (c) =>
+      @glfx.draw(@glfx_texture).swirl(c.move.x, c.move.y, 150, 3).update()
+    $("#glfx-canvas").mousefu 'upleft',
+      start: (c) =>
+        data = @glfx.toDataURL('image/png')
+        @_load_img data, (img) =>
+          @_replace_fabric_image_from_canvas data, yes, @stop_swirl
   
+  stop_swirl: (e) =>
+    @_hide_glfx()
+    $("#glfx-canvas").mousefu_unbind('downleft move')
+    $("#glfx-canvas").mousefu_unbind('upleft')
+    $("#swirl").removeClass("primary")
+    
+  _show_glfx: ->
+    unless $("#glfx-wrap").is(":visible")
+      @_load_img @lower_canvas.toDataURL("png"), (img) =>
+        @glfx_texture = @glfx.texture img
+        @glfx.draw(@glfx_texture).update()
+        $("#glfx-wrap").show(0)
+        $(".canvas-container").hide(0)
+  
+  _hide_glfx: ->
+    if $("#glfx-wrap").is(":visible")
+      $(".canvas-container").show(0)
+      $("#glfx-wrap").hide(0)
+    
   _prepare_filter: (cb) =>
     #$("#hidden-elements").html("")
     caman_img = document.createElement('img')
@@ -198,7 +240,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     caman_img.src = @lower_canvas.toDataURL("image/png")
   
   _after_filter: (is_save_state = yes) =>
-    @_replace_fabric_image_from_canvas $("canvas#caman-img")[0], is_save_state
+    @_replace_fabric_image_from_canvas $("canvas#caman-img")[0].toDataURL("image/png"), is_save_state
     
   show_draw: (e) ->
     e.preventDefault() if e?
@@ -308,6 +350,8 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       $("#eyedropper").click() if @canvas.isEyedropperMode
       @canvas.stopObserving 'drawing:completed', @_on_drawing_completed
       @canvas.isDrawingMode = no
+    else if @edit_mode.fx
+      $("#swirl").click() if $("#swirl").hasClass("primary")
     # destroy sliders
     $(slider_el).slider("destroy") for slider_el in @sliders
     # set the new edit mode
@@ -330,11 +374,10 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     @merge_ctx.clearRect(0, 0, @size.width, @size.height)
     @merge_ctx.drawImage(@lower_canvas, 0, 0, @size.width, @size.height)
     @merge_ctx.drawImage(@draw_canvas, 0, 0, @size.width, @size.height)
-    @_replace_fabric_image_from_canvas @merge_canvas, yes
+    @_replace_fabric_image_from_canvas @merge_canvas.toDataURL("image/png"), yes
     
-  _replace_fabric_image_from_canvas: (canvas, is_save_state) =>
-    temp_img = document.createElement('img')
-    temp_img.onload = =>
+  _replace_fabric_image_from_canvas: (data, is_save_state, cb=null) =>
+    @_load_img data, (temp_img) =>
       img = new fabric.Image temp_img
       img.set(selectable:no, width:@size.width, height:@size.height, top: @size.height / 2, left: @size.width / 2)
       @canvas.add img
@@ -342,4 +385,9 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       if is_save_state
         @_save_state()
         @_after_state_change()
-    temp_img.src = canvas.toDataURL("image/png")
+      cb() if cb?
+  
+  _load_img: (src, cb) =>
+    temp_img = document.createElement('img')
+    temp_img.onload = => cb(temp_img)
+    temp_img.src = src

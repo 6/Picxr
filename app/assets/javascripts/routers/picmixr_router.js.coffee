@@ -42,7 +42,7 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
     pic = new Image()
     pic.onload = =>
       @view = new PicMixr.Views.Edit pic: pic
-      @view.render().init_fabric().show_draw()
+      @view.render().init_libraries().show_draw()
     pic.onerror = =>
       UT.message "Error loading image."
     pic.src = url
