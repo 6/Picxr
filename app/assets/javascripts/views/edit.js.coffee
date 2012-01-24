@@ -58,6 +58,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     @lower_ctx = @lower_canvas.getContext('2d')
     @draw_canvas = $(".upper-canvas")[0]
     @draw_ctx = @draw_canvas.getContext('2d')
+    @glfx_fx = null
     placeholder = document.getElementById('glfx-placeholder')
     try
       @glfx = fx.canvas()
@@ -201,56 +202,49 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
         @hazyDays().render global_this._after_filter
     @
     
+  _glfx_start_stop: (id, e, hide = yes) =>
+    e.preventDefault() if e?
+    if $(id).hasClass("primary")
+      @glx_fx = null
+      $(id).removeClass("primary")
+      $("#glfx-canvas").mousefu_unbind()
+      # hide glfx if shown
+      if hide and $("#glfx-wrap").is(":visible")
+        $(".canvas-container").show(0)
+        $("#glfx-wrap").hide(0)
+    else
+      @_glfx_start_stop(@glx_fx, null, no) if @glx_fx?
+      @glx_fx = id
+      $(id).addClass("primary")
+      # show glfx if not shown
+      unless $("#glfx-wrap").is(":visible")
+        @_load_img @lower_canvas.toDataURL("png"), (img) =>
+          @glfx_texture = @glfx.texture img
+          @glfx.draw(@glfx_texture).update()
+          $("#glfx-wrap").show(0)
+          $(".canvas-container").hide(0)
+    
   swirl: (e) ->
-    e.preventDefault()
-    return @stop_swirl() if $("#swirl").hasClass("primary")
-    @_show_glfx()
-    $("#swirl").addClass("primary")
+    @_glfx_start_stop "#swirl", e
     $("#glfx-canvas").mousefu 'downleft move', (c) =>
       @glfx.draw(@glfx_texture).swirl(c.move.x, c.move.y, 150, 3).update()
     $("#glfx-canvas").mousefu 'upleft',
       start: (c) =>
         data = @glfx.toDataURL('image/png')
         @_load_img data, (img) =>
-          @_replace_fabric_image_from_canvas data, yes, @stop_swirl
-  
-  stop_swirl: =>
-    @_hide_glfx()
-    $("#glfx-canvas").mousefu_unbind('downleft move')
-    $("#glfx-canvas").mousefu_unbind('upleft')
-    $("#swirl").removeClass("primary")
+          @glfx_texture = @glfx.texture img
+          @_replace_fabric_image_from_canvas data, yes
     
   bulge: (e) ->
-    e.preventDefault()
-    return @stop_bulge() if $("#swirl").hasClass("primary")
-    @_show_glfx()
-    $("#bulge").addClass("primary")
+    @_glfx_start_stop "#bulge", e
     $("#glfx-canvas").mousefu 'downleft move', (c) =>
       @glfx.draw(@glfx_texture).bulgePinch(c.move.x, c.move.y, 150, 3).update()
     $("#glfx-canvas").mousefu 'upleft',
       start: (c) =>
         data = @glfx.toDataURL('image/png')
         @_load_img data, (img) =>
-          @_replace_fabric_image_from_canvas data, yes, @stop_bulge
-  
-  stop_bulge: =>
-    @_hide_glfx()
-    $("#glfx-canvas").mousefu_unbind('downleft move')
-    $("#glfx-canvas").mousefu_unbind('upleft')
-    $("#bulge").removeClass("primary")
-    
-  _show_glfx: ->
-    unless $("#glfx-wrap").is(":visible")
-      @_load_img @lower_canvas.toDataURL("png"), (img) =>
-        @glfx_texture = @glfx.texture img
-        @glfx.draw(@glfx_texture).update()
-        $("#glfx-wrap").show(0)
-        $(".canvas-container").hide(0)
-  
-  _hide_glfx: ->
-    if $("#glfx-wrap").is(":visible")
-      $(".canvas-container").show(0)
-      $("#glfx-wrap").hide(0)
+          @glfx_texture = @glfx.texture img
+          @_replace_fabric_image_from_canvas data, yes
     
   _prepare_filter: (cb) =>
     #$("#hidden-elements").html("")
@@ -351,7 +345,13 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     new_idx = @cur_state_idx + idx_delta
     unless new_idx < 0 or new_idx > @saved_states.length - 1
       @cur_state_idx = new_idx
-      @canvas.loadFromDatalessJSON @saved_states[@cur_state_idx], @_after_state_change
+      @canvas.loadFromDatalessJSON @saved_states[@cur_state_idx], () =>
+        if $("#glfx-wrap").is(":visible")
+          # restore glfx canvas as well, since it's visible
+          @_load_img @lower_canvas.toDataURL("png"), (img) =>
+            @glfx_texture = @glfx.texture img
+            @glfx.draw(@glfx_texture).update()
+        @_after_state_change()
     
   _after_state_change: =>
     # toggle whether or not undo/redo button is clickable
