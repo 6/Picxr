@@ -103,6 +103,8 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       fontFamily: 'CA_BND_Web_Bold_700'
       fill: "#fff"
       fontSize: 50
+      strokeWidth: 5
+      strokeStyle: "#000"
     @_save_state()
     @_after_state_change()
 
