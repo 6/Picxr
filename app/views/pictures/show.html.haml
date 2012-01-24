@@ -1,6 +1,7 @@
 - content_for :custom_metadata do
   %meta{:name => "medium", :content => "image"}
   %meta{:property => "og:image", :content => "#{@pic_url}"}
+  %link{:rel => "image_src", :href => @pic_url}
 
 %p
   %a{:href => "#{@pic_url}", :target => "_blank"}
