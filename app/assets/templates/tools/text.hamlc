@@ -1,2 +1,7 @@
 %input#text-to-insert{:type => "text", :placeholder => "Enter some text"}
 %a#insert-text.btn{:href => "#"} Insert
+#text-edit-wrap.hide
+  %hr
+  %input#text-to-edit{:type => "text", :placeholder => "Enter some text"}
+  %a#change-text.btn{:href => "#"} Change
+  

@@ -22,6 +22,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       'click #swirl': 'swirl'
       'click #bulge': 'bulge'
       'click #insert-text': 'insert_text'
+      'click #change-text': 'change_text'
   
   initialize: ->
     @confirm_leave = "Are you sure you want to leave without saving?"
@@ -83,21 +84,26 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
           @_after_state_change()
         temp_img.src = data
     @canvas.observe 'object:modified', @_on_object_modified
+    @canvas.observe 'object:selected', @_on_object_selected
+    @canvas.observe 'selection:cleared', @_on_selection_cleared
     @
     
-  show_text: (e) ->
-    e.preventDefault() if e?
-    return @ if $("#show-text").hasClass("disabled")
+  show_text: (e, cb) =>
+    e.preventDefault() if e?      
+    if $("#show-text").hasClass("disabled")
+      cb() if cb?
+      return @
     @_set_edit_mode "text"
     $("#tool-well").html JST['tools/text']()
     $("#tool-selector-well > .btn").removeClass("disabled")
     $("#show-text").addClass("disabled")
+    cb() if cb?
     
   insert_text: (e) ->
     e.preventDefault()
     text = $.trim($('#text-to-insert').val())
     return unless text.length > 0
-    @canvas.add new fabric.Text text,
+    text_obj = new fabric.Text text,
       left: Math.round(@size.width/2)
       top: Math.round(@size.height/2)
       fontFamily: 'CA_BND_Web_Bold_700'
@@ -105,8 +111,28 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       fontSize: 50
       strokeWidth: 5
       strokeStyle: "#000"
+    @canvas.add text_obj
+    @canvas.setActiveObject text_obj
+    $("#text-to-insert").val("")
     @_save_state()
     @_after_state_change()
+  
+  change_text: (e) =>
+    e.preventDefault()
+    text = $.trim($('#text-to-edit').val())
+    @canvas.getActiveObject().text = text if text.length > 0
+    @_after_edit_text yes
+    
+  _edit_text: =>
+    text_obj = @canvas.getActiveObject()
+    $("#text-to-edit").val(text_obj.text)
+    $("#text-edit-wrap").show(0)
+  
+  _after_edit_text: (is_save_state) =>
+    @canvas.renderAll()
+    if is_save_state
+      @_save_state()
+      @_after_state_change()
 
   show_fx: (e) ->
     e.preventDefault() if e?
@@ -445,3 +471,11 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     if e.memo.target.type is "text"
       @_save_state()
       @_after_state_change()
+  
+  _on_object_selected: (e) =>
+    if e.memo.target.type is "text"
+      @show_text null, @_edit_text
+  
+  _on_selection_cleared: (e) =>
+    @cur_selected_text = null
+    $("#text-edit-wrap").hide(0) if @edit_mode.text
