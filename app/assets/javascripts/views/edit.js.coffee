@@ -396,6 +396,9 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       @canvas.isDrawingMode = no
     else if @edit_mode.fx
       $("#swirl").click() if $("#swirl").hasClass("primary")
+    #remove any active selections
+    @canvas.deactivateAll()
+    @canvas.renderAll()
     # destroy sliders
     $(slider_el).slider("destroy") for slider_el in @sliders
     # set the new edit mode
