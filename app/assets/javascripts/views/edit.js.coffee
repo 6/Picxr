@@ -81,7 +81,6 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
           @glfx_texture = @glfx.texture temp_img
           @glfx.draw(@glfx_texture).update()
           @_save_state()
-          @_after_state_change()
         temp_img.src = data
     @canvas.observe 'object:modified', @_on_object_modified
     @canvas.observe 'object:selected', @_on_object_selected
@@ -115,7 +114,6 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     @canvas.setActiveObject text_obj
     $("#text-to-insert").val("")
     @_save_state()
-    @_after_state_change()
   
   change_text: (e) =>
     e.preventDefault()
@@ -130,9 +128,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
   
   _after_edit_text: (is_save_state) =>
     @canvas.renderAll()
-    if is_save_state
-      @_save_state()
-      @_after_state_change()
+    @_save_state() if is_save_state
 
   show_fx: (e) ->
     e.preventDefault() if e?
@@ -152,9 +148,8 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
             Caman "#caman-img", () ->
               @brightness(ui.value).render () ->
                 global_this._after_filter(no)
-        stop: (e, ui) =>
-          @_save_state()
-          @_after_state_change()
+        stop: @_save_state
+      
     @sliders.push("#brightness-slider")
     $("#contrast-slider").slider
         range: "min"
@@ -167,9 +162,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
             Caman "#caman-img", () ->
               @contrast(ui.value).render () ->
                 global_this._after_filter(no)
-        stop: (e, ui) =>
-          @_save_state()
-          @_after_state_change()
+        stop: @_save_state
       @sliders.push("#contrast-slider")
       $("#saturation-slider").slider
           range: "min"
@@ -182,9 +175,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
               Caman "#caman-img", () ->
                 @saturation(ui.value).render () ->
                   global_this._after_filter(no)
-          stop: (e, ui) =>
-            @_save_state()
-            @_after_state_change()
+          stop: @_save_state
       @sliders.push("#saturation-slider")
       $("#hue-slider").slider
           range: "min"
@@ -392,6 +383,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       @saved_states.splice(@cur_state_idx + 1)
     @saved_states.push JSON.stringify(@canvas)
     @cur_state_idx = if @cur_state_idx? then @cur_state_idx + 1 else 0
+    @_after_state_change()
     
   _restore_state: (idx_delta) =>
     new_idx = @cur_state_idx + idx_delta
@@ -457,9 +449,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       img.set(selectable:no, width:@size.width, height:@size.height, top: @size.height / 2, left: @size.width / 2)
       @canvas.add img
       @canvas.remove @canvas.item(0)
-      if is_save_state
-        @_save_state()
-        @_after_state_change()
+      @_save_state() if is_save_state
       cb() if cb?
   
   _load_img: (src, cb) =>
@@ -468,9 +458,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     temp_img.src = src
     
   _on_object_modified: (e) =>
-    if e.memo.target.type is "text"
-      @_save_state()
-      @_after_state_change()
+    @_save_state() if e.memo.target.type is "text"
   
   _on_object_selected: (e) =>
     if e.memo.target.type is "text"
