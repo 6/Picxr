@@ -10,6 +10,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       'click #redo': 'redo'
       'click #show-draw': 'show_draw'
       'click #show-fx': 'show_fx'
+      'click #show-text': 'show_text'
       # specific to partials
       'click #eyedropper': 'eyedropper'
       'click #grayscale': 'grayscale'
@@ -20,6 +21,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       'click #hazyDays': 'hazyDays'
       'click #swirl': 'swirl'
       'click #bulge': 'bulge'
+      'click #insert-text': 'insert_text'
   
   initialize: ->
     @confirm_leave = "Are you sure you want to leave without saving?"
@@ -81,6 +83,25 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
           @_after_state_change()
         temp_img.src = data
     @
+    
+  show_text: (e) ->
+    e.preventDefault() if e?
+    return @ if $("#show-text").hasClass("disabled")
+    @_set_edit_mode "text"
+    $("#tool-well").html JST['tools/text']()
+    $("#tool-selector-well > .btn").removeClass("disabled")
+    $("#show-text").addClass("disabled")
+    
+  insert_text: (e) ->
+    e.preventDefault()
+    text = $.trim($('#text-to-insert').val())
+    return unless text.length > 0
+    @canvas.add new fabric.Text text,
+      left: Math.round(@size.width/2)
+      top: Math.round(@size.height/2)
+      fontFamily: 'CA_BND_Web_Bold_700'
+      fill: "#fff"
+      fontSize: 50
 
   show_fx: (e) ->
     e.preventDefault() if e?

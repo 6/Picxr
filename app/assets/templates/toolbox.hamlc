@@ -5,6 +5,7 @@
   #tool-selector-well.well
     %a#show-draw.btn{:href => "#"} Draw
     %a#show-fx.btn{:href => "#"} Fx
+    %a#show-text.btn{:href => "#"} Aa
   #tool-well.well
   #save-image-well.well
     %p

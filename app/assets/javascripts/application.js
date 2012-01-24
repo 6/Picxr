@@ -21,6 +21,7 @@
 //= require mousefu
 //= require on_ready
 //= require pic_mixr
+//= require CA_BND_Web_Bold_700.font
 //= require_tree ../templates
 //= require_tree ./models
 //= require_tree ./collections

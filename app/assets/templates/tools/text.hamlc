@@ -1,0 +1,2 @@
+%input#text-to-insert{:type => "text", :placeholder => "Enter some text"}
+%a#insert-text.btn{:href => "#"} Insert
