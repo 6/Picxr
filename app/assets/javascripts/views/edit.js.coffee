@@ -397,6 +397,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     new_idx = @cur_state_idx + idx_delta
     unless new_idx < 0 or new_idx > @saved_states.length - 1
       @cur_state_idx = new_idx
+      $("#text-edit-wrap").hide(0)
       @canvas.loadFromJSON @saved_states[@cur_state_idx], () =>
         if $("#glfx-wrap").is(":visible")
           # restore glfx canvas as well, since it's visible
