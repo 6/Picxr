@@ -25,7 +25,6 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       'click #change-text': 'change_text'
   
   initialize: ->
-    @confirm_leave = "Are you sure you want to leave without saving?"
     @pic = arguments[0].pic
     @saved_states = []
     @cur_state_idx = null
@@ -40,8 +39,6 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     $(document).bind 'keydown', 'meta+z', @undo
     $(document).bind 'keydown', 'ctrl+y', @redo
     $(document).bind 'keydown', 'meta+shift+z', @redo
-    # confirm leave page alert
-    window.onbeforeunload = @_onbeforeunload
     UT.p "PicMixr.Views.Edit -> initialize", @pic
   
   render: ->
@@ -382,6 +379,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
 
   save: (e) ->
     e.preventDefault()
+    window.onbeforeunload = null
     data = @canvas.toDataURL("png")
     # remove "data:image/png;base64,"
     data = data.substr(data.indexOf(',') + 1).toString()
@@ -420,6 +418,10 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       $("#redo").addClass("disabled")
     else
       $("#redo").removeClass("disabled")
+    # confirm leave page alert only after at least one edit
+    if @cur_state_idx >= 1
+      window.onbeforeunload ?= @_onbeforeunload
+      @confirm_leave = @_onbeforeunload()
   
   _set_edit_mode: (key) =>
     # destruct/unbind events
