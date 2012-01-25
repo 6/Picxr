@@ -330,14 +330,13 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
           @brush_preview.renderAll()
           @canvas.freeDrawingLineWidth = (ui.value * 2) + min_radius
     # brush color selector
-    $ =>
-      $("#brush-color-selector").spectrum
-        flat: true
-        theme: 'sp-light'
-        move: (color) =>
-          @brush_preview.item(0).set 'fill', color.toHexString()
-          @brush_preview.renderAll()
-          @canvas.freeDrawingColor = color.toHexString()
+    $("#brush-color-selector").spectrum
+      flat: true
+      theme: 'sp-light'
+      move: (color) =>
+        @brush_preview.item(0).set 'fill', color.toHexString()
+        @brush_preview.renderAll()
+        @canvas.freeDrawingColor = color.toHexString()
     $("#tool-selector-well > .btn").removeClass("disabled")
     $("#show-draw").addClass("disabled")
     @
