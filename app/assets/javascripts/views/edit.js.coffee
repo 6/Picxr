@@ -473,5 +473,4 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       @show_text null, @_edit_text
   
   _on_selection_cleared: (e) =>
-    @cur_selected_text = null
     $("#text-edit-wrap").hide(0) if @edit_mode.text
