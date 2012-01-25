@@ -2,6 +2,7 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
   initialize: ->
     # Need to apply a custom regex for routes with non-alphanumeric params
     @route.apply @, [/edit\/([^\s]+)/, 'edit', @edit]
+    @route.apply @, [/\?([^\s]+)/, 'index', @index]
   
   routes:
     "albums/:user_id": "user_albums"
