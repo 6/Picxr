@@ -40,6 +40,8 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     $(document).bind 'keydown', 'meta+z', @undo
     $(document).bind 'keydown', 'ctrl+y', @redo
     $(document).bind 'keydown', 'meta+shift+z', @redo
+    # confirm leave page alert
+    window.onbeforeunload = @_onbeforeunload
     UT.p "PicMixr.Views.Edit -> initialize", @pic
   
   render: ->
@@ -53,6 +55,8 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     # unbind keyboard shortcuts
     $(document).unbind('keydown', @undo)
     $(document).unbind('keydown', @redo)
+    # remove onbeforeunload alert
+    window.onbeforeunload = null
     @
   
   init_libraries: ->
@@ -475,3 +479,5 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
   
   _on_selection_cleared: (e) =>
     $("#text-edit-wrap").hide(0) if @edit_mode.text
+  
+  _onbeforeunload: () => "Are you sure you want to leave? All your changes will be lost."
