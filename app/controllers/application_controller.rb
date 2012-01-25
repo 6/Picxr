@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   
-  before_filter :set_is_dev
+  before_filter :set_is_dev, :set_locale
   helper_method :current_user
   
   private
@@ -12,6 +12,10 @@ class ApplicationController < ActionController::Base
   
   def set_is_dev
     @is_dev = Rails.env.development? || !params[:dev].nil? ? 'yes' : 'no'
+  end
+
+  def set_locale
+    I18n.locale = params[:locale] || I18n.default_locale
   end
   
 end

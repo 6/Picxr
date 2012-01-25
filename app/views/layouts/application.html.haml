@@ -8,7 +8,7 @@
   %head
     %meta{:charset => 'utf-8'}
     =yield(:custom_metadata)
-    %title= @page_title ? "#{@page_title} - PicMixr" : 'PicMixr - Make your photos hilarious'
+    %title= @page_title ? "#{@page_title} - #{t :app}" : "#{t :app} - Make your photos hilarious"
     = stylesheet_link_tag    "application"
     = javascript_include_tag "application"
     = csrf_meta_tags
@@ -19,12 +19,12 @@
           .row
             #logo-wrap.span3
               %a{:href=> "/"}
-                %img#logo{:src => "/assets/logo-small.png", :alt => "picmixr"}
+                %img#logo{:src => "/assets/logo-small.png", :alt => "#{t(:app).downcase}"}
             #cta.span9
               #cta-row.row
       =yield
     %footer#default-footer
-      &copy; 2012 PicMixr.
+      %span= "&copy; 2012 #{t :app}.".html_safe
       %a{:href => "/about"} About
       &middot;
       %a{:href => "/contact"} Contact
