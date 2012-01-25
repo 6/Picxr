@@ -35,16 +35,17 @@
               #cta-row.row
       =yield
     %footer#default-footer
-      %span= "&copy; 2012 #{t :app}.".html_safe
+      %span.spacer= "&copy; 2012 #{t :app}".html_safe
       %a{:href => "/about"} About
       &middot;
       %a{:href => "/contact"} Contact
       &middot;
-      %a{:href => "https://www.facebook.com/picmixr"} Facebook
-      &middot;
-      %a{:href => "https://twitter.com/picmixr"} Twitter
-      &middot;
       %a{:href => "/terms"} Terms
+      %span.spacer
+        %a.img{:href => "https://www.facebook.com/picmixr", :title => "Like #{t :app}"}
+          %img{:src => "/assets/facebook_16.png", :alt => "Facebook"}
+        %a.img{:href => "https://twitter.com/picmixr", :title => "Follow #{t :app}"}
+          %img{:src => "/assets/twitter_16.png", :alt => "Twitter"}
     #fb-root.hide
     :javascript
       // Load Facebook JS SDK asynchronously
