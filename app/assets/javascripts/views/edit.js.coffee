@@ -126,7 +126,9 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
   change_text: (e) =>
     e.preventDefault()
     text = $.trim($('#text-to-edit').val())
-    @canvas.getActiveObject().text = text if text.length > 0
+    text_obj = @canvas.getActiveObject()
+    return if text_obj.text is text or text.length is 0
+    text_obj.text = text
     @_after_edit_text yes
     
   _edit_text: =>
