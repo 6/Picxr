@@ -188,9 +188,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
               Caman "#caman-img", () ->
                 @hue(ui.value).render () ->
                   global_this._after_filter(no)
-          stop: (e, ui) =>
-            @_save_state()
-            @_after_state_change()
+          stop: @_save_state
       @sliders.push("#hue-slider")
     
     $("#tool-selector-well > .btn").removeClass("disabled")
