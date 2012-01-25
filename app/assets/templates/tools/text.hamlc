@@ -1,9 +1,9 @@
-%input#text-to-insert{:type => "text", :placeholder => "Enter some text"}
+%textarea#text-to-insert{:placeholder => "Enter some text", :rows => 2}
 %a#insert-text.btn{:href => "#"} Insert
 #text-edit-wrap.hide
   %hr
   %p
-    %input#text-to-edit{:type => "text", :placeholder => "Enter some text"}
+    %textarea#text-to-edit{:rows => 2}
     %a#change-text.btn{:href => "#"} Change
   %p
     %input#text-color-selector{:type => 'text', :value => "#fff"}
