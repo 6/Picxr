@@ -17,7 +17,7 @@ PicMixr::Application.routes.draw do
   
   match '/about' => 'static#about'
   match '/contact' => 'static#contact'
-  match '/terms' => 'static#terms'
+  match '/terms' => 'static#terms', :as => "terms"
   match '/about/tech' => 'static#tech', :as => "tech"
 
   match "/:id" => "pictures#show" # this should always be the last route
