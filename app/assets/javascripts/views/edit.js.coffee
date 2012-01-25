@@ -380,6 +380,8 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
   save: (e) ->
     e.preventDefault()
     window.onbeforeunload = null
+    @canvas.deactivateAll()
+    @canvas.renderAll()
     data = @canvas.toDataURL("png")
     # remove "data:image/png;base64,"
     data = data.substr(data.indexOf(',') + 1).toString()
