@@ -1,7 +1,13 @@
 - @page_title = "About"
 #static-wrap
   %h1= @page_title
-  %p TODO
+  %p= "#{t :app} is a web application built on the Facebook Application Platform that allows you to easily modify your own photos or friends' photos in novel ways. Using PicMixr, you can apply image effects and filters, insert text, and draw on top of photos. When you're finished modifying a photo, you can share the modified photo with your friends."
+  %h2 Why Photo Manipulation?
+  %p Software such as <a href="http://en.wikipedia.org/wiki/Instagram">Instagram</a> and <a href="http://en.wikipedia.org/wiki/Photo_Booth">Apple Photo Booth</a> have achieved a high degree of popularity due to the photo manipulation features they provide. Similarly, the popular Japanese <a href="http://ja.wikipedia.org/wiki/%E3%83%97%E3%83%AA%E3%83%B3%E3%83%88%E5%80%B6%E6%A5%BD%E9%83%A8">プリクラ</a> (purikura), also known as "photo sticker booths", allow people to take a photo, modify it, and produce stickers of the modified photo. The rise of internet memes has lead to the creation of many applications such as <a href="http://www.quickmeme.com/">quickmeme</a> and <a href="http://cheezburger.com/Builder">LOLcat Builder</a> that give users templates for creating their own memes.
+  %p One of the key aspects of all of these applications is that they make it incredibly easy for users to manipulate photos in interesting ways. While these applications lack in customizability of effects in comparison to more sophisticated (and complicated) desktop programs such as Adobe Photoshop or GIMP, it appears that many people do not need this customizability to achieve desired photo effects.
+  %h2 Why Facebook?
+  %p As of 2012, Facebook has 800 million users of which more than 500 million use the Facebook Application Platform every month. Over 250 million photographs are uploaded to Facebook each day (<a href ="https://www.facebook.com/press/info.php?statistics">source</a>). By interfacing with the Facebook API, Facebook users only need to press a single button to have all their photos imported from Facebook as opposed to having to find and upload their photos one by one. Furthermore, Facebook exposes some semantic data about photos through their API, such as which Facebook users appear in a photo.
+  %p.last= "Building on the Facebook Application Platform allows #{t :app} to start with a large and rapidly growing user-base and set of photos. Unlike other photo manipulation software, #{t :app} is more closely coupled with Facebook, making it incredibly easy for users to modify photos of themselves or people they know."
   %hr
   %p.last
     =link_to "Learn about the technology used to run #{t :app}", tech_path
