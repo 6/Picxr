@@ -94,6 +94,14 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       return @
     @_set_edit_mode "text"
     $("#tool-well").html JST['tools/text']()
+    $("#text-color-selector").spectrum
+      flat: no
+      theme: 'sp-light'
+      show: (color) => @color_before = color.toHexString()
+      move: (color) =>
+        @canvas.getActiveObject().set 'fill', color.toHexString()
+        @canvas.renderAll()
+      hide: (color) => @_save_state() if @color_before isnt color.toHexString()
     $("#tool-selector-well > .btn").removeClass("disabled")
     $("#show-text").addClass("disabled")
     cb() if cb?
@@ -123,6 +131,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     
   _edit_text: =>
     text_obj = @canvas.getActiveObject()
+    return unless text_obj?
     $("#text-to-edit").val(text_obj.text)
     $("#text-edit-wrap").show(0)
   
