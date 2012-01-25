@@ -22,7 +22,7 @@ class Picture < ActiveRecord::Base
   
   has_attached_file :picture,
     :storage => :s3,
-    :path => ":id.:extension",
+    :path => ":b64_id.:extension",
     :bucket => ENV['S3_BUCKET'],
     :s3_protocol => 'https',
     :s3_credentials => {
@@ -34,5 +34,9 @@ class Picture < ActiveRecord::Base
   
   def set_b64_id
     self.update_attributes(:b64_id => BaseEncoder.encode(self.id + 3530000000000))
+  end
+  
+  Paperclip.interpolates :b64_id do |picture, style|
+    picture.instance.b64_id
   end
 end
