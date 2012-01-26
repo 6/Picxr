@@ -3,5 +3,7 @@
     - if @info.owner
       %a{:href => "/albums/#{@info.owner.id}"}= "#{@info.owner.info.name}'s photos"
       &mdash;
-    %span= "#{@info.name}'s photos"
+      %span= @info.name
+    - else
+      %span= "#{@info.name}'s photos"
 %ul#fb-photos.media-grid
