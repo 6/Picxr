@@ -2,4 +2,4 @@
 %form{:action => "/upload", :enctype => "multipart/form-data", :method => "post"}
   %p
     %input{:type => "file", :name => "picture"}
-    %input#submit-url.btn.success{:type => 'submit', :value => 'Upload'}
+    %input.btn.success{:type => 'submit', :value => 'Upload'}
