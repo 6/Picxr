@@ -6,7 +6,6 @@ class PicMixr.Views.Browse extends PicMixr.Views.BaseView
     @info = arguments[0].info
     UT.p "PicMixr.Views.Browse -> initialize", @info
     @collection.bind 'reset', @render, @
-    @collection.bind 'add', @render, @
     @collection.bind 'change', @render, @
     @collection.bind 'remove', @render, @
   

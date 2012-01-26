@@ -17,8 +17,9 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
       albums = new PicMixr.Collections.Pictures
       Face.get_user_info user_id, (info) =>
         @view = new PicMixr.Views.Browse collection: albums, info: info
-        Face.user_albums user_id, (albums_models) ->
+        Face.user_albums user_id, (albums_models) =>
           albums.add albums_models
+          @view.render()
     else
       UT.loading()
       Face.update_status_cb = -> PicMixr.router.user_albums(user_id)
@@ -30,8 +31,9 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
       pics = new PicMixr.Collections.Pictures
       Face.get_album_info album_id, (info) =>
         @view = new PicMixr.Views.Browse collection: pics, info: info
-        Face.album_photos album_id, (pics_models) ->
+        Face.album_photos album_id, (pics_models) =>
           pics.add pics_models
+          @view.render()
     else
       UT.loading()
       Face.update_status_cb = -> PicMixr.router.album(album_id)
