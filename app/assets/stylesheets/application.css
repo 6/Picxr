@@ -5,6 +5,7 @@
  *= require_self
  *= require twitter/bootstrap
  *= require jquery-ui-1.8.16.custom
+ *= require chosen
  *= require spectrum
  *= require_tree . 
 */

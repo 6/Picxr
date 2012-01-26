@@ -13,6 +13,7 @@
 //= require backbone_rails_authtoken_adapter
 //= require backbone_rails_parse_tojson_adapter
 //= require hamlcoffee
+//= require chosen.jquery
 //= require fabric-all
 //= require caman.full
 //= require glfx
