@@ -80,18 +80,29 @@ body {
 
 .media-grid {
   img.thumbnail {
-    width: 103px;
-    height: 103px;
+    width: 101px;
+    height: 80px;
   }
   .thumb-href {
     position:relative;
+    padding:5px;
+    font-size: 11px;
     .thumbnail-meta {
       position:absolute;
-      right:4px;
-      bottom: 4px;
-      padding: 1px 5px;
-      background:rgba(0,0,0,0.6);
+      right:5px;
+      bottom: 20px;
+      padding: 0 5px;
+      background:rgba(0,0,0,0.5);
       color: #fff;
+    }
+    .album-title {
+      width: 103px - 5*2px;
+      line-height: 20px;
+      margin-bottom: -5px;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      -o-text-overflow: ellipsis;
     }
     &:hover {
       text-decoration: none;
