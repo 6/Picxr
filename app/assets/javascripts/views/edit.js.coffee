@@ -384,8 +384,9 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     @canvas.renderAll()
     data = @canvas.toDataURL("png")
     # remove "data:image/png;base64,"
-    data = data.substr(data.indexOf(',') + 1).toString()
-    $.post '/save', {imgdata: data}, (id) ->
+    post_data = {imgdata: data.substr(data.indexOf(',') + 1)}
+    post_data.private = "yes" if $("#privacy-private").is(':checked')
+    $.post '/save', post_data, (id) ->
       UT.redirect "/#{id}"
     @
   

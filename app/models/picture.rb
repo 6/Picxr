@@ -9,20 +9,20 @@
 #  picture_updated_at   :datetime
 #  original_url         :string(255)
 #  creator_id           :integer
-#  private_id           :string(255)
 #  created_at           :datetime
 #  updated_at           :datetime
-#  b64_id               :string(255)
+#  permalink_id         :string(255)
+#  is_private           :boolean
 #
 
 require 'base_encoder'
 
 class Picture < ActiveRecord::Base
-  after_create :set_b64_id
+  after_create :set_permalink_id
   
   has_attached_file :picture,
     :storage => :s3,
-    :path => ":b64_id.:extension",
+    :path => ":permalink_id.:extension",
     :bucket => ENV['S3_BUCKET'],
     :s3_protocol => 'https',
     :s3_credentials => {
@@ -32,11 +32,25 @@ class Picture < ActiveRecord::Base
   
   private
   
-  def set_b64_id
-    self.update_attributes(:b64_id => BaseEncoder.encode(self.id + 3530000000000))
+  def set_permalink_id
+    if self.is_private
+      self.update_attributes(:permalink_id => "p/#{random_permalink_id}")
+    else
+      self.update_attributes(:permalink_id => BaseEncoder.encode(self.id + 3530000000000))
+    end
   end
   
-  Paperclip.interpolates :b64_id do |picture, style|
-    picture.instance.b64_id
+  def random_permalink_id
+    random_s = BaseEncoder.encode(rand(1000000000000..10000000000000000000000000000))
+    count = Picture.where(:permalink_id => random_s).count()
+    if count > 0
+      return random_permalink_id
+    else
+      return random_s
+    end
+  end
+  
+  Paperclip.interpolates :permalink_id do |picture, style|
+    picture.instance.permalink_id
   end
 end

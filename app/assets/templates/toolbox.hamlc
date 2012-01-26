@@ -9,5 +9,10 @@
   #tool-well.well
   #save-image-well.well
     %p
+      %input#privacy-public{:type => "radio", :name => "privacy", :checked => true}
+      %span Public
+      %input#privacy-private.space-l{:type => "radio", :name => "privacy"}
+      %span Private
+    %p
       %a.save.btn.large.success{:href => "#"} Done Editing
     %a.route-default{:href => "/"} Choose a different image

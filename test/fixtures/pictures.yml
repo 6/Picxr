@@ -9,10 +9,10 @@
 #  picture_updated_at   :datetime
 #  original_url         :string(255)
 #  creator_id           :integer
-#  private_id           :string(255)
 #  created_at           :datetime
 #  updated_at           :datetime
-#  b64_id               :string(255)
+#  permalink_id         :string(255)
+#  is_private           :boolean
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/Fixtures.html

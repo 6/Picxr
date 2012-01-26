@@ -35,8 +35,11 @@ class MixrController < ApplicationController
     sio.class.class_eval { attr_accessor :original_filename, :content_type }
     sio.original_filename = "picmixr.png"
     sio.content_type = "image/png"
-    picture = Picture.create(:creator_id => session[:user_id])
+    picture = Picture.create(
+      :creator_id => session[:user_id],
+      :is_private => params[:private].nil? ? false : true
+    )
     picture.update_attributes(:picture => sio)
-    render :text => picture.b64_id
+    render :text => picture.permalink_id
   end
 end
