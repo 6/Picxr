@@ -80,18 +80,34 @@ body {
 
 .fb-browse-meta {
   margin-top: -3px;
-  margin-bottom: 12px;
+  margin-bottom: 11px;
+  .btn {
+    padding: 4px 6px;
+  }
   #fb-photos-title {
-    padding-left: 3px;
-    line-height: 14px;
+    line-height: 16px;
     font-size: 14px;
     font-weight: 400;
     color: #999;
     span {
-      color: #555;
+      color: #444;
     }
     .spacer {
-      padding-left: 20px;
+      padding-left: 10px;
+    }
+    #fb-photos-title-left {
+      .name{
+        padding-left:3px;
+      }
+    }
+    #fb-photos-title-right {
+      text-align:right;
+      select,option,div {
+        text-align:left;
+      }
+      #friends-select {
+        width: 177px;
+      }
     }
   }
 }
