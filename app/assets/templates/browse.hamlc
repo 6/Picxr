@@ -1,11 +1,14 @@
 .fb-browse-meta
   %h3#fb-photos-title
-    - if @info.owner
-      %a.route-bb{:href => "/albums/#{@info.owner.id}"}= "#{@info.owner.info.name}'s photos"
+    - if @mode is 'album'
+      %a.route-bb{:href => "/albums/#{@info.uid}"}= "#{@info.owner.name}'s photos"
       &mdash;
       %span= @info.name
     - else
       %span= "#{@info.name}'s photos"
+    %span.spacer
+    %a.btn.small.route-bb{:class => "#{'primary' unless @mode is 'tags'}", :href => "/albums/#{@info.uid}"} Albums
+    %a.btn.small.route-bb{:class => "#{'primary' if @mode is 'tags'}", :href => "/tags/#{@info.uid}"} Tags
     %span.spacer
     %select#friends-select{:data => {:placeholder => "Select a friend"}}
       %option{:value => ""}

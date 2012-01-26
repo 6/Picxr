@@ -12,6 +12,7 @@ PicMixr::Application.routes.draw do
   # handled by backbone router
   match '/albums/:id' => 'home#index'
   match '/album/:id' => 'home#index'
+  match '/tags/:id' => 'home#index'
   match '/edit/:url' => 'home#index', :as => "edit"
   match '/upload/:type' => 'home#index'
   

@@ -44,6 +44,7 @@ fetch_friends = ->
   FB.api '/me/friends', (res) ->
     $.each res.data, (i, friend) ->
       Face.people[friend.id] =
+        uid: friend.id
         name: friend.name
     Face.fetch_friends_cb() if Face.fetch_friends_cb?
     Face.finished_fetch_friends = yes
@@ -67,6 +68,7 @@ Face.get_user_info = (uid, cb) ->
     unless res.length > 0
       return UT.route_bb Face.default_route() 
     Face.people[uid] =
+      uid: uid
       name: res[0].name
     return cb(Face.people[uid])
 
@@ -79,7 +81,8 @@ Face.get_album_info = (aid, cb) ->
     Face.get_user_info res[0].owner, (owner_info) ->
       Face.albums[aid] = 
         name: res[0].name
-        owner: {id: res[0].owner, info: owner_info}
+        uid: res[0].owner
+        owner: owner_info
       return cb(Face.albums[aid])
 
 create_session = (user_id, name) ->
@@ -141,6 +144,23 @@ Face.album_photos = (aid, cb) ->
         alt: photo.caption
         href: "/edit/#{encodeURIComponent src.replace(/\./g, '@')}"
       )
+    UT.p "Found photos", photos
+    cb photos
+
+Face.tagged_photos = (uid, cb) ->
+  UT.p "Face.tagged_photos #{uid}"
+  q_photos = FB.Data.query("SELECT caption, src, src_big FROM photo WHERE pid IN (SELECT pid FROM photo_tag WHERE subject='{0}')", uid)
+  q_photos.wait (results) ->
+    photos = []
+    $.each results, (i, photo) ->
+      src = photo.src_big or photo.src
+      if src?
+        photos.push new PicMixr.Models.Picture(
+          src_small: photo.src
+          title: photo.caption
+          alt: photo.caption
+          href: "/edit/#{encodeURIComponent src.replace(/\./g, '@')}"
+        )
     UT.p "Found photos", photos
     cb photos
 
