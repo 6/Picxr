@@ -9,11 +9,10 @@ class PicMixr.Views.Browse extends PicMixr.Views.BaseView
     @collection.bind 'add', @render, @
     @collection.bind 'change', @render, @
     @collection.bind 'remove', @render, @
-    $(@el).html @template(info: @info)
   
   render: ->
     UT.p "PicMixr.Views.Browse -> render"
-    $("#fb-photos").html("")
+    $(@el).html @template(info: @info)
     @collection.each (pic) =>
       view = new PicMixr.Views.BrowseThumbnail model: pic
       @$('#fb-photos').append(view.render().el)
