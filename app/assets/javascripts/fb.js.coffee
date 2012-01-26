@@ -31,9 +31,10 @@ update_status = (res) ->
 set_user_info = ->
   UT.p "set_user_info"
   $("#cta-row").html JST["tween/loading"]()
-  FB.api '/me', (res) ->
-    Face.view.render(fb_user_id: user_id, fb_name: res.name)
-    create_session user_id, res.name
+  q_name = FB.Data.query("SELECT name FROM user WHERE uid='{0}'", user_id)
+  q_name.wait (res) ->
+    Face.view.render(fb_user_id: user_id, fb_name: res[0].name)
+    create_session user_id, res[0].name
 
 Face.fb_login = ->
   FB.login (res) ->
