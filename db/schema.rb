@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(:version => 20120126050036) do
     t.string   "picture_content_type"
     t.integer  "picture_file_size"
     t.datetime "picture_updated_at"
-    t.string   "original_id"
+    t.string   "original_permalink_id"
     t.integer  "creator_id"
     t.datetime "created_at"
     t.datetime "updated_at"
