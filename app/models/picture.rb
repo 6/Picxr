@@ -30,6 +30,16 @@ class Picture < ActiveRecord::Base
       :secret_access_key => ENV['S3_SECRET']
     }
   
+  def self.original_url(id)
+    if Rails.env.production?
+      return "http://i.picmixr.com/#{id}.png"
+    else
+      pic = Picture.find_by_permalink_id(id)
+      return nil if pic.nil?
+      return pic.picture.url(:original, false)
+    end
+  end
+  
   private
   
   def set_permalink_id

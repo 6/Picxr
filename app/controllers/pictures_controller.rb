@@ -2,11 +2,9 @@ class PicturesController < ApplicationController
 
   def show
     id = request.path.starts_with?("/p/") ? "p/#{params[:id]}" : params[:id]
-    pic = Picture.find_by_permalink_id(id)
-    if Rails.env.production?
-      @pic_url = "http://i.picmixr.com/#{id}.png"
-    else
-      @pic_url = pic.picture.url(:original, false)
+    @pic_url = Picture.original_url(id)
+    if @pic_url.nil?
+      return render :text => 'not found', :status => 404
     end
     @permalink = "#{ENV['PERMALINK_ROOT']}#{id}"
   end
