@@ -29,7 +29,6 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
       @destroy_view()
       pics = new PicMixr.Collections.Pictures
       Face.get_album_info album_id, (info) =>
-        console.log "IIIII", info
         @view = new PicMixr.Views.Browse collection: pics, info: info
         Face.album_photos album_id, (pics_models) ->
           pics.add pics_models
