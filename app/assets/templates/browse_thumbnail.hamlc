@@ -1,2 +1,4 @@
 %a.thumb-href{:href => @pic.get('href')}
   %img.thumbnail{:src => @pic.get('src_small'), :title => @pic.get('title'), :alt=> @pic.get('alt')}
+  - if @pic.get('count')
+    %span.thumbnail-meta= @pic.get_count()
