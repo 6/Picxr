@@ -15,9 +15,10 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
       UT.p "Route ALBUMS for user #{user_id}"
       @destroy_view()
       albums = new PicMixr.Collections.Pictures
-      @view = new PicMixr.Views.Browse collection: albums, title: "[TODO: #{user_id}'s name]'s albums (fetch only once)"
-      Face.user_albums user_id, (albums_models) ->
-        albums.add albums_models
+      Face.get_user_info user_id, (info) =>
+        @view = new PicMixr.Views.Browse collection: albums, info: info
+        Face.user_albums user_id, (albums_models) ->
+          albums.add albums_models
     else
       UT.loading()
       Face.update_status_cb = -> PicMixr.router.user_albums(user_id)
@@ -27,9 +28,11 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
       UT.p "Route ALBUM for album #{album_id}"
       @destroy_view()
       pics = new PicMixr.Collections.Pictures
-      @view = new PicMixr.Views.Browse collection: pics, title: "[TODO album title]"
-      Face.album_photos album_id, (pics_models) ->
-        pics.add pics_models
+      Face.get_album_info album_id, (info) =>
+        console.log "IIIII", info
+        @view = new PicMixr.Views.Browse collection: pics, info: info
+        Face.album_photos album_id, (pics_models) ->
+          pics.add pics_models
     else
       UT.loading()
       Face.update_status_cb = -> PicMixr.router.album(album_id)

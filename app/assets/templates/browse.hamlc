@@ -1,3 +1,7 @@
 .fb-browse-meta
-  %h3#fb-photos-title= @title
+  %h3#fb-photos-title
+    - if @info.owner
+      %a{:href => "/albums/#{@info.owner.id}"}= "#{@info.owner.info.name}'s photos"
+      &mdash;
+    %span= "#{@info.name}'s photos"
 %ul#fb-photos.media-grid

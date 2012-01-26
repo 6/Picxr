@@ -5,6 +5,8 @@ window.Face =
   active: -> user_id?
   update_status_cb: null
   default_route: -> "albums/#{user_id}"
+  people: {}
+  albums: {}
 
 window.fbAsyncInit = ->
   UT.p "fbAsyncInit"
@@ -31,10 +33,9 @@ update_status = (res) ->
 set_user_info = ->
   UT.p "set_user_info"
   $("#cta-row").html JST["tween/loading"]()
-  q_name = FB.Data.query("SELECT name FROM user WHERE uid='{0}'", user_id)
-  q_name.wait (res) ->
-    Face.view.render(fb_user_id: user_id, fb_name: res[0].name)
-    create_session user_id, res[0].name
+  Face.get_user_info user_id, (info) ->
+    Face.view.render(fb_user_id: user_id, fb_name: info.name)
+    create_session user_id, name
 
 Face.fb_login = ->
   FB.login (res) ->
@@ -47,6 +48,28 @@ Face.fb_login = ->
 Face.fb_logout = ->
   user_id = null
   FB.logout (res) -> UT.redirect "logout"
+  
+Face.get_user_info = (uid, cb) ->
+  return cb(Face.people[uid]) if Face.people[uid]?
+  q_name = FB.Data.query("SELECT name FROM user WHERE uid='{0}'", uid)
+  q_name.wait (res) =>
+    unless res.length > 0
+      return UT.route_bb Face.default_route() 
+    Face.people[uid] =
+      name: res[0].name
+    return cb(Face.people[uid])
+
+Face.get_album_info = (aid, cb) ->
+  return cb(Face.albums[aid]) if Face.albums[aid]?
+  q_name = FB.Data.query("SELECT name,owner FROM album WHERE aid='{0}'", aid)
+  q_name.wait (res) =>
+    unless res.length > 0
+      return UT.route_bb Face.default_route() 
+    Face.get_user_info res[0].owner, (owner_info) ->
+      Face.albums[aid] = 
+        name: res[0].name
+        owner: {id: res[0].owner, info: owner_info}
+      return cb(Face.albums[aid])
 
 create_session = (user_id, name) ->
   $.post '/session/facebook',
