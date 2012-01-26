@@ -6,4 +6,7 @@
       %span= @info.name
     - else
       %span= "#{@info.name}'s photos"
+    %span.spacer
+    %select#friends-select{:data => {:placeholder => "Select a friend"}}
+      %option{:value => ""}
 %ul#fb-photos.media-grid

@@ -4,6 +4,8 @@ access_token = null
 window.Face =
   active: -> user_id?
   update_status_cb: null
+  fetch_friends_cb: null
+  finished_fetch_friends: no
   default_route: -> "albums/#{user_id}"
   people: {}
   albums: {}
@@ -24,6 +26,7 @@ update_status = (res) ->
     access_token = res.authResponse.accessToken
     Face.view = new PicMixr.Views.TopbarFbUserInfo
     set_user_info()
+    fetch_friends()
     UT.p "Auth token:",res.authResponse.accessToken, "expires:", res.authResponse.expiresIn
     Face.update_status_cb() if Face.update_status_cb?
   else if !user_id?
@@ -36,6 +39,14 @@ set_user_info = ->
   Face.get_user_info user_id, (info) ->
     Face.view.render(fb_user_id: user_id, fb_name: info.name)
     create_session user_id, name
+
+fetch_friends = ->
+  FB.api '/me/friends', (res) ->
+    $.each res.data, (i, friend) ->
+      Face.people[friend.id] =
+        name: friend.name
+    Face.fetch_friends_cb() if Face.fetch_friends_cb?
+    Face.finished_fetch_friends = yes
 
 Face.fb_login = ->
   FB.login (res) ->
@@ -96,7 +107,7 @@ fb_share = (e) ->
 Face.user_albums = (uid, cb) ->
   UT.p "Face.user_albums #{uid}"
   albums = []
-  q_albums = FB.Data.query("SELECT aid, name, cover_pid, photo_count FROM album WHERE owner='{0}' AND photo_count > 0", user_id)
+  q_albums = FB.Data.query("SELECT aid, name, cover_pid, photo_count FROM album WHERE owner='{0}' AND photo_count > 0", uid)
   q_albums.wait (rows) ->
     cb [] if rows.length is 0
     results_count = rows.length
