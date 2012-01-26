@@ -1,7 +1,7 @@
 .fb-browse-meta
   %h3#fb-photos-title
     - if @info.owner
-      %a{:href => "/albums/#{@info.owner.id}"}= "#{@info.owner.info.name}'s photos"
+      %a.route-bb{:href => "/albums/#{@info.owner.id}"}= "#{@info.owner.info.name}'s photos"
       &mdash;
       %span= @info.name
     - else
