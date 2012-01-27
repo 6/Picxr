@@ -2,6 +2,9 @@
 %html{:data => {:controller => controller_name,
                 :action => action_name,
                 :'is-dev' => @is_dev,
+                :'app-name' => t(:app),
+                :'app-name-lower' => t(:app_lower),
+                :'root' => ENV['PERMALINK_ROOT'],
                 :'fb-app-id' => ENV['FACEBOOK_APP_ID'],
                 :'fb-cb-frame' => ENV['FACEBOOK_CB_FRAME'],
                 :'fb-cb-default' => root_url}}
@@ -30,7 +33,7 @@
           #landing-header-inner.row
             #logo-wrap.span3
               %a{:href=> "/"}
-                %img#logo{:src => "/assets/logo-small.png", :alt => "#{t(:app).downcase}"}
+                %img#logo{:src => "/assets/logo-small.png", :alt => "#{t :app_lower}"}
             #cta.span9
               #cta-row.row
       =yield
@@ -42,9 +45,9 @@
       &middot;
       %a{:href => terms_path} Terms
       %span.spacer
-        %a.img{:href => "https://www.facebook.com/picmixr", :title => "Like #{t :app}"}
+        %a.img{:href => "https://www.facebook.com/pages/Picxr/348273998525494", :title => "Like #{t :app}"}
           %img{:src => "/assets/facebook_16.png", :alt => "Facebook"}
-        %a.img{:href => "https://twitter.com/picmixr", :title => "Follow #{t :app}"}
+        %a.img{:href => "https://twitter.com/picxr", :title => "Follow #{t :app}"}
           %img{:src => "/assets/twitter_16.png", :alt => "Twitter"}
     #fb-root.hide
     :javascript

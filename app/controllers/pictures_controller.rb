@@ -6,7 +6,7 @@ class PicturesController < ApplicationController
     if @pic_url.nil?
       return render :text => 'not found', :status => 404
     end
-    @permalink = "#{ENV['PERMALINK_ROOT']}#{id}"
+    @permalink = "http://#{ENV['PERMALINK_ROOT']}/#{id}"
   end
   
   def create

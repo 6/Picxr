@@ -33,7 +33,7 @@ class MixrController < ApplicationController
   def save
     sio = StringIO.new(Base64.decode64(params[:imgdata]))
     sio.class.class_eval { attr_accessor :original_filename, :content_type }
-    sio.original_filename = "picmixr.png"
+    sio.original_filename = "#{t :app_lower}.png"
     sio.content_type = "image/png"
     picture = Picture.create(
       :creator_id => session[:user_id],

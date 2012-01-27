@@ -32,7 +32,7 @@ class Picture < ActiveRecord::Base
   
   def self.original_url(id)
     if Rails.env.production?
-      return "http://i.picmixr.com/#{id}.png"
+      return "http://i.#{ENV['PERMALINK_ROOT']}/#{id}.png"
     else
       pic = Picture.find_by_permalink_id(id)
       return nil if pic.nil?

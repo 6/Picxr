@@ -98,9 +98,9 @@ fb_share = (e) ->
     display: 'popup'
     # must be at least 50px by 50px and have a maximum aspect ratio of 3:1
     picture: $(@).data('picture')
-    name:'picmixr - photo editor'
-    caption: 'picmixr.com'
-    description: 'Use Picmixr to make your photos hilarious.'
+    name: "#{$("html").data("app-name")} - photo editor"
+    caption: $("html").data("root")
+    description: "Use #{$("html").data("app-name")} to make your photos hilarious."
   FB.ui info, (res) ->
     if res?
       UT.p "Published photo", res
