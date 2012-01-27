@@ -22,7 +22,7 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
           albums.add albums_models
           @view.render()
     else
-      UT.loading()
+      if UT.first_page then @index(no) else UT.loading()
       Face.update_status_cb = -> PicMixr.router.user_albums(user_id)
   
   tags: (user_id) ->
@@ -36,7 +36,7 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
           pics.add pics_models
           @view.render()
     else
-      UT.loading()
+      if UT.first_page then @index(no) else UT.loading()
       Face.update_status_cb = -> PicMixr.router.tags(user_id)
     
   album: (album_id) ->
@@ -50,7 +50,7 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
           pics.add pics_models
           @view.render()
     else
-      UT.loading()
+      if UT.first_page then @index(no) else UT.loading()
       Face.update_status_cb = -> PicMixr.router.album(album_id)
 
   edit: (url) ->
@@ -74,14 +74,15 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
     else
       $("#main-wrap").html JST['forms/desktop_upload']()
   
-  index: ->
+  index: (override_update_status_cb = yes) =>
     UT.p "Route INDEX"
     if Face.active()
       UT.loading()
       UT.route_bb Face.default_route()
     else
       @destroy_view()
-      Face.update_status_cb = -> PicMixr.router.index()
+      if override_update_status_cb
+        Face.update_status_cb = -> PicMixr.router.index()
       $("#main-wrap").html JST['home']()
       $("#toolbox-wrap").html JST['toolbox']()
   

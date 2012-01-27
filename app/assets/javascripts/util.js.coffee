@@ -1,5 +1,6 @@
 # globally accessible utilities object
-window.UT = {}
+window.UT =
+  first_page: yes
 
 UT.is_dev = ->
   $("html").attr("data-is-dev") is "yes"
@@ -24,6 +25,7 @@ UT.top_href = ->
   if UT.is_framed() then UT.framed_cb_href() else UT.default_cb_href()
 
 UT.route_bb = (href, e) ->
+  UT.first_page = no
   # remove preceding "/" if it exists
   href = href.substring(1) if href.substring(0 ,1) is "/"
   UT.p "route_bb -> #{href}"
