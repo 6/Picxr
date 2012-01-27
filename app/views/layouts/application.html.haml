@@ -45,12 +45,8 @@
       &middot;
       %a{:href => terms_path} Terms
       %span.spacer
-        %a.img{:href => "https://www.facebook.com/pages/Picxr/348273998525494", :title => "Like #{t :app}"}
-          %img{:src => "/assets/facebook_16.png", :alt => "Facebook"}
-        %a.img{:href => "https://twitter.com/picxr", :title => "Follow #{t :app}"}
-          %img{:src => "/assets/twitter_16.png", :alt => "Twitter"}
-        %a.img{:href => "https://plus.google.com/107858657104647806855"}
-          %img{:src => "/assets/google_plus_16.png", :alt => "Google+"}
+      <a href="https://twitter.com/picxr" class="twitter-follow-button" data-show-count="false" data-width="110px" data-size="medium" data-lang="en">Follow @picxr</a>
+      <iframe class="fb-like" src="//www.facebook.com/plugins/like.php?href&amp;send=false&amp;layout=button_count&amp;width=90&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:90px; height:21px;" allowTransparency="true"></iframe>
     #fb-root.hide
     :javascript
       // Load Facebook JS SDK asynchronously
@@ -60,3 +56,5 @@
         js.src = "//connect.facebook.net/en_US/all.js";
         d.getElementsByTagName('head')[0].appendChild(js);
       }(document));
+    :javascript
+      !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");

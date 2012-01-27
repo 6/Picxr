@@ -17,6 +17,7 @@ window.fbAsyncInit = ->
     status: true
     cookie: true
     oauth: true
+    xfbml: true
   FB.Event.subscribe 'auth.statusChange', update_status
 
 update_status = (res) ->
