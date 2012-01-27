@@ -434,6 +434,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       @canvas.isDrawingMode = no
     else if @edit_mode.fx
       $("#swirl").click() if $("#swirl").hasClass("primary")
+      $("#bulge").click() if $("#bulge").hasClass("primary")
     #remove any active selections
     @canvas.deactivateAll()
     @canvas.renderAll()
