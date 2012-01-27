@@ -29,7 +29,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     @saved_states = []
     @cur_state_idx = null
     @edit_mode = {draw: no, fx: no}
-    @size = UT.fit_dimensions(@pic.width, @pic.height, 558, 600)
+    @size = UT.fit_dimensions(@pic.width, @pic.height, 561, 600)
     @merge_canvas = document.createElement('canvas')
     $(@merge_canvas).attr("width", @size.width).attr("height", @size.height).attr("style", "width:#{@size.width}px;height:#{@size.height}px")
     @merge_ctx = @merge_canvas.getContext('2d')
