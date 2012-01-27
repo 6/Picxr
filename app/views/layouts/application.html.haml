@@ -18,7 +18,7 @@
     %meta{:property => "fb:app_id", :content => ENV['FACEBOOK_APP_ID']}
     %meta{:property => "og:type", :content => @og_type ? @og_type : "website"}
     %meta{:property => "og:title", :content => title}
-    %meta{:property => "og:url", :content => @og_url ? @og_url : "http://#{ENV['PERMALINK_ROOT']}"}
+    %meta{:property => "og:url", :content => @permalink ? @permalink : "http://#{ENV['PERMALINK_ROOT']}"}
     %meta{:property => "og:image", :content => @og_image ? @og_image : "#{root_url}assets/logo-medium.png"}
     %meta{:property => "og:description", :content => "#{t :description_medium, :app => t(:app)}"}
     =yield(:custom_metadata)

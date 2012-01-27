@@ -1,6 +1,5 @@
 - @og_type = "image"
 - @og_image = @pic_url
-- @og_url = @permalink
 - content_for :custom_metadata do
   %meta{:name => "medium", :content => "image"}
   %link{:rel => "image_src", :href => @pic_url}
