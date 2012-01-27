@@ -1,4 +1,5 @@
 !!! 5
+- title = @page_title ? "#{@page_title} - #{t :app}" : "#{t :app} - #{t :description_short}"
 %html{:data => {:controller => controller_name,
                 :action => action_name,
                 :'is-dev' => @is_dev,
@@ -15,8 +16,13 @@
     %meta{:name => "description", :content => "#{t :description_long, :app => t(:app)}"}
     %meta{:name => "keywords", :content => "pictures,photos,images,photo editor,memes,funny pictures,image host,image upload"}
     %meta{:property => "fb:app_id", :content => ENV['FACEBOOK_APP_ID']}
+    %meta{:property => "og:type", :content => @og_type ? @og_type : "website"}
+    %meta{:property => "og:title", :content => title}
+    %meta{:property => "og:url", :content => @og_url ? @og_url : "http://#{ENV['PERMALINK_ROOT']}"}
+    %meta{:property => "og:image", :content => @og_image ? @og_image : "#{root_url}assets/logo-medium.png"}
+    %meta{:property => "og:description", :content => "#{t :description_medium, :app => t(:app)}"}
     =yield(:custom_metadata)
-    %title= @page_title ? "#{@page_title} - #{t :app}" : "#{t :app} - #{t :description_short}"
+    %title= title
     = stylesheet_link_tag    "application"
     = javascript_include_tag "application"
     = csrf_meta_tags
