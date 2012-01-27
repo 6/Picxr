@@ -86,7 +86,7 @@ Face.get_album_info = (aid, cb) ->
       return cb(Face.albums[aid])
 
 create_session = (user_id, name) ->
-  $.post '/session/facebook',
+  $.post '/s/facebook',
     uid: user_id
     info:
       name: name

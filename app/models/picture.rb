@@ -46,7 +46,7 @@ class Picture < ActiveRecord::Base
     if self.is_private
       self.update_attributes(:permalink_id => "p/#{random_permalink_id}")
     else
-      self.update_attributes(:permalink_id => BaseEncoder.encode(self.id + 3530000000000))
+      self.update_attributes(:permalink_id => BaseEncoder.encode(self.id + 57000000000))
     end
   end
   

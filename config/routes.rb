@@ -2,7 +2,7 @@ PicMixr::Application.routes.draw do
   
   root :to => "home#index"
 
-  match "/session/:provider" => "sessions#create", :via => :post
+  match "/s/:provider" => "sessions#create", :via => :post
   match "/logout" => "sessions#destroy", :as => :logout
   
   match "/iproxy/:url" => 'mixr#proxy'
@@ -17,7 +17,7 @@ PicMixr::Application.routes.draw do
   match '/upload/:type' => 'home#index'
   
   match '/about' => 'static#about'
-  match '/contact' => 'static#contact'
+  match '/about/contact' => 'static#contact'
   match '/terms' => 'static#terms', :as => "terms"
   match '/about/tech' => 'static#tech', :as => "tech"
 
