@@ -14,6 +14,7 @@
     %meta{:charset => 'utf-8'}
     %meta{:name => "description", :content => "#{t :description_long, :app => t(:app)}"}
     %meta{:name => "keywords", :content => "pictures,photos,images,photo editor,memes,funny pictures,image host,image upload"}
+    %meta{:property => "fb:app_id", :content => ENV['FACEBOOK_APP_ID']}
     =yield(:custom_metadata)
     %title= @page_title ? "#{@page_title} - #{t :app}" : "#{t :app} - #{t :description_short}"
     = stylesheet_link_tag    "application"
