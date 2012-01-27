@@ -4,14 +4,18 @@
                 :'is-dev' => @is_dev,
                 :'app-name' => t(:app),
                 :'app-name-lower' => t(:app_lower),
-                :'root' => ENV['PERMALINK_ROOT'],
+                :'description-short' => t(:description_short),
+                :'description-medium' => t(:description_medium, :app => t(:app)),
+                :root => ENV['PERMALINK_ROOT'],
                 :'fb-app-id' => ENV['FACEBOOK_APP_ID'],
                 :'fb-cb-frame' => ENV['FACEBOOK_CB_FRAME'],
                 :'fb-cb-default' => root_url}}
   %head
     %meta{:charset => 'utf-8'}
+    %meta{:name => "description", :content => "#{t :description_long, :app => t(:app)}"}
+    %meta{:name => "keywords", :content => "pictures,photos,images,photo editor,memes,funny pictures,image host,image upload"}
     =yield(:custom_metadata)
-    %title= @page_title ? "#{@page_title} - #{t :app}" : "#{t :app} - Make your photos hilarious"
+    %title= @page_title ? "#{@page_title} - #{t :app}" : "#{t :app} - #{t :description_short}"
     = stylesheet_link_tag    "application"
     = javascript_include_tag "application"
     = csrf_meta_tags
