@@ -45,7 +45,7 @@
       &middot;
       %a{:href => terms_path} Terms
       %span.spacer
-      <a href="https://twitter.com/picxr" class="twitter-follow-button" data-show-count="false" data-width="110px" data-size="medium" data-lang="en">Follow @picxr</a>
+      %a.twitter-follow-button{:href => "https://twitter.com/#{t :twitter}", :data => {"show-count" => "false", :width => "110px", :size => "medium", :lang => "en"}}= "Follow @#{t :twitter}"
       <iframe class="fb-like" src="//www.facebook.com/plugins/like.php?href&amp;send=false&amp;layout=button_count&amp;width=90&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:90px; height:21px;" allowTransparency="true"></iframe>
     #fb-root.hide
     :javascript
