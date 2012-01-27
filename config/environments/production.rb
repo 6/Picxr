@@ -57,7 +57,4 @@ PicMixr::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
-  
-  ENV["FACEBOOK_CB_DEFAULT"] = "https://picmixr.herokuapp.com/"
-  ENV["FACEBOOK_CB_FRAME"] = "https://apps.facebook.com/picmixr/"
 end
