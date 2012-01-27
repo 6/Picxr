@@ -3,9 +3,12 @@
   %h1= @page_title
   %p= "#{t :app} relies on a number of open source software libraries to help implement various features you see on the site. The three software components used most extensively throughout #{t :app} code are <a href='http://rubyonrails.org/'>Ruby on Rails</a>, <a href='http://jquery.com'>jQuery</a>, and <a href='http://documentcloud.github.com/backbone/'>Backbone.js</a>. These three components help structure code in a maintainable way, and implement several useful design patterns that allow #{t :app} to more easily respond to user interactions.".html_safe()
   %h2 Ruby on Rails 
-  %p TODO what Rails does and why I chose it
+  %p= "<a href='http://rubyonrails.org/'>Ruby on Rails</a> is a web framework favoring \"convention over configuration,\" and is programmed in the <a href='http://www.ruby-lang.org/'>Ruby</a> programming language. Rails has a large and thriving community with a number of open source libraries. Rails was a good choice for #{t :app} because it made it very easy to get a basic website up and running, and because it provided a well tested, easily deployable, and scalable solution for the backend-side of our website.".html_safe()
+  %p Rails implements the <a href="http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller">Model View Controller</a> design pattern to help organize the code in a maintainable way. Models are used to represent and query data. Views render the data in a user-readable form that is shown by the web browser. Controllers connect the Models and Views by taking user input, telling the appropriate Model(s) to fetch the data, and sending that data to the appropriate View.
+  %p= "Rails also uses the <a href='http://en.wikipedia.org/wiki/Active_record_pattern'>active record pattern</a> to implement <a href='http://en.wikipedia.org/wiki/Object-relational_mapping'>object-relational mapping</a>. #{t :app} uses the PostgreSQL database to store information on pictures, and ActiveRecord in Rails provides an easy way to interact with this database. With ActiveRecord, you can easily insert, query, update, and delete data without having to write verbose SQL. Using ActiveRecord in Rails also helps protect against <a href='http://en.wikipedia.org/wiki/SQL_injection'>SQL injection</a> attacks.".html_safe()
   %h2 Backbone.js
-  %p TODO what Backbone does and why I chose it
+  %p= "<a href='http://backbonejs.org/'>Backbone.js</a> is a client-side <a href='http://en.wikipedia.org/wiki/JavaScript'>JavaScript</a> library that provides structure to JavaScript-heavy applications. #{t :app} is primarily a client-side application, only making calls to the Ruby on Rails backend with necessary, so Backbone was a clear choice for implementing the client-side functionality. Backbone code is organized in four components: Models, Views, Collections, and Routes. Models are used to interact with data retrieved from the server, while Collections hold a list of Models. Views present the data to the user, and can respond to user-interface events. Views can be associated with a collection of models or a single model, and can be set up to automatically update whenever that collection or model updates. The Router renders the appropriate View according to the URL. The structure provided through these four components helps to reduce the amount of data transferred between the client and server, thus making responses to user interaction quicker.".html_safe()
+  %p Backbone also has a built in history module that supports pushState. This allows for Backbone to change the URL without refreshing the whole page. Furthermore, this new URL is pushed into the browser history, so the browser back button still works as expected. For browsers that don't yet support pushState, Backbone falls back on using JavaScript's <i>window.location.hash</i> property.
   %h2 jQuery
   %p TODO what jQuery does and why I chose it
   %h2 Fabric.js
@@ -50,8 +53,8 @@
       %a{:href => "http://jquery.com/"} jQuery
       for DOM manipulation and basic event handling
     %li
-      %a{:href => "http://documentcloud.github.com/backbone/"} Backbone.js
-      for pushState AJAX and providing MVC-like structure for JavaScript
+      %a{:href => "http://backbonejs.org/"} Backbone.js
+      for pushState and providing MVC-like structure for JavaScript
     %li
       %a{:href => "http://fabricjs.com/"} Fabric.js
       for scaling, rotation, and moving on the &lt;canvas&gt; element
