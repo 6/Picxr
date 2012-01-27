@@ -46,7 +46,7 @@
       %a{:href => terms_path} Terms
       %span.spacer
       %a.twitter-follow-button{:href => "https://twitter.com/#{t :twitter}", :data => {"show-count" => "false", :width => "110px", :size => "medium", :lang => "en"}}= "Follow @#{t :twitter}"
-      <iframe class="fb-like" src="//www.facebook.com/plugins/like.php?href&amp;send=false&amp;layout=button_count&amp;width=90&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:90px; height:21px;" allowTransparency="true"></iframe>
+      .fb-like{:data => {:send => "false", :layout => "button_count", :width => "90", "show-faces" => "false"}}
     #fb-root.hide
     :javascript
       // Load Facebook JS SDK asynchronously
