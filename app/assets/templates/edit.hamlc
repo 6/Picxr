@@ -1,7 +1,6 @@
 .row
   #toolbox-wrap.span3
   #canvas-wrap.span9
-    #glfx-wrap.hide
-      #glfx-placeholder
-    <canvas id="fabric" width="#{@width}" height="#{@height}" style="width:#{@width}px;height:#{@height}px;background:#ddd">Please upgrade your browser (try Google Chrome or Firefox)</canvas>
+    #glfx-placeholder.hide
+    %canvas#fabric{:width => @width, :height => @height, :style => "width:#{@width}px;height:#{@height}px;background:#ddd"}
     #hidden-elements.hide

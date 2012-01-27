@@ -45,6 +45,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     UT.p "PicMixr.Views.Edit -> render"
     $(@el).html @template(width: @size.width, height: @size.height)
     $("#toolbox-wrap").html JST['toolbox']()
+    $("#canvas-wrap").attr("style", "width:#{@size.width}px;height:#{@size.height}px")
     @
   
   destroy: =>
@@ -58,6 +59,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
   
   init_libraries: ->
     @canvas = new fabric.Canvas 'fabric', {selection: no}
+    $(@canvas.wrapperEl).attr("id", "fabric-wrap").removeAttr("class").removeAttr("style")
     @lower_canvas = $("#fabric")[0]
     @lower_ctx = @lower_canvas.getContext('2d')
     @draw_canvas = $(".upper-canvas")[0]
@@ -67,7 +69,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     try
       @glfx = fx.canvas()
       @glfx.replace(placeholder)
-      $("#glfx-wrap > canvas").attr("id", "glfx-canvas")
+      $(@glfx).hide(0).attr("id", "glfx-canvas")
     catch e
       placeholder.innerHTML = e
     fabric.Image.fromURL @pic.src, (img) =>
@@ -262,20 +264,20 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       $(id).removeClass("primary")
       $("#glfx-canvas").mousefu_unbind()
       # hide glfx if shown
-      if hide and $("#glfx-wrap").is(":visible")
-        $(".canvas-container").show(0)
-        $("#glfx-wrap").hide(0)
+      if hide and $("#glfx-canvas").is(":visible")
+        $("#fabric-wrap").show(0)
+        $("#glfx-canvas").hide(0)
     else
       @_glfx_start_stop(@glx_fx, null, no) if @glx_fx?
       @glx_fx = id
       $(id).addClass("primary")
       # show glfx if not shown
-      unless $("#glfx-wrap").is(":visible")
+      unless $("#glfx-canvas").is(":visible")
         @_load_img @lower_canvas.toDataURL("png"), (img) =>
           @glfx_texture = @glfx.texture img
           @glfx.draw(@glfx_texture).update()
-          $("#glfx-wrap").show(0)
-          $(".canvas-container").hide(0)
+          $("#glfx-canvas").show(0)
+          $("#fabric-wrap").hide(0)
     
   swirl: (e) ->
     @_glfx_start_stop "#swirl", e
@@ -404,7 +406,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       @cur_state_idx = new_idx
       $("#text-edit-wrap").hide(0)
       @canvas.loadFromJSON @saved_states[@cur_state_idx], () =>
-        if $("#glfx-wrap").is(":visible")
+        if $("#glfx-canvas").is(":visible")
           # restore glfx canvas as well, since it's visible
           @_load_img @lower_canvas.toDataURL("png"), (img) =>
             @glfx_texture = @glfx.texture img
