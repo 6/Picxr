@@ -1,22 +1,22 @@
 - @og_type = "image"
-- @og_image = @pic_url
+- @og_image = @pic.direct_link
 - content_for :custom_metadata do
   %meta{:name => "medium", :content => "image"}
-  %link{:rel => "image_src", :href => @pic_url}
+  %link{:rel => "image_src", :href => @pic.direct_link}
 .row#share-image-wrap
   .span8{:itemscope => true, :itemtype => "schema.org/ImageObject"}
     #image-wrap
-      %a{:href => @pic_url, :target => "_blank"}
-        %img{:src => @pic_url, :alt => "#{t :app} image", :itemprop => @pic_url, :width => "497"}
+      %a{:href => @pic.direct_link, :target => "_blank"}
+        %img{:src => @pic.direct_link, :alt => "#{t :app} image", :itemprop => @pic.direct_link, :width => "497"}
       #bottom-links
         .row
           .span4
-            %a.first{:href => "/dl/#{@id}"}> Dowload
-            %a.last{:href => @pic_url} Direct link
+            %a.first{:href => "/dl/#{@pic.permalink_id}"}> Dowload
+            %a.last{:href => @pic.direct_link} Direct link
           .span4#time-ago
             %span= "Created #{time_ago_in_words @pic.created_at} ago"
   .span4.share
     %h5.share-header Share this image
     %input.on-focus-highlight{:type => 'text', :value => @permalink}
-    %a#fb-share.btn{:data => {:link => @permalink, :picture => @pic_url}} Share on Facebook
+    %a#fb-share.btn{:data => {:link => @permalink, :picture => @pic.direct_link}} Share on Facebook
     %a.twitter-share-button{:href => "https://twitter.com/share", :data => {:related => t(:twitter), :counturl => @permalink, :url => @permalink, :lang => "en", :size => "large", :count => "none", :text => "I made this on #{t :app}", :via => t(:twitter)}} Tweet

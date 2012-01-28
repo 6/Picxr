@@ -30,13 +30,22 @@ class Picture < ActiveRecord::Base
       :secret_access_key => ENV['S3_SECRET']
     }
   
-  def self.original_url(id)
-    if Rails.env.production?
-      return "http://i.#{ENV['PERMALINK_ROOT']}/#{id}.png"
+  def self.from_path(relative_path)
+    if relative_path =~ /^\/(dl\/)?p\//
+      # private permalink ID
+      id = relative_path.split("/")[-2..-1].join("/")
     else
-      pic = Picture.find_by_permalink_id(id)
-      return nil if pic.nil?
-      return pic.picture.url(:original, false)
+      # public permalink ID
+      id = relative_path.split("/")[-1]
+    end
+    Picture.find_by_permalink_id(id)
+  end
+  
+  def direct_link
+    if Rails.env.production?
+      "http://i.#{ENV['PERMALINK_ROOT']}/#{self.id}.png"
+    else
+      self.picture.url(:original, false)
     end
   end
   
