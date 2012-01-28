@@ -1,20 +1,19 @@
 #toolbox
   .well
     %p
-      %button#undo.btn{:class => "disabled" if @disabled} Undo
-      %button#redo.btn{:class => "disabled" if @disabled} Redo
+      %button#undo.btn Undo
+      %button#redo.btn Redo
     %p#tool-selector-well.last
       %button#show-draw.small.btn Draw
       %button#show-fx.small.btn Fx
       %button#show-text.small.btn Text
-  - unless @disabled
-    #tool-well.well
-      #save-image-well.well
-      %h4 Done editing?
-      %p
-        %input#privacy-public{:type => "radio", :name => "privacy", :checked => true}
-        %span Public
-        %input#privacy-private.space-l{:type => "radio", :name => "privacy"}
-        %span Private
-      %p
-        %a.save.btn.large.success{:href => "#"} Save &amp; Share
+  #tool-well.well
+  #save-image-well.well
+    %h4 Done editing?
+    %p
+      %input#privacy-public{:type => "radio", :name => "privacy", :checked => true}
+      %span Public
+      %input#privacy-private.space-l{:type => "radio", :name => "privacy"}
+      %span Private
+    %p
+      %a.save.btn.large.success{:href => "#"} Save &amp; Share
