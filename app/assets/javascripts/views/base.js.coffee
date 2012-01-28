@@ -15,10 +15,7 @@ class PicMixr.Views.BaseView extends Backbone.View
     UT.p "PicMixr.Views.BaseView -> route_default"
     leave = @_confirm_leave_if_enabled e
     return @ unless leave
-    if Face.active()
-      UT.route_bb Face.default_route(), e
-    else
-      UT.route_bb '/', e
+    UT.route_default e
     @
   
   destroy: ->

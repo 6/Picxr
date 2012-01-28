@@ -34,6 +34,12 @@ UT.route_bb = (href, e) ->
     # update Facebook URL
     UT.p "TODO: update FB URL to #{UT.top_href()}#{href} ? need to hijack history"
   e.preventDefault() if e?
+
+UT.route_default = (e) ->
+  if Face.active()
+    UT.route_bb Face.default_route(), e
+  else
+    UT.route_bb '/', e
   
 UT.fit_dimensions = (width, height, max_width, max_height) ->
   if width <= max_width or height <= max_height

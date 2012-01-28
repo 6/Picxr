@@ -2,6 +2,9 @@ $ ->
   init_bootstrap()
   $(".on-focus-highlight").mouseup ->
     $(@).focus().select()
+  $(".route-default").click UT.route_default
+  $(".route-bb").click (e) ->
+    UT.route_bb e.target.pathname, e
   
 init_bootstrap = ->
   $("body > .topbar").scrollSpy()
