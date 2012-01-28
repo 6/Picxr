@@ -1,15 +1,34 @@
+@import "twitter/bootstrap/mixins";
+
 .twitter-share-button {
   margin-bottom: -10px;
 }
 
 #share-image-wrap {
+  #image-wrap {
+    .box-shadow();
+    background: #ddd;
+  }
   #bottom-links {
+    color: #777;
+    text-shadow:none;
+    padding-bottom: 4px;
     a {
       padding:2px 8px;
-      border-right: 1px solid #ccc;
+      border-left: 1px solid #eee;
+      border-right: 1px solid #bbb;
+    }
+    a.first {
+      border-left: 0;
     }
     a.last {
       border-right: 0;
+    }
+    #time-ago {
+      text-align:right;
+      span {
+        padding-right: 8px;
+      }
     }
   }
 }

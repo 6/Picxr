@@ -3,6 +3,7 @@ class PicturesController < ApplicationController
   def show
     @id = request.path.starts_with?("/p/") ? "p/#{params[:id]}" : params[:id]
     @pic_url = Picture.original_url(@id)
+    @pic = Picture.find_by_permalink_id(@id)
     if @pic_url.nil?
       return render :text => 'not found', :status => 404
     end
