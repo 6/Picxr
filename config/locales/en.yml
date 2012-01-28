@@ -5,6 +5,6 @@ en:
   app: "Picxr"
   app_lower: "picxr"
   twitter: "picxr"
-  description_short: "fun photo editor"
+  description_short: "fun, fast photo editor"
   description_medium: "Use %{app} to make your photos hilarious."
-  description_long: "%{app} is a photo editor that makes your photos hilarious. Draw, insert text, and add effects to you and your friends' pictures."
+  description_long: "%{app} is a photo editor that makes your photos hilarious. Draw, insert text, and add effects to pictures of you and your friends."
