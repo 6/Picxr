@@ -1,15 +1,16 @@
-%span Brightness
-#brightness-slider
-%br
-%span Contrast
-#contrast-slider
-%br
-%span Saturation
-#saturation-slider
-%br
-%span Hue
-#hue-slider
-%br
+/
+  %span Brightness
+  #brightness-slider
+  %br
+  %span Contrast
+  #contrast-slider
+  %br
+  %span Saturation
+  #saturation-slider
+  %br
+  %span Hue
+  #hue-slider
+  %br
 
 %a#grayscale.btn{:href => "#"} Grayscale
 %a#invert.btn{:href => "#"} Invert
