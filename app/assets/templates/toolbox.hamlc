@@ -1,4 +1,6 @@
 #toolbox
+  %p.align-center
+    %a.route-default{:href => "/"} Choose a different image
   #global-feature-well.well
     %a#undo.btn{:href => "#"} Undo
     %a#redo.btn{:href => "#"} Redo
@@ -8,11 +10,11 @@
     %a#show-text.btn{:href => "#"} Aa
   #tool-well.well
   #save-image-well.well
+    %h4 Done editing?
     %p
       %input#privacy-public{:type => "radio", :name => "privacy", :checked => true}
       %span Public
       %input#privacy-private.space-l{:type => "radio", :name => "privacy"}
       %span Private
     %p
-      %a.save.btn.large.success{:href => "#"} Done Editing
-    %a.route-default{:href => "/"} Choose a different image
+      %a.save.btn.large.success{:href => "#"} Save &amp; Share
