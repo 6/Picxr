@@ -1,4 +1,4 @@
-%h3 Upload image from URL
 %p
-  %input#url{:type => "text", :placeholder => "http://"}
+  %input#url.xlarge{:type => "text", :placeholder => "http://"}
+%p
   %input#submit-url.btn.success{:type => 'submit', :value => 'Upload'}

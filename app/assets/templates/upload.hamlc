@@ -1,0 +1,9 @@
+.row
+  .span3 &nbsp;
+  #upload-wrap.span6
+    #upload-meta.row
+      %h3.span3 Upload an Image
+      .span3
+        %a.btn.small.route-bb{:class => "#{'primary' if @type is 'desktop'}", :href => "/upload/desktop"} From Desktop
+        %a.btn.small.route-bb{:class => "#{'primary' if @type is 'url'}", :href => "/upload/url"} From URL
+    #upload-form-wrap

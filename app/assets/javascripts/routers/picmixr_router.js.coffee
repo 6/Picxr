@@ -73,11 +73,7 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
     
   upload: (type) ->
     @_set_active("#nav-upload")
-    if type is "url"
-      @view = new PicMixr.Views.UrlUpload
-      @view.render()
-    else
-      $("#main-wrap").html JST['forms/desktop_upload']()
+    @view = new PicMixr.Views.Upload(type: type).render()
   
   index: (override_update_status_cb = yes) =>
     UT.p "Route INDEX"

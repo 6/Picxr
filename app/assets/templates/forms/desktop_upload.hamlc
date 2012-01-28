@@ -1,5 +1,5 @@
-%h3 Upload image from Desktop
-%form{:action => "/upload", :enctype => "multipart/form-data", :method => "post"}
+%form.last{:action => "/upload", :enctype => "multipart/form-data", :method => "post"}
   %p
     %input{:type => "file", :name => "picture"}
+  %p
     %input.btn.success{:type => 'submit', :value => 'Upload'}
