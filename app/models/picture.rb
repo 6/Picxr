@@ -43,7 +43,8 @@ class Picture < ActiveRecord::Base
   
   def direct_link
     if Rails.env.production?
-      "http://i.#{ENV['PERMALINK_ROOT']}/#{self.id}.png"
+      ext = self.picture.url(:original, false).split(".")[-1]
+      "http://i.#{ENV['PERMALINK_ROOT']}/#{self.permalink_id}.#{ext}"
     else
       self.picture.url(:original, false)
     end
