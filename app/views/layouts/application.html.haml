@@ -43,11 +43,18 @@
       .row
         #landing-header.span12
           #landing-header-inner.row
-            #logo-wrap.span3
+            #logo-wrap.span2
               %a{:href=> "/"}
                 %img#logo{:src => "/assets/logo-small.png", :alt => "#{t :app_lower}"}
-            #cta.span9
-              #cta-row.row
+            %ul.nav
+              %li#nav-home
+                %a.normal.first.route-default{:href =>"/"} Home
+              %li#nav-upload
+                %a.normal.route-bb{:href =>"/upload/desktop"} Upload
+              %li#cta.dropdown
+            #share
+              %a.twitter-follow-button{:href => "https://twitter.com/#{t :twitter}", :data => {"show-count" => "false", :width => "110px", :size => "medium", :lang => "en", "show-screen-name" => "true"}}= "Follow @#{t :twitter}"
+              .fb-like{:data => {:send => "false", :layout => "button_count", :width => "90", "show-faces" => "false"}}
       =yield
     %footer#default-footer
       %span.spacer= "&copy; 2012 #{t :app}".html_safe
@@ -56,9 +63,6 @@
       %a{:href => "/about/contact"} Contact
       &middot;
       %a{:href => terms_path} Terms
-      %span.spacer &nbsp;
-      %a.twitter-follow-button{:href => "https://twitter.com/#{t :twitter}", :data => {"show-count" => "false", :width => "110px", :size => "medium", :lang => "en"}}= "Follow @#{t :twitter}"
-      .fb-like{:data => {:send => "false", :layout => "button_count", :width => "90", "show-faces" => "false"}}
     #fb-root.hide
     :javascript
       // Load Facebook JS SDK asynchronously

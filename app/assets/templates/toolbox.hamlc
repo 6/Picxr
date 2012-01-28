@@ -1,6 +1,4 @@
 #toolbox
-  %p.align-center
-    %a.route-default{:href => "/"} Choose a different image
   #global-feature-well.well
     %a#undo.btn{:href => "#"} Undo
     %a#redo.btn{:href => "#"} Redo

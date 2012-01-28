@@ -1,2 +1,1 @@
-#cta-import-wrap.span
-  %a#fb-auth.btn.medium.fb{:href => "#"} Import Facebook Photos
+%button#fb-auth.btn.medium.fb{:href => "#"} Import Facebook Photos

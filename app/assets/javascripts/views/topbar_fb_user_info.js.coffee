@@ -1,5 +1,5 @@
 class PicMixr.Views.TopbarFbUserInfo extends PicMixr.Views.BaseView
-  el: '#cta-row'
+  el: '#cta'
   template: JST['topbar/fb_user_info']
   events: ->
     _.extend super,
@@ -8,6 +8,7 @@ class PicMixr.Views.TopbarFbUserInfo extends PicMixr.Views.BaseView
   render: (info) ->
     UT.p "PicMixr.Views.TopbarFbUserInfo -> render_fb_user"
     $(@el).html @template(info)
+    $(@el).dropdown()
     @
     
   fb_logout: (e) ->

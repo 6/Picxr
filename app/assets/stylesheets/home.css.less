@@ -16,49 +16,94 @@ body {
   .border-radius();
   .gradientBar(#fff, #fbfbfb);
   #landing-header-inner {
-    height: 45px;
+    height: 46px;
   }
   span, a{
     text-shadow: none;
   }
-  .loading {
-    margin-top: 9px;
+}
+
+.nav {
+  li {
+    a {
+      color: #195;
+      border-right: 1px solid #e3e3e3;
+    }
+    a.normal {
+      padding: 13px 13px 14px;
+    }
+    a.first {
+      border-left: 1px solid #e3e3e3;
+    }
+    a:hover,a.dropdown-toggle:hover {
+      color: #083;
+      .gradientBar(#fcfcfc, #f2f2f2);
+    }
+  }
+  li.active > a {
+    .gradientBar(#17883a, #24ce58);
+    .box-shadow(inset 0 1px 4px rgba(0,0,0,.4));
+    color: #fff;
   }
 }
 
-#logo {
-  padding-top: 7px;
-  padding-left: 17px;
-  font-size: 18px;
+#logo-wrap {
+  text-align:center;
+  #logo {
+    padding-top: 8px;
+    font-size: 18px;
+  }
+  &:hover {
+    .gradientBar(#fcfcfc, #f2f2f2);
+    .border-radius();
+  }
 }
 
 #cta {
-  padding-top: 5px;
   .btn {
-    margin-top: 4px
+    margin-left: 13px;
+    margin-top: 9px
   }
-  #cta-or {
-    text-transform: uppercase;
-    margin-top: 15px;
+  .loading {
+    margin-left: 13px;
+    margin-top: 14px;
   }
-}
-
-#user-info-wrap {
-  margin-top: 5px;
-  #user-info {
-    font-size: 13px;
-    padding-right:7px;
+  .dropdown-toggle {
+    padding-top: 14px;
   }
-}
-
-.fb-avatar-wrap {
-  color: #666;
+  .fb-name {
+    display:inline-block;
+    padding:0 3px 0 7px;
+  }
   .fb-avatar {
-    width:25px;
-    height:25px;
+    width:24px;
+    height:24px;
     vertical-align:middle;
-    margin-right: 9px;
-    margin-bottom: 3px;
+    margin-top:-4px;
+  }
+  ul.dropdown-menu {
+    top: 46px;
+    background: #fff;
+    li:hover {
+      border:0;
+    }
+    a {
+      background: #fff;
+      &:hover {
+        border:0;
+        color: #083;
+      }
+    }
+  }
+}
+
+#share {
+  float:right;
+  padding-top: 13px;
+  padding-right: 5px;
+  text-align:right;
+  .twitter-follow-button {
+    margin-bottom: -3px;
   }
 }
 
@@ -164,22 +209,5 @@ footer#default-footer {
   }
   span.spacer {
     padding: 0 6px;
-  }
-  a.img {
-    &:hover {
-      text-decoration:none;
-    }
-    img {
-      width: 16px;
-      height: 16px;
-      vertical-align:middle;
-      margin-bottom: 4px;
-    }
-  }
-  .twitter-follow-button {
-    margin-bottom: -5px;
-  }
-  .fb-like {
-    top: 2px;
   }
 }

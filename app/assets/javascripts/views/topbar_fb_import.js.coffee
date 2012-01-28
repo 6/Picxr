@@ -1,5 +1,5 @@
 class PicMixr.Views.TopbarFbImport extends PicMixr.Views.BaseView
-  el: '#cta-row'
+  el: '#cta'
   template: JST['topbar/fb_import']
   events: ->
     _.extend super,

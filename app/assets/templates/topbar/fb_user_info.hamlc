@@ -1,7 +1,6 @@
-#user-info-wrap.span6
-  %span#user-info
-    %span.fb-avatar-wrap
-      %img.fb-avatar{:src => "https://graph.facebook.com/#{@fb_user_id}/picture"}
-      %span.fb-name= @fb_name
-  - unless UT.is_framed()
+%a.dropdown-toggle{:href => "#"}
+  %img.fb-avatar{:src => "https://graph.facebook.com/#{@fb_user_id}/picture"}
+  %span.fb-name= @fb_name
+%ul.dropdown-menu
+  %li
     %a#fb-logout{:href => "#"} Logout

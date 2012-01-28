@@ -36,7 +36,7 @@ update_status = (res) ->
     
 set_user_info = ->
   UT.p "set_user_info"
-  $("#cta-row").html JST["tween/loading"]()
+  $("#cta").html JST["tween/loading"]()
   Face.get_user_info user_id, (info) ->
     Face.view.render(fb_user_id: user_id, fb_name: info.name)
     create_session user_id, name

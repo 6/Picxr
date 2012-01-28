@@ -12,6 +12,7 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
     "": "index"
   
   user_albums: (user_id) ->
+    @_set_active("#nav-home")
     if Face.active()
       UT.p "Route ALBUMS for user #{user_id}"
       @destroy_view()
@@ -26,6 +27,7 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
       Face.update_status_cb = -> PicMixr.router.user_albums(user_id)
   
   tags: (user_id) ->
+    @_set_active("#nav-home")
     if Face.active()
       UT.p "Route TAGS for user #{user_id}"
       @destroy_view()
@@ -40,6 +42,7 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
       Face.update_status_cb = -> PicMixr.router.tags(user_id)
     
   album: (album_id) ->
+    @_set_active("#nav-home")
     if Face.active()
       UT.p "Route ALBUM for album #{album_id}"
       @destroy_view()
@@ -54,6 +57,7 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
       Face.update_status_cb = -> PicMixr.router.album(album_id)
 
   edit: (url) ->
+    @_set_active()
     @destroy_view()
     clean_url = decodeURIComponent(url).replace(/@/g, ".")
     url = "#{UT.default_cb_href()}iproxy/#{encodeURIComponent clean_url.replace(/\./g, '@')}"
@@ -68,6 +72,7 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
     pic.src = url
     
   upload: (type) ->
+    @_set_active("#nav-upload")
     if type is "url"
       @view = new PicMixr.Views.UrlUpload
       @view.render()
@@ -76,6 +81,7 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
   
   index: (override_update_status_cb = yes) =>
     UT.p "Route INDEX"
+    @_set_active("#nav-home")
     if Face.active()
       UT.loading()
       UT.route_bb Face.default_route()
@@ -90,3 +96,7 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
     UT.p "destroy view if active:", @view
     @view.destroy() if @view? and @view.destroy?
     @view = null
+    
+  _set_active: (id) ->
+    $(".nav .active").removeClass("active")
+    $(id).addClass("active") if id?
