@@ -73,6 +73,7 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
     
   upload: (type) ->
     @_set_active("#nav-upload")
+    @destroy_view()
     @view = new PicMixr.Views.Upload(type: type).render()
   
   index: (override_update_status_cb = yes) =>
