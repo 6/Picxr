@@ -1,6 +1,6 @@
 .row
-  #toolbox-wrap.span3.disabled
-  #landing-main-wrap.span9
+  .span2 &nbsp;
+  #landing-main-wrap.span8
     #landing-main
       %h1= "#{$('html').data('app-name')} is a photo editor that makes your photos hilarious."
       %h2 Get started by selecting a photo

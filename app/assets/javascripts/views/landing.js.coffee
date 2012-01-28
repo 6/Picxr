@@ -7,7 +7,6 @@ class PicMixr.Views.Landing extends PicMixr.Views.BaseView
   
   render: ->
     $(@el).html @template()
-    $("#toolbox-wrap").html JST['toolbox'](disabled: true)
     
   fb_auth: (e) ->
     e.preventDefault()
