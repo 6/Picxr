@@ -14,7 +14,7 @@ PicMixr::Application.routes.draw do
   match '/album/:id' => 'home#index'
   match '/tags/:id' => 'home#index'
   match '/edit/:url' => 'home#index', :as => "edit"
-  match '/upload/:type' => 'home#index'
+  match '/upload/:type' => 'home#index', :as => "upload"
   
   match '/about' => 'static#about'
   match '/about/contact' => 'static#contact'

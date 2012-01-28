@@ -9,9 +9,14 @@ class PicturesController < ApplicationController
   end
   
   def create
-    @pic = Picture.create(:is_private => true, :creator_id => session[:user_id])
-    @pic.update_attributes(:picture => params[:picture])
-    redirect_to edit_path(CGI.escape(@pic.picture.url(:original, false).gsub(/\./, '@')))
+    @pic = Picture.new(:is_private => true, :creator_id => session[:user_id])
+    if @pic.save
+      @pic.update_attributes(:picture => params[:picture])
+      redirect_to edit_path(CGI.escape(@pic.picture.url(:original, false).gsub(/\./, '@')))
+    else
+      flash[:alert] = 'Please specify a valid image.'
+      redirect_to upload_path("desktop")
+    end
   end
   
   def download

@@ -55,6 +55,11 @@
             #share
               %a.twitter-follow-button{:href => "https://twitter.com/#{t :twitter}", :data => {"show-count" => "false", :width => "110px", :size => "medium", :lang => "en", "show-screen-name" => "true"}}= "Follow @#{t :twitter}"
               .fb-like{:data => {:send => "false", :layout => "button_count", :width => "90", "show-faces" => "false"}}
+      .alerts
+        - if flash[:alert]
+          .alert-message.warning
+            %a.close{:href => "#"} &times;
+            %p= flash[:alert]
       #main-wrap= yield
     %footer#default-footer
       %span.spacer= "&copy; 2012 #{t :app}".html_safe

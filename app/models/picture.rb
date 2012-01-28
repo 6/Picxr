@@ -29,6 +29,8 @@ class Picture < ActiveRecord::Base
       :access_key_id => ENV['S3_KEY'],
       :secret_access_key => ENV['S3_SECRET']
     }
+  validates_attachment_presence :picture
+  validates_attachment_content_type :picture, :content_type => /image/
   
   def self.from_path(relative_path)
     if relative_path =~ /^\/(dl\/)?p\//
