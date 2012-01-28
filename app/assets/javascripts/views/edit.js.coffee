@@ -426,7 +426,6 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     # confirm leave page alert only after at least one edit
     if @cur_state_idx >= 1
       window.onbeforeunload ?= @_onbeforeunload
-      @confirm_leave = @_onbeforeunload()
   
   _set_edit_mode: (key) =>
     # destruct/unbind events
