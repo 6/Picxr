@@ -1,12 +1,10 @@
 # globally accessible utilities object
 window.UT =
   first_page: yes
-
-UT.is_dev = ->
-  $("html").attr("data-is-dev") is "yes"
+  debug: if $("html").data("debug") is "yes" then yes else no
 
 UT.p = (args...) ->
-  console.log args... if UT.is_dev()
+  console.log args... if UT.debug
 
 UT.redirect = (path) ->
   path = path.substring(1) if path.substring(0 ,1) is "/"

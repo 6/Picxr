@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   
-  before_filter :set_is_dev, :set_locale
+  before_filter :set_debug, :set_locale
   helper_method :current_user
   
   private
@@ -10,8 +10,8 @@ class ApplicationController < ActionController::Base
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
   end
   
-  def set_is_dev
-    @is_dev = Rails.env.development? || !params[:dev].nil? ? 'yes' : 'no'
+  def set_debug
+    @debug = Rails.env.development? || !params[:debug].nil? ? 'yes' : 'no'
   end
 
   def set_locale

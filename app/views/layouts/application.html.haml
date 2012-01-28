@@ -2,7 +2,7 @@
 - title = @page_title ? "#{@page_title} - #{t :app}" : "#{t :app} - #{t :description_short}"
 %html{:data => {:controller => controller_name,
                 :action => action_name,
-                :'is-dev' => @is_dev,
+                :debug => @debug,
                 :'app-name' => t(:app),
                 :'app-name-lower' => t(:app_lower),
                 :'description-short' => t(:description_short),
