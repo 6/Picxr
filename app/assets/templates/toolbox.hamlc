@@ -16,4 +16,4 @@
       %input#privacy-private.space-l{:type => "radio", :name => "privacy"}
       %span Private
     %p
-      %a.save.btn.large.success{:href => "#"} Save &amp; Share
+      %a#save-button.save.btn.large.success{:href => "#"} Save &amp; Share

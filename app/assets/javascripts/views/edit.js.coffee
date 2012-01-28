@@ -381,6 +381,9 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
 
   save: (e) ->
     e.preventDefault()
+    return @ if $("#save-button").hasClass("disabled")
+    $("#save-button").addClass("disabled")
+    $("input[name=privacy]").attr("disabled", true)
     window.onbeforeunload = null
     @canvas.deactivateAll()
     @canvas.renderAll()
@@ -388,8 +391,12 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     # remove "data:image/png;base64,"
     post_data = {imgdata: data.substr(data.indexOf(',') + 1)}
     post_data.private = "yes" if $("#privacy-private").is(':checked')
-    $.post '/save', post_data, (id) ->
+    $.post('/save', post_data, (id) ->
       UT.redirect "/#{id}"
+    ).error () ->
+      alert("Error saving the image. Try pressing the save button again.")
+      $("#save-button").removeClass("disabled")
+      $("input[name=privacy]").attr("disabled", false)
     @
   
   _save_state: =>
