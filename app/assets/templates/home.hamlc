@@ -1,4 +1,9 @@
 .row
   #toolbox-wrap.span3.disabled
-  #canvas-placeholder-wrap.span9
-    #canvas-placeholder TODO description of app
+  #landing-main-wrap.span9
+    #landing-main
+      %h1= "#{$('html').data('app-name')} is a photo editor that makes your photos hilarious."
+      %h2 Get started by selecting a photo
+      #landing-cta
+        %a.btn.large.route-bb{:href => "/upload/desktop"} Upload a Photo
+        %a#fb-auth2.btn.large.fb{:href => "#"} Import Facebook Photos

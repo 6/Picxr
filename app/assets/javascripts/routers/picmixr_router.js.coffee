@@ -85,8 +85,7 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
       @destroy_view()
       if override_update_status_cb
         Face.update_status_cb = -> PicMixr.router.index()
-      $("#main-wrap").html JST['home']()
-      $("#toolbox-wrap").html JST['toolbox']()
+      @view = new PicMixr.Views.Landing().render()
   
   destroy_view: ->
     UT.p "destroy view if active:", @view
