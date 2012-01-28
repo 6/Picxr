@@ -51,7 +51,7 @@ class Picture < ActiveRecord::Base
   end
   
   def random_permalink_id
-    random_s = BaseEncoder.encode(rand(1000000000000..10000000000000000000000000000))
+    random_s = BaseEncoder.encode(Random.new.rand(1000000000000..10000000000000000000000000000))
     count = Picture.where(:permalink_id => random_s).count()
     if count > 0
       return random_permalink_id
