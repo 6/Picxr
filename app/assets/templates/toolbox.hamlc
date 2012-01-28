@@ -1,11 +1,12 @@
 #toolbox
-  #global-feature-well.well
-    %a#undo.btn{:href => "#"} Undo
-    %a#redo.btn{:href => "#"} Redo
-  #tool-selector-well.well
-    %a#show-draw.btn{:href => "#"} Draw
-    %a#show-fx.btn{:href => "#"} Fx
-    %a#show-text.btn{:href => "#"} Aa
+  .well
+    %p
+      %a#undo.btn{:href => "#"} Undo
+      %a#redo.btn{:href => "#"} Redo
+    %p#tool-selector-well.last
+      %a#show-draw.small.btn{:href => "#"} Draw
+      %a#show-fx.small.btn{:href => "#"} Fx
+      %a#show-text.small.btn{:href => "#"} Text
   #tool-well.well
   #save-image-well.well
     %h4 Done editing?
