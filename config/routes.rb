@@ -18,7 +18,7 @@ PicMixr::Application.routes.draw do
   
   match '/about' => 'static#about'
   match '/about/contact' => 'static#contact'
-  match '/terms' => 'static#terms', :as => "terms"
+  match '/about/terms' => 'static#terms', :as => "terms"
   match '/about/tech' => 'static#tech', :as => "tech"
 
   match "/dl/p/:id" => "pictures#download"
