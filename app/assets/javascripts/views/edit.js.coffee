@@ -213,11 +213,14 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
   
   _caman_filter: (e, cb) =>
     e.preventDefault()
+    return if $(e.target).hasClass("disabled")
+    $(e.target).addClass("disabled")
     t = @
     @_prepare_filter () ->
       Caman "#caman-img", () ->
         cb @, () ->
           t._replace_fabric_image_from_canvas $("#caman-img")[0].toDataURL("image/png"), yes
+          $(e.target).removeClass("disabled")
   
   grayscale: (e) -> @_caman_filter e, (t, cb) -> t.greyscale().render(cb)
   invert: (e) -> @_caman_filter e, (t, cb) -> t.invert().render(cb)
