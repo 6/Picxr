@@ -74,3 +74,6 @@ UT.has_webgl = ->
     !!(window.WebGLRenderingContext && (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')))
   catch e
     no
+
+UT.onbeforeunload = ->
+  "Are you sure you want to leave? All your changes will be lost."

@@ -415,7 +415,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       $("#redo").removeClass("disabled")
     # confirm leave page alert only after at least one edit
     if @cur_state_idx >= 1
-      window.onbeforeunload ?= @_onbeforeunload
+      window.onbeforeunload ?= UT.onbeforeunload
   
   _set_edit_mode: (key) =>
     # destruct/unbind events
@@ -473,5 +473,3 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
   
   _on_selection_cleared: (e) =>
     $("#text-edit-wrap").hide(0) if @edit_mode.text
-  
-  _onbeforeunload: () => "Are you sure you want to leave? All your changes will be lost."
