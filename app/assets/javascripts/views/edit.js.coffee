@@ -269,23 +269,6 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
           # clicked on a non-glfx button
           @_glfx_stop @glfx_id, yes
     @
-    
-  _glfx_start_stop: (id, e) =>
-    e.preventDefault() if e?
-    if $(id).hasClass("primary")
-      @_glfx_stop id, yes
-      return no
-    else
-      @glfx_id = id
-      $(id).addClass("primary")
-      # show glfx if not shown
-      unless $("#glfx-canvas").is(":visible")
-        @_load_img @lower_canvas.toDataURL("png"), (img) =>
-          @glfx_texture = @glfx.texture img
-          @glfx.draw(@glfx_texture).update()
-          $("#glfx-canvas").show(0)
-          $("#fabric-wrap").hide(0)
-      return yes
 
   _glfx_stop: (id, hide) =>
     @glfx_id = null
@@ -297,18 +280,28 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       $("#glfx-canvas").hide(0)
   
   _glfx_click_builder: (e, id, down_cb) =>
-    is_start = @_glfx_start_stop id, e
-    if is_start
-      $("#glfx-canvas").mousefu 'downleft move', (c) =>
-        @glfx.draw(@glfx_texture)
-        down_cb(c.move.x, c.move.y)
-        @glfx.update()
-      $("#glfx-canvas").mousefu 'upleft',
-        start: (c) =>
-          data = @glfx.toDataURL('image/png')
-          @_load_img data, (img) =>
-            @glfx_texture = @glfx.texture img
-            @_replace_fabric_image_from_canvas data, yes
+    e.preventDefault() if e?
+    return @_glfx_stop id, yes if $(id).hasClass("primary")
+    @glfx_id = id
+    $(id).addClass("primary")
+    # show glfx if not shown
+    unless $("#glfx-canvas").is(":visible")
+      @_load_img @lower_canvas.toDataURL("png"), (img) =>
+        @glfx_texture = @glfx.texture img
+        @glfx.draw(@glfx_texture).update()
+        $("#glfx-canvas").show(0)
+        $("#fabric-wrap").hide(0)
+    # bind mouse events to glfx canvas
+    $("#glfx-canvas").mousefu 'downleft move', (c) =>
+      @glfx.draw(@glfx_texture)
+      down_cb(c.move.x, c.move.y)
+      @glfx.update()
+    $("#glfx-canvas").mousefu 'upleft',
+      start: (c) =>
+        data = @glfx.toDataURL('image/png')
+        @_load_img data, (img) =>
+          @glfx_texture = @glfx.texture img
+          @_replace_fabric_image_from_canvas data, yes
     
   swirl: (e) ->
     @_glfx_click_builder e, "#swirl", (x, y) =>
