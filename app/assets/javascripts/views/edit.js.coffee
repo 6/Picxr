@@ -294,30 +294,28 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     if hide and $("#glfx-canvas").is(":visible")
       $("#fabric-wrap").show(0)
       $("#glfx-canvas").hide(0)
+  
+  _glfx_click_builder: (e, id, down_cb) =>
+    is_start = @_glfx_start_stop id, e
+    if is_start
+      $("#glfx-canvas").mousefu 'downleft move', (c) =>
+        @glfx.draw(@glfx_texture)
+        down_cb(c.move.x, c.move.y)
+        @glfx.update()
+      $("#glfx-canvas").mousefu 'upleft',
+        start: (c) =>
+          data = @glfx.toDataURL('image/png')
+          @_load_img data, (img) =>
+            @glfx_texture = @glfx.texture img
+            @_replace_fabric_image_from_canvas data, yes
     
   swirl: (e) ->
-    is_start = @_glfx_start_stop "#swirl", e
-    if is_start
-      $("#glfx-canvas").mousefu 'downleft move', (c) =>
-        @glfx.draw(@glfx_texture).swirl(c.move.x, c.move.y, 150, 3).update()
-      $("#glfx-canvas").mousefu 'upleft',
-        start: (c) =>
-          data = @glfx.toDataURL('image/png')
-          @_load_img data, (img) =>
-            @glfx_texture = @glfx.texture img
-            @_replace_fabric_image_from_canvas data, yes
+    @_glfx_click_builder e, "#swirl", (x, y) =>
+      @glfx.swirl(x, y, 150, 3)
     
   bulge: (e) ->
-    is_start = @_glfx_start_stop "#bulge", e
-    if is_start
-      $("#glfx-canvas").mousefu 'downleft move', (c) =>
-        @glfx.draw(@glfx_texture).bulgePinch(c.move.x, c.move.y, 150, 3).update()
-      $("#glfx-canvas").mousefu 'upleft',
-        start: (c) =>
-          data = @glfx.toDataURL('image/png')
-          @_load_img data, (img) =>
-            @glfx_texture = @glfx.texture img
-            @_replace_fabric_image_from_canvas data, yes
+    @_glfx_click_builder e, "#bulge", (x, y) =>
+      @glfx.bulgePinch(x, y, 150, 3)
     
   _prepare_filter: (cb) =>
     #$("#hidden-elements").html("")
