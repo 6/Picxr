@@ -20,3 +20,4 @@
 %a#hazyDays.caman.btn{:href => "#"} Hazy
 %a#swirl.glfx.btn{:href => "#"} Swirl
 %a#bulge.glfx.btn{:href => "#"} Bulge
+%a#zoomblur.glfx.btn{:href => "#"} Zoom Blur

@@ -22,6 +22,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       'click .btn': 'click_button'
       'click #swirl': 'swirl'
       'click #bulge': 'bulge'
+      'click #zoomblur': 'zoomblur'
       'click #insert-text': 'insert_text'
       'click #change-text': 'change_text'
   
@@ -316,6 +317,10 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
   bulge: (e) ->
     @_glfx_click_builder e, "#bulge", (x, y) =>
       @glfx.bulgePinch(x, y, 150, 3)
+
+  zoomblur: (e) ->
+    @_glfx_click_builder e, "#zoomblur", (x, y) =>
+      @glfx.zoomBlur(x, y, 0.2)
     
   _prepare_filter: (cb) =>
     #$("#hidden-elements").html("")
