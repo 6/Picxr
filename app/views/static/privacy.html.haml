@@ -1,0 +1,10 @@
+- @page_title = "Privacy Policy"
+#static-wrap
+  %h1= @page_title
+  %p= "The following Privacy Policy summarizes the various ways that #{t :app} treats the information you provide while using #{ENV['PERMALINK_ROOT']} (the \"<b>Services</b>\"). If you cannot agree with the terms and conditions of this Privacy Policy, please do not use the Service.".html_safe()
+  %p Our servers may automatically collect information about your computer when you use the Service, including without limitation the type of browser software you use, the operating system you are running, the website that referred you, and your Internet Protocol ("IP") address.
+  %p The Service cannot guarantee the security of the information you send to us or the security of our servers or databases, and by using the Service you agree to assume all risk in connection with the information sent to us or collected by us when you use the Service.
+  %p This Service is not intended for use by children, and no one under age 13 is allowed to provide any personal information or upload any content.
+  %p= "#{t :app} may revise this Privacy Policy, and the most current version will always be at <a href='#{privacy_path}'>#{ENV['PERMALINK_ROOT']}#{privacy_path}</a>. By continuing to access or use the Services after those revisions become effective, you agree to be bound by the revised Privacy Policy.".html_safe()
+  %p.last
+    %i Effective: January 25, 2012
