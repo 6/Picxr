@@ -217,11 +217,9 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     $(e.target).addClass("disabled")
     t = @
     @_prepare_filter () ->
-      console.log "IIII", $("img#caman-img")
-      Caman "img#caman-img", () ->
+      Caman "#caman-img", () ->
         cb @, () ->
-          console.log "OOOOK", $("canvas#caman-img")
-          t._replace_fabric_image_from_canvas $("canvas#caman-img")[0].toDataURL("image/png"), yes
+          t._replace_fabric_image_from_canvas $("#caman-img")[0].toDataURL("image/png"), yes
           $(e.target).removeClass("disabled")
   
   grayscale: (e) -> @_caman_filter e, (t, cb) -> t.greyscale().render(cb)
@@ -288,9 +286,9 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       @glfx.zoomBlur(x, y, 0.2)
     
   _prepare_filter: (cb) =>
+    #$("#hidden-elements").html("")
     caman_img = document.createElement('img')
-    $(caman_img).attr("id", "caman-img").data("camanwidth", @size.width).data("camanheight", @size.height)
-    $("#hidden-elements").html(caman_img)
+    $(caman_img).attr("id", "caman-img").data("camanwidth", @size.width).data("camanheight", @size.height).appendTo("#hidden-elements")
     caman_img.onload = => cb()
     caman_img.src = @lower_canvas.toDataURL("image/png")
   
