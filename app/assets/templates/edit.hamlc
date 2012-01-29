@@ -2,5 +2,5 @@
   #toolbox-wrap.span3
   #canvas-wrap.span9
     #glfx-placeholder.hide
-    %canvas#fabric{:width => @width, :height => @height, :style => "width:#{@width}px;height:#{@height}px;background:#ddd"}
+    %canvas#fabric{:width => @width, :height => @height, :style => "width:#{@width}px;height:#{@height}px"}
     #hidden-elements.hide
