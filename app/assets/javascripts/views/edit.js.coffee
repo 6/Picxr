@@ -211,53 +211,20 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     $("#show-fx").addClass("disabled")
     @
   
-  grayscale: (e) ->
+  _caman_filter: (e, cb) =>
     e.preventDefault()
-    global_this = @
+    t = @
     @_prepare_filter () ->
       Caman "#caman-img", () ->
-        @greyscale().render global_this._after_filter
-    @
+        cb @, () ->
+          t._replace_fabric_image_from_canvas $("#caman-img")[0].toDataURL("image/png"), yes
   
-  invert: (e) ->
-    e.preventDefault()
-    global_this = @
-    @_prepare_filter () ->
-      Caman "#caman-img", () ->
-        @invert().render global_this._after_filter
-    @
-    
-  grungy: (e) ->
-    e.preventDefault()
-    global_this = @
-    @_prepare_filter () ->
-      Caman "#caman-img", () ->
-        @grungy().render global_this._after_filter
-    @
-    
-  lomo: (e) ->
-    e.preventDefault()
-    global_this = @
-    @_prepare_filter () ->
-      Caman "#caman-img", () ->
-        @lomo().render global_this._after_filter
-    @
-    
-  vintage: (e) ->
-    e.preventDefault()
-    global_this = @
-    @_prepare_filter () ->
-      Caman "#caman-img", () ->
-        @vintage().render global_this._after_filter
-    @
-
-  hazyDays: (e) ->
-    e.preventDefault()
-    global_this = @
-    @_prepare_filter () ->
-      Caman "#caman-img", () ->
-        @hazyDays().render global_this._after_filter
-    @
+  grayscale: (e) -> @_caman_filter e, (t, cb) -> t.greyscale().render(cb)
+  invert: (e) -> @_caman_filter e, (t, cb) -> t.invert().render(cb)
+  grungy: (e) -> @_caman_filter e, (t, cb) -> t.grungy().render(cb)
+  lomo: (e) -> @_caman_filter e, (t, cb) -> t.lomo().render(cb)
+  vintage: (e) -> @_caman_filter e, (t, cb) -> t.vintage().render(cb)
+  hazyDays: (e) -> @_caman_filter e, (t, cb) -> t.hazyDays().render(cb)
     
   click_button: (e) ->
     if @glfx_id?
