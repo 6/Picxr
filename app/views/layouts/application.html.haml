@@ -19,9 +19,9 @@
     %meta{:property => "og:type", :content => @og_type ? @og_type : "website"}
     %meta{:property => "og:title", :content => title}
     %meta{:property => "og:url", :content => @permalink ? @permalink : "http://#{ENV['PERMALINK_ROOT']}"}
-    %meta{:property => "og:image", :content => @og_image ? @og_image : "#{root_url}assets/logo-gradient-medium.png"}
+    %meta{:property => "og:image", :content => @og_image ? @og_image : "#{root_url}assets/logo-square-medium.png"}
     %meta{:property => "og:description", :content => "#{t :description_medium, :app => t(:app)}"}
-    %link{:rel => "apple-touch-icon", :href => "/assets/logo-gradient-small.png"}
+    %link{:rel => "apple-touch-icon", :href => "/assets/logo-square-small.png"}
     =yield(:custom_metadata)
     %title= title
     = stylesheet_link_tag    "application"
