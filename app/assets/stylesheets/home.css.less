@@ -95,16 +95,21 @@ body {
     margin-top:-4px;
   }
   ul.dropdown-menu {
+    border-top: 1px solid #ddd;
     top: 46px;
     background: #fff;
-    li:hover {
-      border:0;
+    hr {
+      margin: 5px 0;
     }
     a {
-      background: #fff;
-      &:hover {
-        border:0;
+      padding:2px 15px;
+      border:0;
+      background:#fff;
+      &:hover, &.hover{
+        box-shadow:none;
+        text-shadow:none;
         color: #083;
+        border:0;
       }
     }
   }

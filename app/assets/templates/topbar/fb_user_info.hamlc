@@ -3,4 +3,7 @@
   %span.fb-name= @fb_name
 %ul.dropdown-menu
   %li
+    %a.route-default{:href =>"/"} Your Photos
+  %hr.no-spacing
+  %li
     %a#fb-logout{:href => "#"} Logout
