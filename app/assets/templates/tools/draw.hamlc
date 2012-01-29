@@ -1,5 +1,8 @@
-%canvas#brush-preview-canvas{:width => "60", :height => "60", :style => "width:60px;height:60px"}
+%p.label2.first Preview
+%canvas#brush-preview-canvas{:width => "46", :height => "46", :style => "width:46px;height:46px"}
+%p.label2 Brush size
 #brush-size-slider
+%p.label2 Brush color
 %p
   %input#brush-color-selector{:type => 'text', :value => "#{@default_color}"}
 %p.align-center

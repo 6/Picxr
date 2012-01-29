@@ -300,7 +300,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     return @ if $("#show-draw").hasClass("disabled")
     @_set_edit_mode "draw"
     default_color = "#22ee55"
-    default_radius = 10
+    default_radius = 7
     min_radius = 2
     $("#tool-well").html JST['tools/draw'](default_color: default_color)
     # brush
@@ -321,7 +321,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     $("#brush-size-slider").slider
         range: "min"
         min: 0
-        max: 25
+        max: 18
         value: default_radius - min_radius
         slide: (e, ui) =>
           @brush_preview.item(0).set 'radius', ui.value + min_radius
