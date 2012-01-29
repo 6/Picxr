@@ -12,11 +12,11 @@
   #hue-slider
   %br
 
-%a#grayscale.btn{:href => "#"} Grayscale
-%a#invert.btn{:href => "#"} Invert
-%a#grungy.btn{:href => "#"} Grunge
-%a#lomo.btn{:href => "#"} Lomography
-%a#vintage.btn{:href => "#"} Vintage
-%a#hazyDays.btn{:href => "#"} Hazy
-%a#swirl.btn{:href => "#"} Swirl
-%a#bulge.btn{:href => "#"} Bulge
+%a#grayscale.caman.btn{:href => "#"} Grayscale
+%a#invert.caman.btn{:href => "#"} Invert
+%a#grungy.caman.btn{:href => "#"} Grunge
+%a#lomo.caman.btn{:href => "#"} Lomography
+%a#vintage.caman.btn{:href => "#"} Vintage
+%a#hazyDays.caman.btn{:href => "#"} Hazy
+%a#swirl.glfx.btn{:href => "#"} Swirl
+%a#bulge.glfx.btn{:href => "#"} Bulge

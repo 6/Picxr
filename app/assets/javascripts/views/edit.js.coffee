@@ -19,6 +19,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       'click #lomo': 'lomo'
       'click #vintage': 'vintage'
       'click #hazyDays': 'hazyDays'
+      'click .btn': 'click_button'
       'click #swirl': 'swirl'
       'click #bulge': 'bulge'
       'click #insert-text': 'insert_text'
@@ -64,7 +65,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     @lower_ctx = @lower_canvas.getContext('2d')
     @draw_canvas = $(".upper-canvas")[0]
     @draw_ctx = @draw_canvas.getContext('2d')
-    @glfx_fx = null
+    @glfx_id = null
     placeholder = document.getElementById('glfx-placeholder')
     try
       @glfx = fx.canvas()
@@ -257,19 +258,23 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
         @hazyDays().render global_this._after_filter
     @
     
-  _glfx_start_stop: (id, e, hide = yes) =>
+  click_button: (e) ->
+    if @glfx_id?
+      if "##{$(e.target).attr("id")}" isnt @glfx_id
+        if $(e.target).hasClass("glfx")
+          # clicked on a different glfx effect
+          @_glfx_stop @glfx_id, no 
+        else
+          # clicked on a non-glfx button
+          @_glfx_stop @glfx_id, yes
+    @
+    
+  _glfx_start_stop: (id, e) =>
     e.preventDefault() if e?
     if $(id).hasClass("primary")
-      @glx_fx = null
-      $(id).removeClass("primary")
-      $("#glfx-canvas").mousefu_unbind()
-      # hide glfx if shown
-      if hide and $("#glfx-canvas").is(":visible")
-        $("#fabric-wrap").show(0)
-        $("#glfx-canvas").hide(0)
+      @_glfx_stop id, yes
     else
-      @_glfx_start_stop(@glx_fx, null, no) if @glx_fx?
-      @glx_fx = id
+      @glfx_id = id
       $(id).addClass("primary")
       # show glfx if not shown
       unless $("#glfx-canvas").is(":visible")
@@ -278,6 +283,15 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
           @glfx.draw(@glfx_texture).update()
           $("#glfx-canvas").show(0)
           $("#fabric-wrap").hide(0)
+
+  _glfx_stop: (id, hide) =>
+    @glfx_id = null
+    $(id).removeClass("primary")
+    $("#glfx-canvas").mousefu_unbind()
+    # hide glfx if shown
+    if hide and $("#glfx-canvas").is(":visible")
+      $("#fabric-wrap").show(0)
+      $("#glfx-canvas").hide(0)
     
   swirl: (e) ->
     @_glfx_start_stop "#swirl", e
@@ -440,9 +454,6 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       $("#eyedropper").click() if @canvas.isEyedropperMode
       @canvas.stopObserving 'drawing:completed', @_on_drawing_completed
       @canvas.isDrawingMode = no
-    else if @edit_mode.fx
-      $("#swirl").click() if $("#swirl").hasClass("primary")
-      $("#bulge").click() if $("#bulge").hasClass("primary")
     #remove any active selections
     @canvas.deactivateAll()
     @canvas.renderAll()
