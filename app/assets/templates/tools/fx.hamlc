@@ -18,6 +18,7 @@
 %a#lomo.caman.btn{:href => "#"} Lomography
 %a#vintage.caman.btn{:href => "#"} Vintage
 %a#hazyDays.caman.btn{:href => "#"} Hazy
-%a#swirl.glfx.btn{:href => "#"} Swirl
-%a#bulge.glfx.btn{:href => "#"} Bulge
-%a#zoomblur.glfx.btn{:href => "#"} Zoom Blur
+- if UT.has_webgl()
+  %a#swirl.glfx.btn{:href => "#"} Swirl
+  %a#bulge.glfx.btn{:href => "#"} Bulge
+  %a#zoomblur.glfx.btn{:href => "#"} Zoom Blur
