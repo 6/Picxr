@@ -18,6 +18,7 @@
 require 'base_encoder'
 
 class Picture < ActiveRecord::Base
+  delegate :url_helpers, to: 'Rails.application.routes'
   after_create :set_permalink_id
   
   has_attached_file :picture,
@@ -95,6 +96,14 @@ class Picture < ActiveRecord::Base
     else
       return self.permalink_id
     end
+  end
+  
+  def edit_link
+    self.is_private ? url_helpers.edit_private_path(self.clean_permalink_id) : url_helpers.edit_path(self.permalink_id)
+  end
+  
+  def permalink
+    "http://#{ENV['PERMALINK_ROOT']}/#{self.permalink_id}"
   end
   
   private

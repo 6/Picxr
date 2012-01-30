@@ -372,6 +372,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     # remove "data:image/png;base64,"
     post_data = {imgdata: data.substr(data.indexOf(',') + 1)}
     post_data.private = "yes" if $("#privacy-private").is(':checked')
+    post_data.original = @original_id if @original_id?
     $.post('/save', post_data, (id) ->
       UT.redirect "/#{id}"
     ).error () ->

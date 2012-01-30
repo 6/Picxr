@@ -59,18 +59,21 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
   edit: (url_or_id) =>
     @_set_active()
     @destroy_view()
-    is_private = url_or_id.substring(0, 2) is "p/"
-    unless is_private
+    if url_or_id.substring(0, 2) is "p/"
+      url = url_or_id
+    else
       clean = decodeURIComponent(url_or_id).replace(/@/g, ".")
-      clean = "p/#{clean}"
-      url_or_id = encodeURIComponent clean.replace(/\./g, '@')
-    url = "#{UT.default_cb_href()}iproxy/#{url_or_id}"
+      url = encodeURIComponent clean.replace(/\./g, '@')
+    url = "#{UT.default_cb_href()}iproxy/#{url}"
     UT.p "Route EDIT"
     UT.loading()
     pic = new Image()
     pic.onload = =>
       @view = new PicMixr.Views.Edit pic: pic
       @view.render().init_libraries().show_draw()
+      url_start = url_or_id.substring(0,7)
+      unless url_start is "http://" or url_start is "https:/"
+        @view.original_id = url_or_id
     pic.onerror = =>
       UT.message "Error loading image."
     pic.src = url

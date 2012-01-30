@@ -18,7 +18,8 @@ class MixrController < ApplicationController
     sio.content_type = "image/png"
     picture = Picture.create(
       :creator_id => session[:user_id],
-      :is_private => params[:private].nil? ? false : true
+      :is_private => params[:private].nil? ? false : true,
+      :original_permalink_id => params[:original]
     )
     picture.update_attributes(:picture => sio)
     render :text => picture.permalink_id
