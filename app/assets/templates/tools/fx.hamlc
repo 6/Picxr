@@ -19,6 +19,7 @@
 %a#vintage.caman.btn{:href => "#"} Vintage
 %a#hazyDays.caman.btn{:href => "#"} Hazy
 - if UT.has_webgl()
+  %hr
   %a#swirl.glfx.btn{:href => "#"} Swirl
   %a#bulge.glfx.btn{:href => "#"} Bulge
   %a#zoomblur.glfx.btn{:href => "#"} Zoom Blur
