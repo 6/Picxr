@@ -73,7 +73,7 @@
       &middot;
       %a{:href => privacy_path} Privacy
       %a.twitter-follow-button{:href => "https://twitter.com/#{t :twitter}", :data => {"show-count" => "false", :width => "110px", :size => "medium", :lang => "en", "show-screen-name" => "true"}}= "Follow @#{t :twitter}"
-      .fb-like{:data => {:send => "false", :layout => "button_count", :width => "90", "show-faces" => "false"}}
+      .fb-like{:data => {:href => "http://#{ENV['PERMALINK_ROOT']}", :send => "false", :layout => "button_count", :width => "90", "show-faces" => "false"}}
     #fb-root.hide
     :javascript
       // Load Facebook JS SDK asynchronously
