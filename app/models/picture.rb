@@ -23,12 +23,15 @@ class Picture < ActiveRecord::Base
   
   has_attached_file :picture,
     :storage => :s3,
-    :path => ":permalink_id.:extension",
+    :path => ":maybe_style:permalink_id.:extension",
     :bucket => ENV['S3_BUCKET'],
     :s3_protocol => 'https',
     :s3_credentials => {
       :access_key_id => ENV['S3_KEY'],
       :secret_access_key => ENV['S3_SECRET']
+    },
+    :styles => {
+      :small  => "130x130#"
     }
   validates_attachment_content_type :picture, :content_type => /image/
   
@@ -128,5 +131,9 @@ class Picture < ActiveRecord::Base
   
   Paperclip.interpolates :permalink_id do |picture, style|
     picture.instance.permalink_id
+  end
+  
+  Paperclip.interpolates :maybe_style do |picture, style|
+    style == :original ? "" : "#{style.to_s}/"
   end
 end

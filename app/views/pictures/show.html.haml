@@ -18,7 +18,7 @@
   .span4.share
     %h5.share-header Share this image
     %input.on-focus-highlight{:type => 'text', :value => @pic.permalink}
-    %a#fb-share.btn{:data => {:link => @pic.permalink, :picture => @pic.direct_link}} Share on Facebook
+    %a#fb-share.btn{:data => {:link => @pic.permalink, :picture => @pic.picture.url(:small)}} Share on Facebook
     %a.twitter-share-button{:href => "https://twitter.com/share", :data => {:related => t(:twitter), :counturl => @pic.permalink, :url => @pic.permalink, :lang => "en", :size => "large", :count => "none", :text => "I made this on #{t :app}", :via => t(:twitter)}} Tweet
     %hr
     %p.align-center
@@ -28,4 +28,4 @@
       %p
         %h6 Original image
         %a{:href => @original.permalink}
-          %img{:src => @original.direct_link, :alt => "#{t :app} original image", :width => "150"}
+          %img{:src => @original.picture.url(:small), :alt => "#{t :app} original image"}
