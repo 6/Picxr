@@ -107,8 +107,6 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
         @canvas.getActiveObject().set 'fill', color.toHexString()
         @canvas.renderAll()
       hide: (color) => @_save_state() if @color_before isnt color.toHexString()
-    $("#tool-selector-well > .btn").removeClass("disabled")
-    $("#show-text").addClass("disabled")
     cb() if cb?
     
   insert_text: (e) ->
@@ -206,9 +204,6 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
                   global_this._after_filter(no)
           stop: @_save_state
       @sliders.push("#hue-slider")
-    
-    $("#tool-selector-well > .btn").removeClass("disabled")
-    $("#show-fx").addClass("disabled")
     @
   
   _caman_filter: (e, cb) =>
@@ -338,8 +333,6 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
         @brush_preview.item(0).set 'fill', color.toHexString()
         @brush_preview.renderAll()
         @canvas.freeDrawingColor = color.toHexString()
-    $("#tool-selector-well > .btn").removeClass("disabled")
-    $("#show-draw").addClass("disabled")
     @
   
   eyedropper: (e) ->
@@ -438,6 +431,8 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     for k, v of @edit_mode
       @edit_mode[k] = no
     @edit_mode[key] = yes
+    $("#tool-selector-well > .btn").removeClass("disabled primary-down")
+    $("#show-#{key}").addClass("disabled primary-down")
     
   _on_eyedropper: (e) =>
     @canvas.stopObserving 'mouse:up', @_on_eyedropper
