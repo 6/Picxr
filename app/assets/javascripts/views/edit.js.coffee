@@ -36,6 +36,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     $(@merge_canvas).attr("width", @size.width).attr("height", @size.height).attr("style", "width:#{@size.width}px;height:#{@size.height}px")
     @merge_ctx = @merge_canvas.getContext('2d')
     @sliders = []
+    @current_color = "#22ee55"
     # keyboard shortcuts
     $(document).bind 'keydown', 'ctrl+z', @undo
     $(document).bind 'keydown', 'meta+z', @undo
@@ -297,13 +298,11 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     e.preventDefault() if e?
     return @ if $("#show-draw").hasClass("disabled")
     @_set_edit_mode "draw"
-    default_color = "#22ee55"
     default_radius = 7
     min_radius = 2
-    $("#tool-well").html JST['tools/draw'](default_color: default_color)
+    $("#tool-well").html JST['tools/draw'](default_color: @current_color)
     # brush
     @canvas.isDrawingMode = yes
-    @canvas.freeDrawingColor = default_color
     @canvas.freeDrawingLineWidth = default_radius * 2
     @canvas.observe 'drawing:completed', @_on_drawing_completed
     # brush preview
@@ -313,7 +312,6 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       top: tl
       left: tl
       radius: default_radius
-      fill: default_color
       selectable: no
     # brush size slider
     $("#brush-size-slider").slider
@@ -329,10 +327,9 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     $("#brush-color-selector").spectrum
       flat: no
       theme: 'sp-light'
-      move: (color) =>
-        @brush_preview.item(0).set 'fill', color.toHexString()
-        @brush_preview.renderAll()
-        @canvas.freeDrawingColor = color.toHexString()
+      move: (color) => @_set_color color.toHexString(), no
+    
+    @_set_color @current_color
     @
   
   eyedropper: (e) ->
@@ -342,11 +339,15 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       @canvas.isEyedropperMode = no
       $("#eyedropper").removeClass("primary-down")
       @canvas.stopObserving 'mouse:up', @_on_eyedropper
+      @canvas.stopObserving 'mouse:move', @_on_eyedropper_move
+      $(@draw_canvas).unbind('mouseenter mouseleave')
     else
       $("#eyedropper").addClass("primary-down")
       @canvas.isDrawingMode = no
       @canvas.isEyedropperMode = yes
       @canvas.observe 'mouse:up', @_on_eyedropper
+      @canvas.observe 'mouse:move', @_on_eyedropper_move
+      $(@draw_canvas).mouseleave @_on_eyedropper_leave
     @
   
   undo: (e) =>
@@ -433,17 +434,27 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     @edit_mode[key] = yes
     $("#tool-selector-well > .btn").removeClass("disabled primary-down")
     $("#show-#{key}").addClass("disabled primary-down")
-    
-  _on_eyedropper: (e) =>
-    @canvas.stopObserving 'mouse:up', @_on_eyedropper
+  
+  _on_eyedropper_move: (e) =>
     location = @canvas.getPointer(e.memo.e)
     pixel = UT.get_pixel @lower_ctx, location.x, location.y
-    rgb = "rgb(#{pixel.r},#{pixel.g},#{pixel.b})"
-    @brush_preview.item(0).set 'fill', rgb
-    @brush_preview.renderAll()
-    @canvas.freeDrawingColor = rgb
-    $("#brush-color-selector").spectrum("set", rgb)
+    @_set_color "rgb(#{pixel.r},#{pixel.g},#{pixel.b})", yes, no
+    
+  _on_eyedropper_leave: (c) =>
+    @_set_color @current_color if @current_color?
+     
+  _on_eyedropper: (e) =>
     $("#eyedropper").click()
+    location = @canvas.getPointer(e.memo.e)
+    pixel = UT.get_pixel @lower_ctx, location.x, location.y
+    @_set_color "rgb(#{pixel.r},#{pixel.g},#{pixel.b})"
+  
+  _set_color: (color_string, set_spectrum = yes, set_current_color = yes) ->
+    @brush_preview.item(0).set 'fill', color_string
+    @brush_preview.renderAll()
+    @canvas.freeDrawingColor = color_string
+    $("#brush-color-selector").spectrum("set", color_string) if set_spectrum
+    @current_color = @canvas.freeDrawingColor if set_current_color
   
   _on_drawing_completed: (e) =>
     @merge_ctx.clearRect(0, 0, @size.width, @size.height)
