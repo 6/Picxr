@@ -216,11 +216,24 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     return if $(e.target).hasClass("disabled")
     $(e.target).addClass("disabled")
     t = @
-    @_prepare_filter () ->
-      Caman "#caman-img", () ->
+    @_prepare_filter (rand) ->
+      new Caman "#caman-img#{rand}", () ->
+        $("canvas#caman-img#{rand}").attr("id", "caman-canvas#{rand}")
         cb @, () ->
-          t._replace_fabric_image_from_canvas $("#caman-img")[0].toDataURL("image/png"), yes
+          t._replace_fabric_image_from_canvas $("#caman-canvas#{rand}")[0].toDataURL("image/png"), yes
           $(e.target).removeClass("disabled")
+
+  _prepare_filter: (cb) =>
+    caman_img = document.createElement('img')
+    caman_img.onload = =>
+      $("#hidden-elements").append(caman_img)
+      rand = Math.round(Math.random() * 100000000)
+      $(caman_img).attr("id", "caman-img#{rand}").data("camanwidth", @size.width).data("camanheight", @size.height)
+      cb(rand)
+    caman_img.src = @lower_canvas.toDataURL("image/png")
+
+  _after_filter: (is_save_state = yes) =>
+    @_replace_fabric_image_from_canvas $("canvas#caman-img")[0].toDataURL("image/png"), is_save_state
   
   grayscale: (e) -> @_caman_filter e, (t, cb) -> t.greyscale().render(cb)
   invert: (e) -> @_caman_filter e, (t, cb) -> t.invert().render(cb)
@@ -284,16 +297,6 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
   zoomblur: (e) ->
     @_glfx_click_builder e, "#zoomblur", (x, y) =>
       @glfx.zoomBlur(x, y, 0.2)
-    
-  _prepare_filter: (cb) =>
-    #$("#hidden-elements").html("")
-    caman_img = document.createElement('img')
-    $(caman_img).attr("id", "caman-img").data("camanwidth", @size.width).data("camanheight", @size.height).appendTo("#hidden-elements")
-    caman_img.onload = => cb()
-    caman_img.src = @lower_canvas.toDataURL("image/png")
-  
-  _after_filter: (is_save_state = yes) =>
-    @_replace_fabric_image_from_canvas $("canvas#caman-img")[0].toDataURL("image/png"), is_save_state
     
   show_draw: (e) ->
     e.preventDefault() if e?
