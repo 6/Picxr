@@ -250,7 +250,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
 
   _glfx_stop: (id, hide) =>
     @glfx_id = null
-    $(id).removeClass("primary")
+    $(id).removeClass("primary-down")
     $("#glfx-canvas").mousefu_unbind()
     # hide glfx if shown
     if hide and $("#glfx-canvas").is(":visible")
@@ -259,9 +259,9 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
   
   _glfx_click_builder: (e, id, down_cb) =>
     e.preventDefault() if e?
-    return @_glfx_stop id, yes if $(id).hasClass("primary")
+    return @_glfx_stop id, yes if $(id).hasClass("primary-down")
     @glfx_id = id
-    $(id).addClass("primary")
+    $(id).addClass("primary-down")
     # show glfx if not shown
     unless $("#glfx-canvas").is(":visible")
       @_load_img @lower_canvas.toDataURL("png"), (img) =>
@@ -337,13 +337,13 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
   
   eyedropper: (e) ->
     e.preventDefault()
-    if $("#eyedropper").hasClass("primary")
+    if $("#eyedropper").hasClass("primary-down")
       @canvas.isDrawingMode = yes
       @canvas.isEyedropperMode = no
-      $("#eyedropper").removeClass("primary")
+      $("#eyedropper").removeClass("primary-down")
       @canvas.stopObserving 'mouse:up', @_on_eyedropper
     else
-      $("#eyedropper").addClass("primary")
+      $("#eyedropper").addClass("primary-down")
       @canvas.isDrawingMode = no
       @canvas.isEyedropperMode = yes
       @canvas.observe 'mouse:up', @_on_eyedropper
