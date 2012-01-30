@@ -49,6 +49,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     $(@el).html @template(width: @size.width, height: @size.height)
     $("#toolbox-wrap").html JST['toolbox']()
     $("#canvas-wrap").attr("style", "width:#{@size.width}px;height:#{@size.height}px")
+    @restore_state_placeholder = $("#restore-state-placeholder")[0].getContext('2d')
     @
   
   destroy: =>
@@ -397,7 +398,13 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     unless new_idx < 0 or new_idx > @saved_states.length - 1
       @cur_state_idx = new_idx
       $("#text-edit-wrap").hide(0)
+      @restore_state_placeholder.drawImage(@lower_canvas, 0, 0, @size.width, @size.height)
+      $("#fabric-wrap").hide(0)
+      $("#restore-state-placeholder").show(0)
       @canvas.loadFromJSON @saved_states[@cur_state_idx], () =>
+        $("#fabric-wrap").show(0)
+        $("#restore-state-placeholder").hide(0)
+        @restore_state_placeholder.clearRect(0, 0, @size.width, @size.height)
         if $("#glfx-canvas").is(":visible")
           # restore glfx canvas as well, since it's visible
           @_load_img @lower_canvas.toDataURL("png"), (img) =>

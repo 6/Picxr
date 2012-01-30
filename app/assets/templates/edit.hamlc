@@ -1,6 +1,7 @@
 .row
   #toolbox-wrap.span3
   #canvas-wrap.span9
+    %canvas#restore-state-placeholder.hide{:width => @width, :height => @height, :style => "width:#{@width}px;height:#{@height}px"}
     #glfx-placeholder.hide
     %canvas#fabric{:width => @width, :height => @height, :style => "width:#{@width}px;height:#{@height}px"}
     #hidden-elements.hide
