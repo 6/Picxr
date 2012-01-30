@@ -1,9 +1,11 @@
-%p.label2.first Preview
-%canvas#brush-preview-canvas{:width => "46", :height => "46", :style => "width:46px;height:46px"}
-%p.label2 Brush size
-#brush-size-slider
-%p.label2 Brush color
-%p
-  %input#brush-color-selector{:type => 'text', :value => "#{@default_color}"}
-%p.align-center
-  %a#eyedropper.btn{:href => "#"} Eyedropper
+.cont
+  #brush-preview-wrap.left
+    %canvas#brush-preview-canvas{:width => "46", :height => "46", :style => "width:46px;height:46px"}
+  #brush-size-wrap.left
+    %p.label2.first Size
+    #brush-size-slider
+%hr
+.cont
+  .left
+    %input#brush-color-selector{:type => 'text', :value => "#{@default_color}"}
+  %a#eyedropper.btn.small{:href => "#"} Eyedropper

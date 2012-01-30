@@ -332,7 +332,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
           @canvas.freeDrawingLineWidth = (ui.value * 2) + min_radius
     # brush color selector
     $("#brush-color-selector").spectrum
-      flat: true
+      flat: no
       theme: 'sp-light'
       move: (color) =>
         @brush_preview.item(0).set 'fill', color.toHexString()
