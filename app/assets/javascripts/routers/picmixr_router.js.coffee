@@ -72,7 +72,9 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
       @view = new PicMixr.Views.Edit pic: pic
       @view.render().init_libraries().show_draw()
       url_start = url_or_id.substring(0,7)
-      unless url_start is "http://" or url_start is "https:/"
+      if url_start is "http://" or url_start is "https:/"
+        @view.original_url = clean
+      else
         @view.original_id = url_or_id
     pic.onerror = =>
       UT.message "Error loading image."
