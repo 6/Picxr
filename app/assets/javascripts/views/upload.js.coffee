@@ -8,7 +8,7 @@ class PicMixr.Views.Upload extends PicMixr.Views.BaseView
     UT.p "PicMixr.Views.Upload -> render"
     $(@el).html @template(type: @opts.type)
     if @opts.type is "url"
-      new PicMixr.Views.UrlUpload().render()
+      $("#upload-form-wrap").html JST['forms/url_upload']()
     else
       $("#upload-form-wrap").html JST['forms/desktop_upload']()
     @

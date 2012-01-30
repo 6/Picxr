@@ -56,12 +56,16 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
       if UT.first_page then @index(no) else UT.loading()
       Face.update_status_cb = -> PicMixr.router.album(album_id)
 
-  edit: (url) ->
+  edit: (url_or_id) =>
     @_set_active()
     @destroy_view()
-    clean_url = decodeURIComponent(url).replace(/@/g, ".")
-    url = "#{UT.default_cb_href()}iproxy/#{encodeURIComponent clean_url.replace(/\./g, '@')}"
-    UT.p "Route EDIT", clean_url, "through", url
+    is_private = url_or_id.substring(0, 2) is "p/"
+    unless is_private
+      clean = decodeURIComponent(url_or_id).replace(/@/g, ".")
+      clean = "p/#{clean}" if is_private
+      url_or_id = encodeURIComponent clean.replace(/\./g, '@')
+    url = "#{UT.default_cb_href()}iproxy/#{url_or_id}"
+    UT.p "Route EDIT"
     UT.loading()
     pic = new Image()
     pic.onload = =>

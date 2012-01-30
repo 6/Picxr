@@ -5,15 +5,18 @@ PicMixr::Application.routes.draw do
   match "/s/:provider" => "sessions#create", :via => :post
   match "/logout" => "sessions#destroy", :as => :logout
   
-  match "/iproxy/:url" => 'mixr#proxy'
+  match "/iproxy/:url_or_id" => 'mixr#proxy'
+  match "/iproxy/p/:url_or_id" => 'mixr#proxy'
   match "/save" => 'mixr#save', :via => :post
   match "/upload" => 'pictures#create', :via => :post
+  match "/url-upload" => 'pictures#create_from_url', :via => :post
   
   # handled by backbone router
   match '/albums/:id' => 'home#index'
   match '/album/:id' => 'home#index'
   match '/tags/:id' => 'home#index'
-  match '/edit/:url' => 'home#index', :as => "edit"
+  match '/edit/:url_or_id' => 'home#index', :as => "edit"
+  match '/edit/p/:id' => 'home#index', :as => "edit_private"
   match '/upload/:type' => 'home#index', :as => "upload"
   
   match '/about' => 'static#about'

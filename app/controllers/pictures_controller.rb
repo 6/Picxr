@@ -33,4 +33,22 @@ class PicturesController < ApplicationController
       end
     end
   end
+  
+  def create_from_url
+    pic = Picture.get_remote_image(params[:url], request.path)
+    if pic.nil?
+      flash[:alert] = 'Please specify a valid image URL.'
+      return redirect_to upload_path("url")
+    end
+    io = pic[:io]
+    picture = Picture.create(
+      :creator_id => session[:user_id],
+      :is_private => true
+    )
+    def io.original_filename
+      "from_url.png"
+    end
+    picture.update_attributes(:picture => io)
+    redirect_to edit_private_path(picture.clean_permalink_id)
+  end
 end
