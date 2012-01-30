@@ -62,7 +62,7 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
     is_private = url_or_id.substring(0, 2) is "p/"
     unless is_private
       clean = decodeURIComponent(url_or_id).replace(/@/g, ".")
-      clean = "p/#{clean}" if is_private
+      clean = "p/#{clean}"
       url_or_id = encodeURIComponent clean.replace(/\./g, '@')
     url = "#{UT.default_cb_href()}iproxy/#{url_or_id}"
     UT.p "Route EDIT"
