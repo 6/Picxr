@@ -53,9 +53,9 @@
                 %a.normal.route-bb{:href =>"/upload/desktop"} Upload
               %li#cta.dropdown
             #share
-              %a.img{:href => "https://www.facebook.com/pages/Picxr/348273998525494", :title => "Like #{t :app}"}
+              %a.img{:href => "https://www.facebook.com/pages/Picxr/348273998525494", :title => "Like #{t :app}", :target => "_blank"}
                 %img{:src => "/assets/facebook_16.png", :alt => "Facebook"}
-              %a.img{:href => "https://twitter.com/#{t :twitter}", :title => "Follow #{t :app}"}
+              %a.img{:href => "https://twitter.com/#{t :twitter}", :title => "Follow #{t :app}", :target => "_blank"}
                 %img{:src => "/assets/twitter_16.png", :alt => "Twitter"}
       .alerts
         - if flash[:alert]
