@@ -85,8 +85,9 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
           dimg = new fabric.Image(temp_img)
           dimg.set(selectable:no, top: @size.height / 2, left: @size.width / 2, isBgImage: yes)
           @canvas.add dimg
-          @glfx_texture = @glfx.texture temp_img
-          @glfx.draw(@glfx_texture).update()
+          if @glfx?
+            @glfx_texture = @glfx.texture temp_img
+            @glfx.draw(@glfx_texture).update()
           @_save_state()
         temp_img.src = data
     @canvas.observe 'object:modified', @_on_object_modified
