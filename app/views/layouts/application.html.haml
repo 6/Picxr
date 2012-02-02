@@ -15,7 +15,6 @@
     %meta{:charset => 'utf-8'}
     %meta{:name => "description", :content => "#{t :description_long, :app => t(:app)}"}
     %meta{:name => "keywords", :content => "pictures,photos,images,photo editor,memes,funny pictures,image host,image upload"}
-    %meta{:property => "fb:app_id", :content => ENV['FACEBOOK_APP_ID']}
     %meta{:property => "og:type", :content => @og_type ? @og_type : "website"}
     %meta{:property => "og:title", :content => title}
     %meta{:property => "og:url", :content => @permalink ? @permalink : "http://#{ENV['PERMALINK_ROOT']}"}
@@ -51,12 +50,6 @@
                 %a.normal.first.route-default{:href =>"/"} Home
               %li#nav-upload
                 %a.normal.route-bb{:href =>"/upload/desktop"} Upload
-              %li#cta.dropdown
-            #share
-              %a.img{:href => "https://www.facebook.com/pages/Picxr/348273998525494", :title => "Like #{t :app}", :target => "_blank"}
-                %img{:src => "/assets/facebook_16.png", :alt => "Facebook"}
-              %a.img{:href => "https://twitter.com/#{t :twitter}", :title => "Follow #{t :app}", :target => "_blank"}
-                %img{:src => "/assets/twitter_16.png", :alt => "Twitter"}
       .alerts
         - if flash[:alert]
           .alert-message.warning
@@ -72,16 +65,7 @@
       %a{:href => terms_path} Terms
       &middot;
       %a{:href => privacy_path} Privacy
-      %a.twitter-follow-button{:href => "https://twitter.com/#{t :twitter}", :data => {"show-count" => "false", :width => "110px", :size => "medium", :lang => "en", "show-screen-name" => "true"}}= "Follow @#{t :twitter}"
-      .fb-like{:data => {:href => "https%3A%2F%2Fwww.facebook.com%2Fpages%2FPicxr%2F348273998525494", :send => "false", :layout => "button_count", :width => "90", "show-faces" => "false"}}
-    #fb-root.hide
-    :javascript
-      // Load Facebook JS SDK asynchronously
-      (function(d){
-        var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
-        js = d.createElement('script'); js.id = id; js.async = true;
-        js.src = "//connect.facebook.net/en_US/all.js";
-        d.getElementsByTagName('head')[0].appendChild(js);
-      }(document));
-    :javascript
-      !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+      %a.img{:href => "https://www.facebook.com/pages/Picxr/348273998525494", :title => "Like #{t :app}", :target => "_blank"}
+        %img{:src => "/assets/facebook_16.png", :alt => "Facebook"}
+      %a.img{:href => "https://twitter.com/#{t :twitter}", :title => "Follow #{t :app}", :target => "_blank"}
+        %img{:src => "/assets/twitter_16.png", :alt => "Twitter"}

@@ -6,4 +6,3 @@
       %h2 Get started by selecting a photo
       #landing-cta
         %a.btn.large.route-bb{:href => "/upload/desktop"} Upload a Photo
-        %a#fb-auth2.btn.large.fb{:href => "#"} Import Facebook Photos

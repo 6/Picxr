@@ -1,9 +1,0 @@
-%a.dropdown-toggle{:href => "#"}
-  %img.fb-avatar{:src => "https://graph.facebook.com/#{@fb_user_id}/picture"}
-  %span.fb-name= @fb_name
-%ul.dropdown-menu
-  %li
-    %a.route-default{:href =>"/"} Your Photos
-  %hr.no-spacing
-  %li
-    %a#fb-logout{:href => "#"} Logout

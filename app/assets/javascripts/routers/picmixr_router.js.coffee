@@ -5,56 +5,8 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
     @route.apply @, [/\?([^\s]+)/, 'index', @index]
   
   routes:
-    "albums/:user_id": "user_albums"
-    "album/:album_id": "album"
-    "tags/:user_id": "tags"
     "upload/:type": "upload"
     "": "index"
-  
-  user_albums: (user_id) ->
-    @_set_active("#nav-home")
-    if Face.active()
-      UT.p "Route ALBUMS for user #{user_id}"
-      @destroy_view()
-      albums = new PicMixr.Collections.Pictures
-      Face.get_user_info user_id, (info) =>
-        @view = new PicMixr.Views.Browse collection: albums, info: info, mode: 'albums'
-        Face.user_albums user_id, (albums_models) =>
-          albums.add albums_models
-          @view.render()
-    else
-      if UT.first_page then @index(no) else UT.loading()
-      Face.update_status_cb = -> PicMixr.router.user_albums(user_id)
-  
-  tags: (user_id) ->
-    @_set_active("#nav-home")
-    if Face.active()
-      UT.p "Route TAGS for user #{user_id}"
-      @destroy_view()
-      pics = new PicMixr.Collections.Pictures
-      Face.get_user_info user_id, (info) ->
-        @view = new PicMixr.Views.Browse collection: pics, info: info, mode: 'tags'
-        Face.tagged_photos user_id, (pics_models) ->
-          pics.add pics_models
-          @view.render()
-    else
-      if UT.first_page then @index(no) else UT.loading()
-      Face.update_status_cb = -> PicMixr.router.tags(user_id)
-    
-  album: (album_id) ->
-    @_set_active("#nav-home")
-    if Face.active()
-      UT.p "Route ALBUM for album #{album_id}"
-      @destroy_view()
-      pics = new PicMixr.Collections.Pictures
-      Face.get_album_info album_id, (info) =>
-        @view = new PicMixr.Views.Browse collection: pics, info: info, mode: 'album'
-        Face.album_photos album_id, (pics_models) =>
-          pics.add pics_models
-          @view.render()
-    else
-      if UT.first_page then @index(no) else UT.loading()
-      Face.update_status_cb = -> PicMixr.router.album(album_id)
 
   edit: (url_or_id) =>
     @_set_active()
@@ -85,17 +37,11 @@ class PicMixr.Routers.PicMixrRouter extends Backbone.Router
     @destroy_view()
     @view = new PicMixr.Views.Upload(type: type).render()
   
-  index: (override_update_status_cb = yes) =>
+  index: () =>
     UT.p "Route INDEX"
     @_set_active("#nav-home")
-    if Face.active()
-      UT.loading()
-      UT.route_bb Face.default_route()
-    else
-      @destroy_view()
-      if override_update_status_cb
-        Face.update_status_cb = -> PicMixr.router.index()
-      @view = new PicMixr.Views.Landing().render()
+    @destroy_view()
+    @view = new PicMixr.Views.Landing().render()
   
   destroy_view: ->
     UT.p "destroy view if active:", @view

@@ -1,17 +1,1 @@
-.fb-browse-meta
-  %h3#fb-photos-title
-    .row
-      #fb-photos-title-left.span9
-        - if @mode is 'album'
-          %a.name.route-bb{:href => "/albums/#{@info.uid}"}= @info.owner.name
-          &mdash;
-          %span.name= @info.name
-        - else
-          %span.name= @info.name
-        %span.spacer
-        %a.btn.medium.route-bb{:class => "#{'primary' unless @mode is 'tags'}", :href => "/albums/#{@info.uid}"} Albums
-        %a.btn.medium.route-bb{:class => "#{'primary' if @mode is 'tags'}", :href => "/tags/#{@info.uid}"} Tags
-      #fb-photos-title-right.span3
-        %select#friends-select{:data => {:placeholder => "Select a friend"}}
-          %option{:value => ""}
-%ul#fb-photos.media-grid
+%ul#pics.media-grid

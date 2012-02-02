@@ -28,16 +28,10 @@ UT.route_bb = (href, e) ->
   href = href.substring(1) if href.substring(0 ,1) is "/"
   UT.p "route_bb -> #{href}"
   PicMixr.router.navigate(href, true)
-  if UT.is_framed()
-    # update Facebook URL
-    UT.p "TODO: update FB URL to #{UT.top_href()}#{href} ? need to hijack history"
   e.preventDefault() if e?
 
 UT.route_default = (e) ->
-  if Face.active()
-    UT.route_bb Face.default_route(), e
-  else
-    UT.route_bb '/', e
+  UT.route_bb '/', e
   
 UT.fit_dimensions = (width, height, max_width, max_height) ->
   if width <= max_width or height <= max_height
@@ -60,13 +54,6 @@ UT.loading = (text) ->
 
 UT.message = (text) ->
   $("#main-wrap").html JST['tween/message']({text: text})
-
-# NOTE: do not use this for if data.value is large (gets cut off at 393 KB
-UT.non_ajax_post = (url, data_list) ->
-  html = "<form method='post' action='#{url}' class='hide'>"
-  for data in data_list
-    html += "<input name='#{data.name}' value='#{data.value}'>"
-  $("#{html}</form>").appendTo('body').submit()
   
 UT.has_webgl = ->
   try
