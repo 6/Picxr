@@ -4,7 +4,7 @@ window.UT =
   debug: if $("html").data("debug") is "yes" then yes else no
 
 UT.p = (args...) ->
-  console.log args... if UT.debug
+  console.log args... if UT.debug and console?
 
 UT.redirect = (path) ->
   path = path.substring(1) if path.substring(0 ,1) is "/"
