@@ -25,6 +25,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     $(@merge_canvas).attr("width", @size.width).attr("height", @size.height).attr("style", "width:#{@size.width}px;height:#{@size.height}px")
     @merge_ctx = @merge_canvas.getContext('2d')
     @current_color = "#22ee55"
+    @current_opacity = 1
     # keyboard shortcuts
     $(document).bind 'keydown', 'ctrl+z', @undo
     $(document).bind 'keydown', 'meta+z', @undo
@@ -153,6 +154,14 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
           @brush_preview.item(0).set 'radius', ui.value + min_radius
           @brush_preview.renderAll()
           @canvas.freeDrawingLineWidth = (ui.value * 2) + min_radius
+    $("#brush-opacity-slider").slider
+        range: "min"
+        min: 5
+        max: 50
+        value: @current_opacity * 50
+        slide: (e, ui) =>
+          @current_opacity = ui.value / 50
+          @_set_color @current_color
     # brush color selector
     $("#brush-color-selector").spectrum
       flat: no
@@ -281,6 +290,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     @_set_color "rgb(#{pixel.r},#{pixel.g},#{pixel.b})"
   
   _set_color: (color_string, set_spectrum = yes, set_current_color = yes) ->
+    color_string = UT.change_color_opacity(color_string, @current_opacity)
     @brush_preview.item(0).set 'fill', color_string
     @brush_preview.renderAll()
     @canvas.freeDrawingColor = color_string

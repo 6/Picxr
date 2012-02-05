@@ -6025,6 +6025,7 @@ fabric.util.string = {
       this._freeDrawingYPoints.push(pointer.y);
 
       this.contextTop.lineTo(pointer.x, pointer.y);
+      this.contextTop.clearRect(0, 0, this.contextTop.canvas.width, this.contextTop.canvas.height);
       this.contextTop.stroke();
     },
 

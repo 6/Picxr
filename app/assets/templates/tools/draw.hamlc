@@ -4,6 +4,8 @@
   #brush-size-wrap.left
     %p.label2.first Size
     #brush-size-slider
+%p.label2 Opacity
+#brush-opacity-slider
 %hr
 .cont
   .left
