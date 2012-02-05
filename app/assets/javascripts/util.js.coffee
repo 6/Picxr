@@ -77,3 +77,12 @@ UT.has_webgl = ->
 
 UT.onbeforeunload = ->
   "Are you sure you want to leave? All your changes will be lost."
+  
+UT.hex2rgb = (hex) ->
+  c = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec hex
+  "rgb(#{parseInt(c[1], 16)},#{parseInt(c[2], 16)},#{parseInt(c[3], 16)})"
+
+UT.change_color_opacity = (color_s, opacity) ->
+  color_s = UT.hex2rgb(color_s) if color_s.substring(0, 1) is "#"
+  parsed = /^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(1|0\.\d+))?\)$/.exec color_s
+  "rgba(#{parsed[1]},#{parsed[2]},#{parsed[3]},#{parseFloat(opacity)})"
