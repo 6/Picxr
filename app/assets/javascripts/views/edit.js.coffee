@@ -9,20 +9,9 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       'click #undo': 'undo'
       'click #redo': 'redo'
       'click #show-draw': 'show_draw'
-      'click #show-fx': 'show_fx'
       'click #show-text': 'show_text'
       # specific to partials
       'click #eyedropper': 'eyedropper'
-      'click #grayscale': 'grayscale'
-      'click #invert': 'invert'
-      'click #grungy': 'grungy'
-      'click #lomo': 'lomo'
-      'click #vintage': 'vintage'
-      'click #hazyDays': 'hazyDays'
-      'click .btn': 'click_button'
-      'click #swirl': 'swirl'
-      'click #bulge': 'bulge'
-      'click #zoomblur': 'zoomblur'
       'click #insert-text': 'insert_text'
       'click #change-text': 'change_text'
   
@@ -35,7 +24,6 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     @merge_canvas = document.createElement('canvas')
     $(@merge_canvas).attr("width", @size.width).attr("height", @size.height).attr("style", "width:#{@size.width}px;height:#{@size.height}px")
     @merge_ctx = @merge_canvas.getContext('2d')
-    @sliders = []
     @current_color = "#22ee55"
     # keyboard shortcuts
     $(document).bind 'keydown', 'ctrl+z', @undo
@@ -68,14 +56,6 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     @lower_ctx = @lower_canvas.getContext('2d')
     @draw_canvas = $(".upper-canvas")[0]
     @draw_ctx = @draw_canvas.getContext('2d')
-    @glfx_id = null
-    placeholder = document.getElementById('glfx-placeholder')
-    try
-      @glfx = fx.canvas()
-      @glfx.replace(placeholder)
-      $(@glfx).hide(0).attr("id", "glfx-canvas")
-    catch e
-      placeholder.innerHTML = e
     fabric.Image.fromURL @pic.src, (img) =>
       img.toDataURL (data) =>
         # grab image DataURL to store in memory
@@ -85,9 +65,6 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
           dimg = new fabric.Image(temp_img)
           dimg.set(selectable:no, top: @size.height / 2, left: @size.width / 2, isBgImage: yes)
           @canvas.add dimg
-          if @glfx?
-            @glfx_texture = @glfx.texture temp_img
-            @glfx.draw(@glfx_texture).update()
           @_save_state()
         temp_img.src = data
     @canvas.observe 'object:modified', @_on_object_modified
@@ -146,155 +123,6 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
   _after_edit_text: (is_save_state) =>
     @canvas.renderAll()
     @_save_state() if is_save_state
-
-  show_fx: (e) ->
-    e.preventDefault() if e?
-    return @ if $("#show-fx").hasClass("disabled")
-    @_set_edit_mode "fx"
-    $("#tool-well").html JST['tools/fx']()
-      
-    #TODO reduce duplicate slider code
-    $("#brightness-slider").slider
-        range: "min"
-        min: -5
-        max: 5
-        value: 0
-        slide: (e, ui) =>
-          global_this = @
-          @_prepare_filter () ->
-            Caman "#caman-img", () ->
-              @brightness(ui.value).render () ->
-                global_this._after_filter(no)
-        stop: @_save_state
-      
-    @sliders.push("#brightness-slider")
-    $("#contrast-slider").slider
-        range: "min"
-        min: -5
-        max: 5
-        value: 0
-        slide: (e, ui) =>
-          global_this = @
-          @_prepare_filter () ->
-            Caman "#caman-img", () ->
-              @contrast(ui.value).render () ->
-                global_this._after_filter(no)
-        stop: @_save_state
-      @sliders.push("#contrast-slider")
-      $("#saturation-slider").slider
-          range: "min"
-          min: -100
-          max: 100
-          value: 0
-          slide: (e, ui) =>
-            global_this = @
-            @_prepare_filter () ->
-              Caman "#caman-img", () ->
-                @saturation(ui.value).render () ->
-                  global_this._after_filter(no)
-          stop: @_save_state
-      @sliders.push("#saturation-slider")
-      $("#hue-slider").slider
-          range: "min"
-          min: 0
-          max: 100
-          value: 0
-          slide: (e, ui) =>
-            global_this = @
-            @_prepare_filter () ->
-              Caman "#caman-img", () ->
-                @hue(ui.value).render () ->
-                  global_this._after_filter(no)
-          stop: @_save_state
-      @sliders.push("#hue-slider")
-    @
-  
-  _caman_filter: (e, cb) =>
-    e.preventDefault()
-    return if $(e.target).hasClass("disabled")
-    $(e.target).addClass("disabled")
-    t = @
-    @_prepare_filter (rand) ->
-      new Caman "#caman-img#{rand}", () ->
-        $("canvas#caman-img#{rand}").attr("id", "caman-canvas#{rand}")
-        cb @, () ->
-          t._replace_fabric_image_from_canvas $("#caman-canvas#{rand}")[0].toDataURL("image/png"), yes
-          $(e.target).removeClass("disabled")
-
-  _prepare_filter: (cb) =>
-    caman_img = document.createElement('img')
-    caman_img.onload = =>
-      $("#hidden-elements").append(caman_img)
-      rand = Math.round(Math.random() * 100000000)
-      $(caman_img).attr("id", "caman-img#{rand}").data("camanwidth", @size.width).data("camanheight", @size.height)
-      cb(rand)
-    caman_img.src = @lower_canvas.toDataURL("image/png")
-
-  _after_filter: (is_save_state = yes) =>
-    @_replace_fabric_image_from_canvas $("canvas#caman-img")[0].toDataURL("image/png"), is_save_state
-  
-  grayscale: (e) -> @_caman_filter e, (t, cb) -> t.greyscale().render(cb)
-  invert: (e) -> @_caman_filter e, (t, cb) -> t.invert().render(cb)
-  grungy: (e) -> @_caman_filter e, (t, cb) -> t.grungy().render(cb)
-  lomo: (e) -> @_caman_filter e, (t, cb) -> t.lomo().render(cb)
-  vintage: (e) -> @_caman_filter e, (t, cb) -> t.vintage().render(cb)
-  hazyDays: (e) -> @_caman_filter e, (t, cb) -> t.hazyDays().render(cb)
-    
-  click_button: (e) ->
-    if @glfx_id?
-      if "##{$(e.target).attr("id")}" isnt @glfx_id
-        if $(e.target).hasClass("glfx")
-          # clicked on a different glfx effect
-          @_glfx_stop @glfx_id, no 
-        else
-          # clicked on a non-glfx button
-          @_glfx_stop @glfx_id, yes
-    @
-
-  _glfx_stop: (id, hide) =>
-    @glfx_id = null
-    $(id).removeClass("primary-down")
-    $("#glfx-canvas").mousefu_unbind()
-    # hide glfx if shown
-    if hide and $("#glfx-canvas").is(":visible")
-      $("#fabric-wrap").show(0)
-      $("#glfx-canvas").hide(0)
-  
-  _glfx_click_builder: (e, id, down_cb) =>
-    e.preventDefault() if e?
-    return @_glfx_stop id, yes if $(id).hasClass("primary-down")
-    @glfx_id = id
-    $(id).addClass("primary-down")
-    # show glfx if not shown
-    unless $("#glfx-canvas").is(":visible")
-      @_load_img @lower_canvas.toDataURL("png"), (img) =>
-        @glfx_texture = @glfx.texture img
-        @glfx.draw(@glfx_texture).update()
-        $("#glfx-canvas").show(0)
-        $("#fabric-wrap").hide(0)
-    # bind mouse events to glfx canvas
-    $("#glfx-canvas").mousefu 'downleft move', (c) =>
-      @glfx.draw(@glfx_texture)
-      down_cb(c.move.x, c.move.y)
-      @glfx.update()
-    $("#glfx-canvas").mousefu 'upleft',
-      start: (c) =>
-        data = @glfx.toDataURL('image/png')
-        @_load_img data, (img) =>
-          @glfx_texture = @glfx.texture img
-          @_replace_fabric_image_from_canvas data, yes
-    
-  swirl: (e) ->
-    @_glfx_click_builder e, "#swirl", (x, y) =>
-      @glfx.swirl(x, y, 150, 3)
-    
-  bulge: (e) ->
-    @_glfx_click_builder e, "#bulge", (x, y) =>
-      @glfx.bulgePinch(x, y, 150, 3)
-
-  zoomblur: (e) ->
-    @_glfx_click_builder e, "#zoomblur", (x, y) =>
-      @glfx.zoomBlur(x, y, 0.2)
     
   show_draw: (e) ->
     e.preventDefault() if e?
@@ -406,11 +234,6 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
         $("#fabric-wrap").show(0)
         $("#restore-state-placeholder").hide(0)
         @restore_state_placeholder.clearRect(0, 0, @size.width, @size.height)
-        if $("#glfx-canvas").is(":visible")
-          # restore glfx canvas as well, since it's visible
-          @_load_img @lower_canvas.toDataURL("png"), (img) =>
-            @glfx_texture = @glfx.texture img
-            @glfx.draw(@glfx_texture).update()
         @_after_state_change()
     
   _after_state_change: =>
@@ -436,8 +259,6 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     #remove any active selections
     @canvas.deactivateAll()
     @canvas.renderAll()
-    # destroy sliders
-    $(slider_el).slider("destroy") for slider_el in @sliders
     # set the new edit mode
     for k, v of @edit_mode
       @edit_mode[k] = no

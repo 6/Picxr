@@ -5,8 +5,6 @@
       %button#redo.btn Redo
     %p#tool-selector-well.last
       %button#show-draw.small.btn Draw
-      - if UT.has_webgl()
-        %button#show-fx.small.btn Fx
       %button#show-text.small.btn Text
   #tool-well.well
   #save-image-well.well
