@@ -56,9 +56,9 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     @lower_canvas = $("#fabric")[0]
     @lower_ctx = @lower_canvas.getContext('2d')
     @draw_canvas = $(".upper-canvas")[0]
-    @draw_ctx = @draw_canvas.getContext('2d')
     # prevent text cursor on drag
     @draw_canvas.onselectstart = () -> return false
+    @draw_ctx = @draw_canvas.getContext('2d')
     fabric.Image.fromURL @pic.src, (img) =>
       img.toDataURL (data) =>
         # grab image DataURL to store in memory
