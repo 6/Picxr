@@ -69,6 +69,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     @lower_ctx = @lower_canvas.getContext('2d')
     @draw_canvas = $(".upper-canvas")[0]
     @draw_ctx = @draw_canvas.getContext('2d')
+    @draw_canvas.onselectstart = () -> return false # prevent text cursor on drag
     @glfx_id = null
     placeholder = document.getElementById('glfx-placeholder')
     try

@@ -5735,7 +5735,12 @@ fabric.util.string = {
       *
       */
     __onMouseMove: function (e) {
-
+      if(this.isEyedropperMode) {
+        this._setCursor(this.EYEDROPPER_CURSOR);
+      }
+      else {
+        this._setCursor(this.CURSOR);
+      }
       if (this.isDrawingMode) {
         if (this._isCurrentlyDrawing) {
           this._captureDrawingPath(e);
@@ -5769,12 +5774,6 @@ fabric.util.string = {
             if (this._objects[i] && !this._objects[i].active) {
               this._objects[i].setActive(false);
             }
-          }
-          if(this.isEyedropperMode) {
-            style.cursor = this.EYEDROPPER_CURSOR;
-          }
-          else {
-            style.cursor = this.CURSOR;
           }
         }
         else {
@@ -6148,7 +6147,9 @@ fabric.util.string = {
      * @method _setCursor
      */
     _setCursor: function (value) {
-      this.upperCanvasEl.style.cursor = value;
+      if(this.upperCanvasEl.style.cursor !== value) {
+        this.upperCanvasEl.style.cursor = value;
+      }
     },
 
     /**
