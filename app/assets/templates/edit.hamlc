@@ -4,5 +4,4 @@
     %canvas#restore-state-placeholder.hide{:width => @width, :height => @height, :style => "width:#{@width}px;height:#{@height}px"}
     #glfx-placeholder.hide
     %canvas#fabric{:width => @width, :height => @height, :style => "width:#{@width}px;height:#{@height}px"}
-    %canvas#fabric-full{:width => @fullwidth, :height => @fullheight, :style => "width:#{@fullwidth}px;height:#{@fullheight}px"}
     #hidden-elements.hide

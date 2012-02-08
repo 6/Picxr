@@ -18,12 +18,12 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
   initialize: ->
     @pic = arguments[0].pic
     @saved_states = []
-    @saved_states_full = []
     @cur_state_idx = null
     @edit_mode = {draw: no, fx: no}
     @size = UT.fit_dimensions(@pic.width, @pic.height, 561, 600)
-    @merge_small = @_create_canvas(@size.width, @size.height)
-    @merge_full = @_create_canvas(@pic.width, @pic.height)
+    @merge_canvas = document.createElement('canvas')
+    $(@merge_canvas).attr("width", @size.width).attr("height", @size.height).attr("style", "width:#{@size.width}px;height:#{@size.height}px")
+    @merge_ctx = @merge_canvas.getContext('2d')
     @current_color = "#22ee55"
     @current_opacity = 1
     # keyboard shortcuts
@@ -35,7 +35,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
   
   render: ->
     UT.p "PicMixr.Views.Edit -> render"
-    $(@el).html @template(width: @size.width, height: @size.height, fullwidth: @pic.width, fullheight: @pic.height)
+    $(@el).html @template(width: @size.width, height: @size.height)
     $("#toolbox-wrap").html JST['toolbox']()
     $("#canvas-wrap").attr("style", "width:#{@size.width}px;height:#{@size.height}px")
     @restore_state_placeholder = $("#restore-state-placeholder")[0].getContext('2d')
@@ -53,27 +53,20 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
   init_libraries: ->
     @canvas = new fabric.Canvas 'fabric', {selection: no}
     $(@canvas.wrapperEl).attr("id", "fabric-wrap").removeAttr("class").removeAttr("style")
-    @canvas_full = new fabric.Canvas 'fabric-full', {selection: no}
-    $(@canvas_full.wrapperEl).attr("id", "fabric-full-wrap").removeAttr("class").removeAttr("style").hide(0)
     @lower_canvas = $("#fabric")[0]
     @lower_ctx = @lower_canvas.getContext('2d')
-    @draw_canvas = $("#fabric-wrap > .upper-canvas")[0]
+    @draw_canvas = $(".upper-canvas")[0]
     # prevent text cursor on drag
     @draw_canvas.onselectstart = () -> return false
     @draw_ctx = @draw_canvas.getContext('2d')
-    @lower_canvas_full = $("#fabric-full")[0]
     fabric.Image.fromURL @pic.src, (img) =>
       img.toDataURL (data) =>
         # grab image DataURL to store in memory
         temp_img = document.createElement('img')
+        $(temp_img).attr("width", @size.width).attr("height", @size.height)
         temp_img.onload = =>
-          fullimg = new fabric.Image($(temp_img).clone()[0])
-          fullimg.set(selectable:no, top: @pic.height / 2, left: @pic.width / 2, isBgImage: yes)
-          @canvas_full.add fullimg
-          $(temp_img).attr("width", @size.width).attr("height", @size.height)
           dimg = new fabric.Image(temp_img)
           dimg.set(selectable:no, top: @size.height / 2, left: @size.width / 2, isBgImage: yes)
-          console.log "WWWW", dimg.width, dimg.height
           @canvas.add dimg
           @_save_state()
         temp_img.src = data
@@ -216,9 +209,7 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     window.onbeforeunload = null
     @canvas.deactivateAll()
     @canvas.renderAll()
-    @canvas_full.deactivateAll()
-    @canvas_full.renderAll()
-    data = @canvas_full.toDataURL("png")
+    data = @canvas.toDataURL("png")
     # remove "data:image/png;base64,"
     post_data = {imgdata: data.substr(data.indexOf(',') + 1)}
     post_data.private = "yes" if $("#privacy-private").is(':checked')
@@ -251,12 +242,10 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
       $("#fabric-wrap").hide(0)
       $("#restore-state-placeholder").show(0)
       @canvas.loadFromJSON @saved_states[@cur_state_idx], () =>
-        @canvas_full.loadFromJSON @saved_states_full[@cur_state_idx], () =>
-          console.log "EEEEE", @canvas.item(0), @canvas.item(0).width, @canvas.item(0).height
-          $("#fabric-wrap").show(0)
-          $("#restore-state-placeholder").hide(0)
-          @restore_state_placeholder.clearRect(0, 0, @size.width, @size.height)
-          @_after_state_change()
+        $("#fabric-wrap").show(0)
+        $("#restore-state-placeholder").hide(0)
+        @restore_state_placeholder.clearRect(0, 0, @size.width, @size.height)
+        @_after_state_change()
     
   _after_state_change: =>
     # toggle whether or not undo/redo button is clickable
@@ -311,25 +300,17 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     @current_color = @canvas.freeDrawingColor if set_current_color
   
   _on_drawing_completed: (e) =>
-    #TODO this is getting very slow
-    # have a non-fabric.js canvas for drawing? with scale applied
-    @merge_small.ctx2d.clearRect(0, 0, @size.width, @size.height)
-    @merge_small.ctx2d.drawImage(@lower_canvas, 0, 0, @size.width, @size.height)
-    @merge_small.ctx2d.drawImage(@draw_canvas, 0, 0, @size.width, @size.height)
-    @merge_full.ctx2d.clearRect(0, 0, @pic.width, @pic.height)
-    @merge_full.ctx2d.drawImage(@lower_canvas_full, 0, 0, @pic.width, @pic.height)
-    @merge_full.ctx2d.drawImage(@draw_canvas, 0, 0, @pic.width, @pic.height)
-    @_replace_fabric_image_from_canvas @canvas, @merge_small.canvas.toDataURL("image/png"), @size, yes
-    @_replace_fabric_image_from_canvas @canvas_full, @merge_full.canvas.toDataURL("image/png"), @pic, yes
-    @
+    @merge_ctx.clearRect(0, 0, @size.width, @size.height)
+    @merge_ctx.drawImage(@lower_canvas, 0, 0, @size.width, @size.height)
+    @merge_ctx.drawImage(@draw_canvas, 0, 0, @size.width, @size.height)
+    @_replace_fabric_image_from_canvas @merge_canvas.toDataURL("image/png"), yes
     
-  _replace_fabric_image_from_canvas: (canvas, data, size, is_save_state, cb=null) =>
+  _replace_fabric_image_from_canvas: (data, is_save_state, cb=null) =>
     @_load_img data, (temp_img) =>
       img = new fabric.Image temp_img
-      img.set(selectable:no, width:size.width, height:size.height, top: size.height / 2, left: size.width / 2)
-      console.log "TODO _replace SCALETOWIDTH"
-      canvas.add img
-      canvas.remove canvas.item(0)
+      img.set(selectable:no, width:@size.width, height:@size.height, top: @size.height / 2, left: @size.width / 2)
+      @canvas.add img
+      @canvas.remove @canvas.item(0)
       @_save_state() if is_save_state
       cb() if cb?
   
@@ -337,11 +318,6 @@ class PicMixr.Views.Edit extends PicMixr.Views.BaseView
     temp_img = document.createElement('img')
     temp_img.onload = => cb(temp_img)
     temp_img.src = src
-
-  _create_canvas: (width, height) ->
-    canvas = document.createElement('canvas')
-    $(canvas).attr("width", width).attr("height", height).attr("style", "width:#{@size.width}px;height:#{@size.height}px")
-    {canvas: canvas, ctx2d: canvas.getContext('2d')}
     
   _on_object_modified: (e) =>
     @_save_state() if e.memo.target.type is "text"
