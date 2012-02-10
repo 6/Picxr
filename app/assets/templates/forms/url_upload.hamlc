@@ -1,5 +1,5 @@
 %form{:action => "/url-upload", :method => "post"}
+  %p.last
+    %input#input-url{:type => "text", :name => "url", :placeholder => "http://"}
   %p
-    %input{:type => "text", :name => "url", :placeholder => "http://"}
-  %p
-    %input.btn.success{:type => 'submit', :value => 'Upload'}
+    %input.btn.btn-large{:type => 'submit', :value => 'Upload'}

@@ -38,24 +38,22 @@
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
   %body
-    .container
-      .row
-        #landing-header.span12
-          #landing-header-inner.row
-            #logo-wrap.span2
-              %a#logo-a{:href=> "/"}
-                %img#logo{:src => "/assets/logo-small.png", :alt => "#{t :app_lower}"}
-            %ul.nav
-              %li#nav-home
-                %a.normal.first.route-default{:href =>"/"} Home
-              %li#nav-upload
-                %a.normal.route-bb{:href =>"/upload/desktop"} Upload
-      .alerts
-        - if flash[:alert]
-          .alert-message.warning
-            %a.close{:href => "#"} &times;
-            %p= flash[:alert]
-      #main-wrap= yield
+    #landing-header
+      #landing-header-inner.row
+        #logo-wrap
+          %a#logo-a{:href=> "/"}
+            %img#logo{:src => "/assets/logo-small.png", :alt => "#{t :app_lower}"}
+        %ul.nav
+          %li#nav-home
+            %a.normal.first.route-default{:href =>"/"} Browse
+          %li#nav-upload
+            %a.normal.route-bb{:href =>"/upload/desktop"} Upload
+    .alerts
+      - if flash[:alert]
+        .alert-message.warning
+          %a.close{:href => "#"} &times;
+          %p= flash[:alert]
+    #main-wrap.container-fluid= yield
     %footer#default-footer
       %span.spacer= "&copy; 2012 #{t :app}".html_safe
       %a{:href => "/about"} About

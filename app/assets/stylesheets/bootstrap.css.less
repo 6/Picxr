@@ -1,18 +1,10 @@
 @import "twitter/bootstrap";
 
-// Twitter bootstrap overrides and extensions
+// import responsive layout
+//@import "twitter/bootstrap/responsive";
 
-// Baseline grid
-@basefont:          13px;
-@baseline:          18px;
-
-// 760-ish px wide
-@gridColumns: 12;
-@gridColumnWidth: 49px;
-@gridGutterWidth: 15px;
-
+// Your custom stylesheets goes here (override Less here)
 .btn {
-  .transition(none);
   // Facebook Button Type
   &.fb {
     color: @white;
@@ -23,14 +15,11 @@
     .gradientBar(#58d, #7af);
     .box-shadow(inset 0 1px 6px rgba(0,0,0,0.4));
     .opacity(100);
-    &:hover {
-      background-position: 0 0;
-    }
   }
 }
 
-hr {
-  border-color: #e5e5e5;
+.btn:hover {
+  .transition(none);
 }
 
 a.menu:after, .dropdown-toggle:after {
